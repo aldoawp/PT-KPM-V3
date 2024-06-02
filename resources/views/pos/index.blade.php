@@ -22,9 +22,9 @@
             <table class="table">
                 <thead>
                     <tr class="ligth">
-                        <th scope="col">Name</th>
-                        <th scope="col">QTY</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Harga</th>
                         <th scope="col">SubTotal</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -56,13 +56,13 @@
 
             <div class="container row text-center">
                 <div class="form-group col-sm-6">
-                    <p class="h4 text-primary">Quantity: {{ Cart::count() }}</p>
+                    <p class="h4 text-primary">Jumlah: {{ Cart::count() }}</p>
                 </div>
                 <div class="form-group col-sm-6">
                     <p class="h4 text-primary">Subtotal: {{ Cart::subtotal() }}</p>
                 </div>
                 <div class="form-group col-sm-6">
-                    <p class="h4 text-primary">Vat: {{ Cart::tax() }}</p>
+                    <p class="h4 text-primary">VAT: {{ Cart::tax() }}</p>
                 </div>
                 <div class="form-group col-sm-6">
                     <p class="h4 text-primary">Total: {{ Cart::total() }}</p>
@@ -75,7 +75,7 @@
                     <div class="col-md-12">
                         <div class="input-group">
                             <select class="form-control" id="customer_id" name="customer_id">
-                                <option selected="" disabled="">-- Select Customer --</option>
+                                <option selected="" disabled="">-- Pilih Pelanggan --</option>
                                 @foreach ($customers as $customer)
                                     <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
@@ -89,8 +89,8 @@
                     </div>
                     <div class="col-md-12 mt-4">
                         <div class="d-flex flex-wrap align-items-center justify-content-center">
-                            <a href="{{ route('customers.create') }}" class="btn btn-primary add-list mx-1">Add Customer</a>
-                            <button type="submit" class="btn btn-success add-list mx-1">Create Invoice</button>
+                            <a href="{{ route('customers.create') }}" class="btn btn-primary add-list mx-1">Tambah Pelanggan</a>
+                            <button type="submit" class="btn btn-success add-list mx-1">Buat Invoice</button>
                         </div>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                             <div class="form-group row">
                                 <label class="control-label col-sm-3 align-self-center" for="search">Search:</label>
                                 <div class="input-group col-sm-8">
-                                    <input type="text" id="search" class="form-control" name="search" placeholder="Search product" value="{{ request('search') }}">
+                                    <input type="text" id="search" class="form-control" name="search" placeholder="Cari produk..." value="{{ request('search') }}">
                                     <div class="input-group-append">
                                         <button type="submit" class="input-group-text bg-primary"><i class="fa-solid fa-magnifying-glass font-size-20"></i></button>
                                         <a href="{{ route('products.index') }}" class="input-group-text bg-danger"><i class="fa-solid fa-trash"></i></a>
@@ -133,9 +133,9 @@
                             <thead class="bg-white text-uppercase">
                                 <tr class="ligth ligth-data">
                                     <th>No.</th>
-                                    <th>Photo</th>
-                                    <th>@sortablelink('product_name', 'name')</th>
-                                    <th>@sortablelink('selling_price', 'price')</th>
+                                    <th>Foto</th>
+                                    <th>@sortablelink('product_name', 'Nama')</th>
+                                    <th>@sortablelink('selling_price', 'Harga')</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

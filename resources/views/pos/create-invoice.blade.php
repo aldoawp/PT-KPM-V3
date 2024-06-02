@@ -14,16 +14,16 @@
                         <form action="{{ route('pos.printInvoice') }}" method="post">
                             @csrf
                             <input type="hidden" name="customer_id" value="{{ $customer->id }}">
-                            <button type="submit" class="btn btn-primary-dark mr-2"><i class="las la-print"></i> Print</button>
+                            <button type="submit" class="btn btn-primary-dark mr-2"><i class="las la-print"></i>Cetak</button>
                         </form>
 
-                        <button type="button" class="btn btn-primary-dark mr-2" data-toggle="modal" data-target=".bd-example-modal-lg">Create</button>
+                        <button type="button" class="btn btn-primary-dark mr-2" data-toggle="modal" data-target=".bd-example-modal-lg">Konfirmasi</button>
 
                         <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header bg-white">
-                                        <h3 class="modal-title text-center mx-auto">Invoice of {{ $customer->name }}<br/>Total Amount ${{ Cart::total() }}</h3>
+                                        <h3 class="modal-title text-center mx-auto">Invoice dari {{ $customer->name }}<br/>Total Tagihan ${{ Cart::total() }}</h3>
                                     </div>
                                     <form action="{{ route('pos.storeOrder') }}" method="post">
                                         @csrf
@@ -32,7 +32,7 @@
 
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="payment_status">Payment</label>
+                                                    <label for="payment_status">Jenis Pembayaran</label>
                                                     <select class="form-control @error('payment_status') is-invalid @enderror" name="payment_status">
                                                         <option selected="" disabled="">-- Select Payment --</option>
                                                         <option value="HandCash">HandCash</option>
@@ -48,8 +48,8 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="pay">Pay Now</label>
-                                                    <input type="text" class="form-control @error('pay') is-invalid @enderror" id="pay" name="pay" value="{{ old('pay') }}">
+                                                    <label for="pay">Dibayarkan Sekarang</label>
+                                                    <input type="text" class="form-control @error('pay') is-invalid @enderror"  id="pay" name="pay" value="{{ old('pay') }}">
                                                     @error('pay')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -59,8 +59,8 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                            <button type="submit" class="btn btn-primary">Simpan</button>
                                         </div>
                                     </form>
                                 </div>
@@ -83,9 +83,9 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Order Date</th>
-                                            <th scope="col">Order Status</th>
-                                            <th scope="col">Billing Address</th>
+                                            <th scope="col">Tanggal</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Alamat</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -108,16 +108,16 @@
 
                     <div class="row">
                         <div class="col-sm-12">
-                            <h5 class="mb-3">Order Summary</h5>
+                            <h5 class="mb-3">Ringkasan Pesanan</h5>
                             <div class="table-responsive-lg">
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th class="text-center" scope="col">#</th>
-                                            <th scope="col">Item</th>
-                                            <th class="text-center" scope="col">Quantity</th>
-                                            <th class="text-center" scope="col">Price</th>
-                                            <th class="text-center" scope="col">Totals</th>
+                                            <th scope="col">Produk</th>
+                                            <th class="text-center" scope="col">Jumlah</th>
+                                            <th class="text-center" scope="col">Harga</th>
+                                            <th class="text-center" scope="col">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -141,11 +141,8 @@
 
                     <div class="row">
                         <div class="col-sm-12">
-                            <b class="text-danger">Notes:</b>
-                            <p class="mb-0">It is a long established fact that a reader will be distracted by the readable content of a page
-                                when looking
-                                at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
-                                as opposed to using 'Content here, content here', making it look like readable English.</p>
+                            <b class="text-danger">Catatan:</b>
+                            <p class="mb-0">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
                         </div>
                     </div>
 
@@ -153,13 +150,13 @@
                         <div class="offset-lg-8 col-lg-4">
                             <div class="or-detail rounded">
                                 <div class="p-3">
-                                    <h5 class="mb-3">Order Details</h5>
+                                    <h5 class="mb-3">Rincian Order</h5>
                                     <div class="mb-2">
                                         <h6>Sub Total</h6>
                                         <p>${{ Cart::subtotal() }}</p>
                                     </div>
                                     <div>
-                                        <h6>Vat (5%)</h6>
+                                        <h6>VAT (5%)</h6>
                                         <p>${{ Cart::tax() }}</p>
                                     </div>
                                 </div>

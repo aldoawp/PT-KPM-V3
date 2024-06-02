@@ -14,10 +14,10 @@
             @endif
             <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                 <div>
-                    <h4 class="mb-3">Pending Order List</h4>
+                    <h4 class="mb-3">Daftar Pesanan Tertunda</h4>
                 </div>
                 <div>
-                    <a href="{{ route('order.pendingDue') }}" class="btn btn-danger add-list"><i class="fa-solid fa-trash mr-3"></i>Clear Search</a>
+                    <a href="{{ route('order.pendingDue') }}" class="btn btn-danger add-list"><i class="fa-solid fa-trash mr-3"></i>Hapus Pencarian</a>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
                         <label class="control-label col-sm-3 align-self-center" for="search">Search:</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input type="text" id="search" class="form-control" name="search" placeholder="Search order" value="{{ request('search') }}">
+                                <input type="text" id="search" class="form-control" name="search" placeholder="Cari pesanan..." value="{{ request('search') }}">
                                 <div class="input-group-append">
                                     <button type="submit" class="input-group-text bg-primary"><i class="fa-solid fa-magnifying-glass font-size-20"></i></button>
                                 </div>
@@ -58,12 +58,12 @@
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
                             <th>No.</th>
-                            <th>Invoice No</th>
-                            <th>@sortablelink('customer.name', 'name')</th>
-                            <th>@sortablelink('order_date', 'order date')</th>
-                            <th>Payment</th>
-                            <th>@sortablelink('pay')</th>
-                            <th>@sortablelink('due')</th>
+                            <th>No Invoice</th>
+                            <th>@sortablelink('customer.name', 'Nama')</th>
+                            <th>@sortablelink('order_date', 'Tanggal Pesanan')</th>
+                            <th>Jenis Pembayaran</th>
+                            <th>@sortablelink('pay', 'dibayarkan')</th>
+                            <th>@sortablelink('due', 'Hutang')</th>
                             <th>Action</th>
                         </tr>
                     </thead>
