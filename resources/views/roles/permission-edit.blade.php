@@ -65,7 +65,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
-                        <h4 class="card-title">Edit Permission</h4>
+                        <h4 class="card-title">Ubah Hak Akses</h4>
                     </div>
                 </div>
 
@@ -76,7 +76,7 @@
                         <!-- begin: Input Data -->
                         <div class=" row align-items-center">
                             <div class="form-group col-md-6">
-                                <label for="name">Permission Name <span class="text-danger">*</span></label>
+                                <label for="name">Nama Hak Akses <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $permission->name) }}" required autocomplete="off">
                                 @error('name')
                                 <div class="invalid-feedback">
@@ -86,9 +86,9 @@
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="group_name">Group Name <span class="text-danger">*</span></label>
+                                <label for="group_name">Nama Grup <span class="text-danger">*</span></label>
                                 <select class="form-control @error('group_name') is-invalid @enderror" name="group_name" required>
-                                    <option disabled>-- Select Group --</option>
+                                    <option disabled>-- Pilih Grup --</option>
                                     @foreach ($group_names as $item)
                                         <option value="{{ $item['slug'] }}" {{ $permission->group_name == $item['slug'] ? 'selected' : '' }}>{{ $item['name'] }}</option>
                                     @endforeach
@@ -102,8 +102,8 @@
                         </div>
                         <!-- end: Input Data -->
                         <div class="mt-2">
-                            <button type="submit" class="btn btn-primary mr-2">Save</button>
-                            <a class="btn bg-danger" href="{{ route('permission.index') }}">Cancel</a>
+                            <button type="submit" class="btn btn-primary mr-2">Ubah</button>
+                            <a class="btn bg-danger" href="{{ route('permission.index') }}">Batalkan</a>
                         </div>
                     </form>
                 </div>

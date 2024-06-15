@@ -12,6 +12,7 @@ class Employee extends Model
     use HasFactory, Sortable;
 
     protected $fillable = [
+        'id',
         'name',
         'email',
         'phone',
@@ -24,6 +25,7 @@ class Employee extends Model
     ];
 
     public $sortable = [
+        'id',
         'name',
         'email',
         'phone',

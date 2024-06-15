@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\OrderDetails;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,6 +45,11 @@ class Product extends Model
 
     public function supplier(){
         return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetails::class);
     }
 
     public function scopeFilter($query, array $filters)

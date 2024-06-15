@@ -14,13 +14,12 @@
             @endif
             <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                 <div>
-                    <h4 class="mb-3">Advance Salary List</h4>
-                    <p class="mb-0">A advance salary dashboard lets you easily gather and visualize advance salary data from optimizing <br>
-                        the advance salary experience, ensuring advance salary retention. </p>
+                    <h4 class="mb-3">Daftar Pinjaman Karyawan</h4>
+                    <p class="mb-0">Dasbor gaji di muka memungkinkan Anda dengan mudah mengumpulkan dan <br> memvisualisasikan data gaji lanjutan dari mengoptimalkan Pengalaman gaji di muka, <br> memastikan retensi gaji sebelumnya. </p>
                 </div>
                 <div>
-                <a href="{{ route('advance-salary.create') }}" class="btn btn-primary add-list"><i class="fas fa-plus mr-3"></i></i>Create Advance Salary</a>
-                <a href="{{ route('advance-salary.index') }}" class="btn btn-danger add-list"><i class="fa-solid fa-trash mr-3"></i>Clear Search</a>
+                <a href="{{ route('advance-salary.create') }}" class="btn btn-primary add-list"><i class="fas fa-plus mr-3"></i></i>Tambah Pinjaman</a>
+                <a href="{{ route('advance-salary.index') }}" class="btn btn-danger add-list"><i class="fa-solid fa-trash mr-3"></i>Hapus Pencarian</a>
                 </div>
             </div>
         </div>
@@ -29,7 +28,7 @@
             <form action="{{ route('advance-salary.index') }}" method="get">
                 <div class="d-flex flex-wrap align-items-center justify-content-between">
                     <div class="form-group row">
-                        <label for="row" class="col-sm-3 align-self-center">Row:</label>
+                        <label for="row" class="col-sm-3 align-self-center">Baris:</label>
                         <div class="col-sm-9">
                             <select class="form-control" name="row">
                                 <option value="10" @if(request('row') == '10')selected="selected"@endif>10</option>
@@ -41,10 +40,10 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="control-label col-sm-3 align-self-center" for="search">Search:</label>
+                        <label class="control-label col-sm-3 align-self-center" for="search">Cari:</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input type="text" id="search" class="form-control" name="search" placeholder="Search employee" value="{{ request('search') }}">
+                                <input type="text" id="search" class="form-control" name="search" placeholder="Cari karyawan..." value="{{ request('search') }}">
                                 <div class="input-group-append">
                                     <button type="submit" class="input-group-text bg-primary"><i class="fa-solid fa-magnifying-glass font-size-20"></i></button>
                                 </div>
@@ -61,10 +60,10 @@
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
                             <th>No.</th>
-                            <th>Photo</th>
-                            <th>@sortablelink('employee.name', 'name')</th>
-                            <th>@sortablelink('date')</th>
-                            <th>@sortablelink('advance_salary', 'advance salary')</th>
+                            <th>Foto</th>
+                            <th>@sortablelink('employee.name', 'nama')</th>
+                            <th>@sortablelink('tanggal')</th>
+                            <th>@sortablelink('advance_salary', 'Pinjaman')</th>
                             <th>Action</th>
                         </tr>
                     </thead>

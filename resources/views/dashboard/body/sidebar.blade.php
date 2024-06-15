@@ -2,7 +2,7 @@
     <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
         <a href="{{ route('dashboard') }}" class="header-logo">
             <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid rounded-normal light-logo" alt="logo">
-            <h5 class="logo-title light-logo ml-3">PT. KPM</h5>
+            <h5 class="logo-title light-logo ml-4" style="white-space: nowrap;">PT. KPM</h5>
         </a>
         <div class="iq-menu-bt-sidebar ml-0">
             <i class="las la-bars wrapper-menu"></i>
@@ -228,17 +228,17 @@
                             <li
                                 class="{{ Request::is(['permission', 'permission/create', 'permission/edit/*']) ? 'active' : '' }}">
                                 <a href="{{ route('permission.index') }}">
-                                    <i class="fa-solid fa-arrow-right"></i><span>Permissions</span>
+                                    <i class="fa-solid fa-arrow-right"></i><span>Hak Akses</span>
                                 </a>
                             </li>
                             <li class="{{ Request::is(['role', 'role/create', 'role/edit/*']) ? 'active' : '' }}">
                                 <a href="{{ route('role.index') }}">
-                                    <i class="fa-solid fa-arrow-right"></i><span>Roles</span>
+                                    <i class="fa-solid fa-arrow-right"></i><span>Peranan</span>
                                 </a>
                             </li>
                             <li class="{{ Request::is(['role/permission*']) ? 'active' : '' }}">
                                 <a href="{{ route('rolePermission.index') }}">
-                                    <i class="fa-solid fa-arrow-right"></i><span>Role in Permissions</span>
+                                    <i class="fa-solid fa-arrow-right"></i><span>Hak Akses Peranan</span>
                                 </a>
                             </li>
                         </ul>

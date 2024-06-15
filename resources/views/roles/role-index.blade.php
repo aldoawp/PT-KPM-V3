@@ -14,12 +14,12 @@
             @endif
             <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                 <div>
-                    <h4 class="mb-3">Role List</h4>
-                    <p class="mb-0">A role dashboard lets you easily gather and visualize role data from optimizing <br>
-                        the role experience, ensuring role retention. </p>
+                    <h4 class="mb-3">Daftar Peranan</h4>
+                    <p class="mb-0">Dasbor peran memungkinkan Anda dengan mudah mengumpulkan dan memvisualisasikan data <br> peran dari mengoptimalkan
+Pengalaman peran, memastikan retensi peran. </p>
                 </div>
                 <div>
-                    <a href="{{ route('role.create') }}" class="btn btn-primary add-list"><i class="fa-solid fa-plus mr-3"></i>Add Role</a>
+                    <a href="{{ route('role.create') }}" class="btn btn-primary add-list"><i class="fa-solid fa-plus mr-3"></i>Tambah Peran</a>
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
                             <th>No.</th>
-                            <th>Role Name</th>
+                            <th>Nama Peran</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -74,10 +74,10 @@
                                     @method('delete')
                                     @csrf
                                     <div class="d-flex align-items-center list-action">
-                                        <a class="btn btn-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
+                                        <a class="btn btn-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ubah"
                                             href="{{ route('role.edit', $role->id) }}""><i class="ri-pencil-line mr-0"></i>
                                         </a>
-                                        <button type="submit" class="btn btn-warning mr-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line mr-0"></i></button>
+                                        <button type="submit" class="btn btn-warning mr-2 border-none" onclick="return confirm('Apakah Anda yakin ingin menghapus catatan ini?')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Hapus"><i class="ri-delete-bin-line mr-0"></i></button>
                                     </div>
                                 </form>
                             </td>

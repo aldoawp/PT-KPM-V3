@@ -1,5 +1,7 @@
 @extends('dashboard.body.main')
 
+{{-- Chart pendapatan & pendapatan per lokasi --}}
+
 @section('container')
     <div class="container-fluid">
         <div class="row">
@@ -18,7 +20,7 @@
                     <div class="card-body p-0 mt-lg-2 mt-0">
                         <h3 class="mb-3">Halo {{ auth()->user()->name }},</h3>
                         <p class="mb-0 mr-4">Semoga hari ini menjadi hari yang penuh berkah dan kebahagiaan. Jangan lupa
-                            berdoa :)</p>
+                            berdoa!</p>
                     </div>
                 </div>
             </div>
@@ -32,8 +34,8 @@
                                         <img src="../assets/images/product/1.png" class="img-fluid" alt="image">
                                     </div>
                                     <div>
-                                        <p class="mb-2">Total Telah Dibayarkan</p>
-                                        <h4>Rp {{ number_format($total_paid, 0, '.', ',') }}</h4>
+                                        <p class="mb-2">Pendapatan Harian</p>
+                                        <h4>Rp {{ number_format($today_income, 0, '.', ',') }}</h4>
                                     </div>
                                 </div>
                                 <div class="iq-progress-bar mt-2">
@@ -51,8 +53,8 @@
                                         <img src="../assets/images/product/2.png" class="img-fluid" alt="image">
                                     </div>
                                     <div>
-                                        <p class="mb-2">Total Jatuh Tempo</p>
-                                        <h4>Rp {{ number_format($total_due, 0, '.', ',') }}</h4>
+                                        <p class="mb-2">Produk Terjual Harian</p>
+                                        <h4>{{ number_format($today_product, 0, '.', ',') }} pcs</h4>
                                     </div>
                                 </div>
                                 <div class="iq-progress-bar mt-2">
@@ -70,8 +72,8 @@
                                         <img src="../assets/images/product/3.png" class="img-fluid" alt="image">
                                     </div>
                                     <div>
-                                        <p class="mb-2">Pesanan Selesai</p>
-                                        <h4>{{ count($complete_orders) }}</h4>
+                                        <p class="mb-2">Pesanan Selesai Harian</p>
+                                        <h4>{{ count($today_complete_orders) }}</h4>
                                     </div>
                                 </div>
                                 <div class="iq-progress-bar mt-2">
@@ -87,7 +89,7 @@
                 <div class="card card-block card-stretch card-height">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Ringkasan</h4>
+                            <h4 class="card-title">Total Pendapatan</h4>
                         </div>
                         <div class="card-header-toolbar d-flex align-items-center">
                             <div class="dropdown">
@@ -105,7 +107,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div id="layout1-chart1"></div>
+                        <div id="layout1-chart1" data-income-weekly='@json($income_weekly)' data-income-total='@json($income_total)'></div>
                     </div>
                 </div>
             </div>
@@ -113,7 +115,7 @@
                 <div class="card card-block card-stretch card-height">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Pendapatan vs Pengeluaran</h4>
+                            <h4 class="card-title">Pendapatan per Lokasi</h4>
                         </div>
                         <div class="card-header-toolbar d-flex align-items-center">
                             <div class="dropdown">
@@ -159,7 +161,7 @@
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled row top-product mb-0">
-                            @foreach ($products as $product)
+                            @foreach ($best_sellers as $product)
                                 <li class="col-lg-3">
                                     <div class="card card-block card-stretch card-height mb-0">
                                         <div class="card-body">
@@ -169,7 +171,7 @@
                                             </div>
                                             <div class="style-text text-left mt-3">
                                                 <h5 class="mb-1">{{ $product->product_name }}</h5>
-                                                <p class="mb-0">{{ $product->product_store }} Item</p>
+                                                <p class="mb-0">{{ $product->total_quantity }} pcs</p>
                                             </div>
                                         </div>
                                     </div>

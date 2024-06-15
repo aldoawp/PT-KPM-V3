@@ -14,12 +14,12 @@
             @endif
             <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                 <div>
-                    <h4 class="mb-3">Pay Salary List</h4>
-                    <p class="mb-0">A pay salary dashboard lets you easily gather and visualize pay salary data from optimizing <br>
-                        the pay salary experience, ensuring pay salary retention. </p>
+                    <h4 class="mb-3">Daftar Pembayaran Gaji</h4>
+                    <p class="mb-0">Dasbor gaji gaji memungkinkan Anda dengan mudah mengumpulkan dan memvisualisasikan<br>data gaji pembayaran dari mengoptimalkan
+Pengalaman gaji pembayaran, memastikan <br> retensi gaji gaji. </p>
                 </div>
                 <div>
-                <a href="{{ route('advance-salary.index') }}" class="btn btn-danger add-list"><i class="fa-solid fa-trash mr-3"></i>Clear Search</a>
+                <a href="{{ route('advance-salary.index') }}" class="btn btn-danger add-list"><i class="fa-solid fa-trash mr-3"></i>Hapus Pencarian</a>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
             <form action="{{ route('advance-salary.index') }}" method="get">
                 <div class="d-flex flex-wrap align-items-center justify-content-between">
                     <div class="form-group row">
-                        <label for="row" class="col-sm-3 align-self-center">Row:</label>
+                        <label for="row" class="col-sm-3 align-self-center">Baris:</label>
                         <div class="col-sm-9">
                             <select class="form-control" name="row">
                                 <option value="10" @if(request('row') == '10')selected="selected"@endif>10</option>
@@ -40,10 +40,10 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="control-label col-sm-3 align-self-center" for="search">Search:</label>
+                        <label class="control-label col-sm-3 align-self-center" for="search">Cari:</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input type="text" id="search" class="form-control" name="search" placeholder="Search employee" value="{{ request('search') }}">
+                                <input type="text" id="search" class="form-control" name="search" placeholder="Cari karyawan..." value="{{ request('search') }}">
                                 <div class="input-group-append">
                                     <button type="submit" class="input-group-text bg-primary"><i class="fa-solid fa-magnifying-glass font-size-20"></i></button>
                                 </div>
@@ -60,11 +60,11 @@
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
                             <th>No.</th>
-                            <th>Photo</th>
-                            <th>@sortablelink('employee.name', 'name')</th>
+                            <th>Foto</th>
+                            <th>@sortablelink('employee.name', 'nama')</th>
                             <th>@sortablelink('date')</th>
-                            <th>@sortablelink('employee.salary', 'salary')</th>
-                            <th>@sortablelink('advance_salary', 'advance salary')</th>
+                            <th>@sortablelink('employee.salary', 'gaji')</th>
+                            <th>@sortablelink('advance_salary', 'pinjaman')</th>
                             <th>Due</th>
                             <th>Action</th>
                         </tr>
@@ -78,9 +78,9 @@
                             </td>
                             <td>{{ $advanceSalary->employee->name }}</td>
                             <td>{{ Carbon\Carbon::parse($advanceSalary->date)->format('M/Y') }}</td>
-                            <td>${{ $advanceSalary->employee->salary }}</td>
-                            <td>{{ $advanceSalary->advance_salary ? '$'.$advanceSalary->advance_salary : 'No Advance' }}</td>
-                            <td>${{ $advanceSalary->employee->salary - $advanceSalary->advance_salary }}</td>
+                            <td>Rp {{ number_format($advanceSalary->employee->salary, 0, ',', '.') }}</td>
+                            <td>{{ $advanceSalary->advance_salary ? '$'.$advanceSalary->advance_salary : 'Tidak Ada Pinjaman' }}</td>
+                            <td>Rp {{ number_format($advanceSalary->employee->salary - $advanceSalary->advance_salary, 0, ',', '.') }}</td> 
                             <td>
                                 <div class="d-flex align-items-center list-action">
                                     <a class="btn btn-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Pay Now"

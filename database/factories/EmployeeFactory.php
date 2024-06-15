@@ -22,7 +22,7 @@ class EmployeeFactory extends Factory
             'phone' => fake()->unique()->phoneNumber(),
             'address' => fake()->address(),
             'experience' => fake()->randomElement(['0 Year', '1 Year', '2 Year', '3 Year', '4 Year', '5 Year']),
-            'salary' => fake()->randomNumber(3, true),
+            'salary' => fake()->numberBetween(1000000, 10000000),
             'city' => fake()->city(),
         ];
     }

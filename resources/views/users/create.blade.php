@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
-                        <h4 class="card-title">Create User</h4>
+                        <h4 class="card-title">Tambah Pengguna</h4>
                     </div>
                 </div>
 
@@ -29,7 +29,7 @@
                             <div class="input-group mb-4 col-lg-6">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input @error('photo') is-invalid @enderror" id="image" name="photo" accept="image/*" onchange="previewImage();">
-                                    <label class="custom-file-label" for="photo">Choose file</label>
+                                    <label class="custom-file-label" for="photo">Pilih file</label>
                                 </div>
                                 @error('photo')
                                 <div class="invalid-feedback">
@@ -42,7 +42,7 @@
                         <!-- begin: Input Data -->
                         <div class=" row align-items-center">
                             <div class="form-group col-md-12">
-                                <label for="name">Name <span class="text-danger">*</span></label>
+                                <label for="name">Nama <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
                                 @error('name')
                                 <div class="invalid-feedback">
@@ -79,7 +79,7 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="password_confirmation">Confirm Password <span class="text-danger">*</span></label>
+                                <label for="password_confirmation">Konfirmasi Password <span class="text-danger">*</span></label>
                                 <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation" required>
                                 @error('password_confirmation')
                                 <div class="invalid-feedback">
@@ -88,9 +88,9 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="role">Role</label>
+                                <label for="role">Peran</label>
                                 <select class="form-control @error('role') is-invalid @enderror" name="role">
-                                    <option selected="" disabled>-- Select Role --</option>
+                                    <option selected="" disabled>-- Pilih Peran --</option>
                                     @foreach ($roles as $role)
                                         <option value="{{ $role->id }}">{{ $role->name }}</option>
                                     @endforeach
@@ -104,8 +104,8 @@
                         </div>
                         <!-- end: Input Data -->
                         <div class="mt-2">
-                            <button type="submit" class="btn btn-primary mr-2">Save</button>
-                            <a class="btn bg-danger" href="{{ route('users.index') }}">Cancel</a>
+                            <button type="submit" class="btn btn-primary mr-2">Simpan</button>
+                            <a class="btn bg-danger" href="{{ route('users.index') }}">Batalkan</a>
                         </div>
                     </form>
                 </div>

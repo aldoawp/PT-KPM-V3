@@ -23,9 +23,9 @@ class ProductFactory extends Factory
             'category_id' => fake()->randomElement([1, 2, 3, 4, 5]),
             'supplier_id' => fake()->randomElement([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
             'product_garage' => fake()->randomElement(['A', 'B', 'C', 'D']),
-            'product_store' => fake()->randomNumber(3),
-            'buying_price' => fake()->randomNumber(2),
-            'selling_price' => fake()->randomNumber(2),
+            'product_store' => fake()->numberBetween(100, 1000),
+            'buying_price' => fake()->numberBetween(1000, 20000),
+            'selling_price' => fake()->numberBetween(1000, 20000),
             'buying_date' => Carbon::now(),
             'expire_date' => Carbon::now()->addYears(2),
         ];

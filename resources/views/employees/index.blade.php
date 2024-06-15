@@ -14,13 +14,12 @@
             @endif
             <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                 <div>
-                    <h4 class="mb-3">Employee List</h4>
-                    <p class="mb-0">A employee dashboard lets you easily gather and visualize employee data from optimizing <br>
-                        the employee experience, ensuring employee retention. </p>
+                    <h4 class="mb-3">Daftar Karyawan</h4>
+                    <p class="mb-0">Dasbor karyawan memungkinkan Anda dengan mudah mengumpulkan dan memvisualisasikan <br> data karyawan untuk mengoptimalkan pengalaman karyawan, memastikan retensi karyawan.</p>
                 </div>
                 <div>
-                <a href="{{ route('employees.create') }}" class="btn btn-primary add-list"><i class="fa-solid fa-plus mr-3"></i>Add Employee</a>
-                <a href="{{ route('employees.index') }}" class="btn btn-danger add-list"><i class="fa-solid fa-trash mr-3"></i>Clear Search</a>
+                <a href="{{ route('employees.create') }}" class="btn btn-primary add-list"><i class="fa-solid fa-plus mr-3"></i>Tambah Karyawan</a>
+                <a href="{{ route('employees.index') }}" class="btn btn-danger add-list"><i class="fa-solid fa-trash mr-3"></i>Hapus Pencarian</a>
                 </div>
             </div>
         </div>
@@ -29,7 +28,7 @@
             <form action="{{ route('employees.index') }}" method="get">
                 <div class="d-flex flex-wrap align-items-center justify-content-between">
                     <div class="form-group row">
-                        <label for="row" class="col-sm-3 align-self-center">Row:</label>
+                        <label for="row" class="col-sm-3 align-self-center">Baris:</label>
                         <div class="col-sm-9">
                             <select class="form-control" name="row">
                                 <option value="10" @if(request('row') == '10')selected="selected"@endif>10</option>
@@ -41,10 +40,10 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="control-label col-sm-3 align-self-center" for="search">Search:</label>
+                        <label class="control-label col-sm-3 align-self-center" for="search">Cari:</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input type="text" id="search" class="form-control" name="search" placeholder="Search employee" value="{{ request('search') }}">
+                                <input type="text" id="search" class="form-control" name="search" placeholder="Cari karyawan..." value="{{ request('search') }}">
                                 <div class="input-group-append">
                                     <button type="submit" class="input-group-text bg-primary"><i class="fa-solid fa-magnifying-glass font-size-20"></i></button>
                                 </div>
@@ -61,40 +60,41 @@
                 <table class="table mb-0">
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
-                            <th>No.</th>
-                            <th>Photo</th>
-                            <th>@sortablelink('name')</th>
+                            <th>@sortablelink('id', 'No.')</th>
+                            <th>Foto</th>
+                            <th>@sortablelink('nama')</th>
                             <th>@sortablelink('email')</th>
-                            <th>@sortablelink('phone')</th>
-                            <th>@sortablelink('salary')</th>
-                            <th>@sortablelink('city')</th>
+                            <th>@sortablelink('No HP')</th>
+                            <th>@sortablelink('Gaji')</th>
+                            <th>@sortablelink('Kota')</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="ligth-body">
                         @forelse ($employees as $employee)
                         <tr>
-                            <td>{{ (($employees->currentPage() * 10) - 10) + $loop->iteration  }}</td>
+                            {{-- <td>{{ (($employees->currentPage() * 10) - 10) + $loop->iteration  }}</td> --}}
+                            <td>{{ $employee->id }}</td>
                             <td>
                                 <img class="avatar-60 rounded" src="{{ $employee->photo ? asset('storage/employees/'.$employee->photo) : asset('assets/images/user/1.png') }}">
                             </td>
                             <td>{{ $employee->name }}</td>
                             <td>{{ $employee->email }}</td>
                             <td>{{ $employee->phone }}</td>
-                            <td>${{ $employee->salary }}</td>
+                            <td>Rp {{ number_format($employee->salary, 0, ',', '.') }}</td>
                             <td>{{ $employee->city }}</td>
                             <td>
                                 <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
+                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tampilkan"
                                         href="{{ route('employees.show', $employee->id) }}"><i class="ri-eye-line mr-0"></i>
                                     </a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
+                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ubah"
                                         href="{{ route('employees.edit', $employee->id) }}""><i class="ri-pencil-line mr-0"></i>
                                     </a>
                                     <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" style="margin-bottom: 5px">
                                         @method('delete')
                                         @csrf
-                                        <button type="submit" class="badge bg-warning mr-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line mr-0"></i></button>
+                                        <button type="submit" class="badge bg-warning mr-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Hapus"><i class="ri-delete-bin-line mr-0"></i></button>
                                     </form>
                                 </div>
                             </td>

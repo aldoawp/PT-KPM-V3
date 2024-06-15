@@ -26,8 +26,8 @@
                         <div class="ml-3">
                             <h4 class="mb-1">{{ $customer->name }}</h4>
                             <p class="mb-2">{{ $customer->shopname }}</p>
-                            <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-primary font-size-14">Edit</a>
-                            <a href="{{ route('customers.index') }}" class="btn btn-danger font-size-14">Back</a>
+                            <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-primary font-size-14">Ubah</a>
+                            <a href="{{ route('customers.index') }}" class="btn btn-danger font-size-14">Kembali</a>
                         </div>
                     </div>
                     <ul class="list-inline p-0 m-0">
@@ -67,7 +67,7 @@
             <div class="card card-block card-stretch mb-0">
                 <div class="card-header px-3">
                     <div class="header-title">
-                        <h4 class="card-title">Customer Information</h4>
+                        <h4 class="card-title">Informasi Pelanggan</h4>
                     </div>
                 </div>
                 <div class="card-body p-3">
@@ -75,7 +75,7 @@
                         <li class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-sm-3 col-4">
-                                    <label class="col-form-label">Name</label>
+                                    <label class="col-form-label">Nama</label>
                                 </div>
                                 <div class="col-sm-9 col-8">
                                     <input type="text" class="form-control bg-white" value="{{ $customer->name }}" readonly>
@@ -95,7 +95,7 @@
                         <li class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-sm-3 col-4">
-                                    <label class="col-form-label">Phone</label>
+                                    <label class="col-form-label">No HP</label>
                                 </div>
                                 <div class="col-sm-9 col-8">
                                     <input type="text" class="form-control bg-white" value="{{ $customer->phone }}" readonly>
@@ -105,7 +105,7 @@
                         <li class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-sm-3 col-4">
-                                    <label class="col-form-label">Shop Name</label>
+                                    <label class="col-form-label">Nama Usaha</label>
                                 </div>
                                 <div class="col-sm-9 col-8">
                                     <input type="text" class="form-control bg-white" value="{{ $customer->shopname }}" readonly>
@@ -115,7 +115,7 @@
                         <li class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-sm-3 col-4">
-                                    <label class="col-form-label">Account Holder</label>
+                                    <label class="col-form-label">Nama Pemilik Rekening</label>
                                 </div>
                                 <div class="col-sm-9 col-8">
                                     <input type="text" class="form-control bg-white" value="{{ $customer->account_holder }}" readonly>
@@ -125,7 +125,7 @@
                         <li class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-sm-3 col-4">
-                                    <label class="col-form-label">Bank Name</label>
+                                    <label class="col-form-label">Nama Bank</label>
                                 </div>
                                 <div class="col-sm-9 col-8">
                                     <input type="text" class="form-control bg-white" value="{{ $customer->bank_name }}" readonly>
@@ -135,7 +135,7 @@
                         <li class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-sm-3 col-4">
-                                    <label class="col-form-label">Account Number</label>
+                                    <label class="col-form-label">Nomor Rekening</label>
                                 </div>
                                 <div class="col-sm-9 col-8">
                                     <input type="text" class="form-control bg-white" value="{{ $customer->account_number }}" readonly>
@@ -145,7 +145,7 @@
                         <li class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-sm-3 col-4">
-                                    <label class="col-form-label">Bank Branch</label>
+                                    <label class="col-form-label">Cabang Bank</label>
                                 </div>
                                 <div class="col-sm-9 col-8">
                                     <input type="text" class="form-control bg-white" value="{{ $customer->bank_branch }}" readonly>
@@ -155,7 +155,7 @@
                         <li class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-sm-3 col-4">
-                                    <label class="col-form-label">City</label>
+                                    <label class="col-form-label">Kota Pelanggan</label>
                                 </div>
                                 <div class="col-sm-9 col-8">
                                     <input type="text" class="form-control bg-white" value="{{ $customer->city }}" readonly>
@@ -165,7 +165,7 @@
                         <li class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-sm-3 col-4">
-                                    <label class="col-form-label">Address</label>
+                                    <label class="col-form-label">Alamat Pelanggan</label>
                                 </div>
                                 <div class="col-sm-9 col-8">
                                     <textarea class="form-control bg-white" readonly>{{ $customer->address }}</textarea>
