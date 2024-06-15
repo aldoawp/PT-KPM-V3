@@ -23,7 +23,7 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header bg-white">
-                                        <h3 class="modal-title text-center mx-auto">Invoice dari {{ $customer->name }}<br/>Total Tagihan ${{ Cart::total() }}</h3>
+                                        <h3 class="modal-title text-center mx-auto">Invoice dari {{ $customer->name }}<br/>Total Tagihan: Rp {{ number_format(Cart::total(), 0, ',', '.') }}</h3>
                                     </div>
                                     <form action="{{ route('pos.storeOrder') }}" method="post">
                                         @csrf
@@ -34,10 +34,10 @@
                                                 <div class="form-group">
                                                     <label for="payment_status">Jenis Pembayaran</label>
                                                     <select class="form-control @error('payment_status') is-invalid @enderror" name="payment_status">
-                                                        <option selected="" disabled="">-- Select Payment --</option>
-                                                        <option value="HandCash">HandCash</option>
-                                                        <option value="Cheque">Cheque</option>
-                                                        <option value="Due">Due</option>
+                                                        <option selected="" disabled="">-- Pilih Pembayaran --</option>
+                                                        <option value="HandCash">Tunai</option>
+                                                        <option value="Cheque">Cek</option>
+                                                        <option value="Due">Bon</option>
                                                     </select>
                                                     @error('payment_status')
                                                     <div class="invalid-feedback">
@@ -49,7 +49,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="pay">Dibayarkan Sekarang</label>
-                                                    <input type="text" class="form-control @error('pay') is-invalid @enderror"  id="pay" name="pay" value="{{ old('pay') }}">
+                                                    <input type="number" class="form-control @error('pay') is-invalid @enderror"  id="pay" name="pay" value="{{ old('pay') }}">
                                                     @error('pay')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -128,8 +128,8 @@
                                                 <h6 class="mb-0">{{ $item->name }}</h6>
                                             </td>
                                             <td class="text-center">{{ $item->qty }}</td>
-                                            <td class="text-center">{{ $item->price }}</td>
-                                            <td class="text-center"><b>{{ $item->subtotal }}</b></td>
+                                            <td class="text-center">Rp {{ number_format($item->price, 0, ',', '.') }}</td> 
+                                            <td class="text-center"><b>Rp {{ number_format($item->subtotal, 0, ',', '.') }}</b></td>
                                         </tr>
 
                                         @endforeach
@@ -153,16 +153,16 @@
                                     <h5 class="mb-3">Rincian Order</h5>
                                     <div class="mb-2">
                                         <h6>Sub Total</h6>
-                                        <p>${{ Cart::subtotal() }}</p>
+                                        <p>Rp {{ number_format(Cart::subtotal(), 0, ',', '.') }}</p>
                                     </div>
                                     <div>
                                         <h6>VAT (5%)</h6>
-                                        <p>${{ Cart::tax() }}</p>
+                                        <p>Rp {{ number_format(Cart::tax(), 0, ',', '.') }}</p>
                                     </div>
                                 </div>
                                 <div class="ttl-amt py-2 px-3 d-flex justify-content-between align-items-center">
                                     <h6>Total</h6>
-                                    <h3 class="text-primary font-weight-700">${{ Cart::total() }}</h3>
+                                    <h3 class="text-primary font-weight-700">Rp {{ number_format(Cart::total(), 0, ',', '.') }}</h3>
                                 </div>
                             </div>
                         </div>

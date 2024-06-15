@@ -6,6 +6,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 
@@ -30,8 +31,12 @@ class CustomerController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->has('previous_url')) {
+            Session::put('previous_url', $request->query('previous_url'));
+        }
+
         return view('customers.create');
     }
 
@@ -60,7 +65,7 @@ class CustomerController extends Controller
          * Handle upload image with Storage.
          */
         if ($file = $request->file('photo')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
             $path = 'public/customers/';
 
             $file->storeAs($path, $fileName);
@@ -69,7 +74,14 @@ class CustomerController extends Controller
 
         Customer::create($validatedData);
 
-        return Redirect::route('customers.index')->with('success', 'Customer has been created!');
+        // Check if there is a 'previous_url' in the session
+        if ($request->session()->has('previous_url')) {
+            $previousUrl = $request->session()->get('previous_url');
+            $request->session()->forget('previous_url');
+            return redirect($previousUrl)->with('success', 'Pelanggan telah dibuat!')->withInput();
+        }
+
+        return Redirect::route('customers.index')->with('success', 'Pelanggan telah dibuat!');
     }
 
     /**
@@ -100,8 +112,8 @@ class CustomerController extends Controller
         $rules = [
             'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
-            'email' => 'required|email|max:50|unique:customers,email,'.$customer->id,
-            'phone' => 'required|string|max:15|unique:customers,phone,'.$customer->id,
+            'email' => 'required|email|max:50|unique:customers,email,' . $customer->id,
+            'phone' => 'required|string|max:15|unique:customers,phone,' . $customer->id,
             'shopname' => 'required|string|max:50',
             'account_holder' => 'max:50',
             'account_number' => 'max:25',
@@ -117,13 +129,13 @@ class CustomerController extends Controller
          * Handle upload image with Storage.
          */
         if ($file = $request->file('photo')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
             $path = 'public/customers/';
 
             /**
              * Delete photo if exists.
              */
-            if($customer->photo){
+            if ($customer->photo) {
                 Storage::delete($path . $customer->photo);
             }
 
@@ -133,7 +145,7 @@ class CustomerController extends Controller
 
         Customer::where('id', $customer->id)->update($validatedData);
 
-        return Redirect::route('customers.index')->with('success', 'Customer has been updated!');
+        return Redirect::route('customers.index')->with('success', 'Pelanggan telah diperbarui!');
     }
 
     /**
@@ -144,12 +156,12 @@ class CustomerController extends Controller
         /**
          * Delete photo if exists.
          */
-        if($customer->photo){
+        if ($customer->photo) {
             Storage::delete('public/customers/' . $customer->photo);
         }
 
         Customer::destroy($customer->id);
 
-        return Redirect::route('customers.index')->with('success', 'Customer has been deleted!');
+        return Redirect::route('customers.index')->with('success', 'Pelanggan telah dihapus!');
     }
 }
