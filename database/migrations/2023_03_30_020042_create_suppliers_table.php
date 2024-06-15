@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->unique();
-            $table->text('address')->nullable();
-            $table->string('shopname')->nullable();
+            $table->text('address');
+            $table->string('shopname');
             $table->string('photo')->nullable();
             $table->string('type')->nullable();
             $table->string('account_holder')->nullable();
@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('bank_name')->nullable();
             $table->string('bank_branch')->nullable();
             $table->string('city')->nullable();
+            
             $table->timestamps();
         });
     }

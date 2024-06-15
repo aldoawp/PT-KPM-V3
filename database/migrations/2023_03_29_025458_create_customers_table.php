@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->nullable()->unique();
             $table->string('phone')->unique();
             $table->text('address')->nullable();
             $table->string('shopname')->nullable();
@@ -23,7 +23,11 @@ return new class extends Migration
             $table->string('account_number')->nullable();
             $table->string('bank_name')->nullable();
             $table->string('bank_branch')->nullable();
-            $table->string('city')->nullable();
+            $table->integer('branch_id')->unsigned()->nullable();
+
+            $table->foreign('branch_id')->references('id')
+                ->on('branches')->onDelete('set null');
+
             $table->timestamps();
         });
     }
