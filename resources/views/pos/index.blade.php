@@ -38,7 +38,8 @@
                                         @csrf
                                         <div class="input-group">
                                             <input type="number" class="form-control" name="qty" required
-                                                value="{{ old('qty', $item->qty) }}">
+                                                value="{{ old('qty', $item->qty) }}"
+                                                max="{{ $products[$item->id - 1]->product_store }}">
                                             <div class="input-group-append">
                                                 <button type="submit" class="btn btn-success border-none"
                                                     data-toggle="tooltip" data-placement="top" title=""
@@ -90,14 +91,20 @@
 
                 <style>
                     .cart-info {
-                        background-color: #f8f9fa; /* Light background */
+                        background-color: #f8f9fa;
+                        /* Light background */
                         padding: 20px;
-                        border-radius: 10px; /* Rounded borders */
-                        border: 1px solid #ddd; /* Light border */
-                        margin: 10px 0; /* Spacing between elements */
+                        border-radius: 10px;
+                        /* Rounded borders */
+                        border: 1px solid #ddd;
+                        /* Light border */
+                        margin: 10px 0;
+                        /* Spacing between elements */
                     }
+
                     .cart-info p {
-                        color: #000; /* Text color black */
+                        color: #000;
+                        /* Text color black */
                     }
                 </style>
 
@@ -121,7 +128,8 @@
                         </div>
                         <div class="col-md-12 mt-4">
                             <div class="d-flex flex-wrap align-items-center justify-content-center">
-                                <a href="{{ route('customers.create', ['previous_url' => url()->current()]) }}" class="btn btn-primary add-list mx-1">Tambah
+                                <a href="{{ route('customers.create', ['previous_url' => url()->current()]) }}"
+                                    class="btn btn-primary add-list mx-1">Tambah
                                     Pelanggan</a>
                                 <button type="submit" class="btn btn-success add-list mx-1">Buat Invoice</button>
                             </div>
@@ -172,23 +180,23 @@
                             <table class="table mb-0">
                                 <thead class="bg-white text-uppercase">
                                     <tr class="ligth ligth-data">
-                                        <th>No.</th>
                                         <th>Foto</th>
                                         <th>@sortablelink('product_name', 'Nama')</th>
                                         <th>@sortablelink('selling_price', 'Harga')</th>
+                                        <th>Stok</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="ligth-body">
                                     @forelse ($products as $product)
                                         <tr>
-                                            <td>{{ $products->currentPage() * 10 - 10 + $loop->iteration }}</td>
                                             <td>
                                                 <img class="avatar-60 rounded"
                                                     src="{{ $product->product_image ? asset('storage/products/' . $product->product_image) : asset('assets/images/product/default.webp') }}">
                                             </td>
                                             <td>{{ $product->product_name }}</td>
                                             <td>{{ 'Rp ' . number_format($product->selling_price, 0, ',', '.') }}</td>
+                                            <td>{{ $product->product_store }}</td>
                                             <td>
                                                 <form action="{{ route('pos.addCart') }}" method="POST"
                                                     style="margin-bottom: 5px">
