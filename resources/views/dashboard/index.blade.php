@@ -178,8 +178,7 @@
                                     </div>
                                 </li>
                             @endforeach
-
-                            @if ($best_sellers->count() <= 3 && $best_sellers->count() != 0)
+                            @if ($best_sellers->count > 0 && $best_sellers->count() <= 3)
                                 @for ($i = $best_sellers->count(); $i <= 3; $i++)
                                     <li class="col-lg-3">
                                         <div class="card card-block card-stretch card-height mb-0 d-none">

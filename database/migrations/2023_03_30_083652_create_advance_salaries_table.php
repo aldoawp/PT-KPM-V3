@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('advance_salaries', function (Blueprint $table) {
             $table->id();
-            $table->integer('employee_id');
-            $table->date('date');
-            $table->integer('advance_salary')->nullable();
+            $table->bigInteger('employee_id')->unsigned();
+            $table->integer('advance_salary');
+
+            $table->foreign('employee_id')->references('id')
+                ->on('employees')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

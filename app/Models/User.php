@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -26,7 +27,6 @@ class User extends Authenticatable
         'email',
         'password',
         'photo',
-        'email_verified_at',
     ];
 
     /**
@@ -73,7 +73,7 @@ class User extends Authenticatable
         return $permission_groups;
     }
 
-    public static function getPermissionByGroupName(String $group_name)
+    public static function getPermissionByGroupName(string $group_name)
     {
         $permissions = Permission::select('id', 'name')->where('group_name', $group_name)->get();
 
@@ -85,11 +85,21 @@ class User extends Authenticatable
         $hasPermission = true;
 
         foreach ($permissions as $permission) {
-            if(!$role->hasPermissionTo($permission->name)) {
+            if (!$role->hasPermissionTo($permission->name)) {
                 $hasPermission = false;
                 return $hasPermission;
             }
             return $hasPermission;
         }
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id', 'id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 }
