@@ -101,6 +101,20 @@
                                 </div>
                                 @enderror
                             </div>
+                            <div class="form-group col-md-6">
+                                <label for="branch_id">Daerah</label>
+                                <select class="form-control @error('branch_id') is-invalid @enderror" name="branch_id">
+                                    <option selected="" disabled>-- Pilih Daerah --</option>
+                                    @foreach ($branches as $branch)
+                                        <option value="{{ $branch->id }}">{{ $branch->region }}</option>
+                                    @endforeach
+                                </select>
+                                @error('branch_id')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
                         </div>
                         <!-- end: Input Data -->
                         <div class="mt-2">

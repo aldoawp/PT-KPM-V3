@@ -46,6 +46,17 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        // Top sales
+        $top_sales = DB::table('orders')
+            ->select('users.name', DB::raw('SUM(orders.total) as total_sales'), DB::raw('SUM(orders.total_products) as total_products'))
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->where('orders.order_status', 'complete')
+            ->groupBy('user_id')
+            ->orderBy('total_sales', 'desc')
+            ->take(5)
+            ->get();
+        
+
 
         // $product_qty = OrderDetails::selectRaw('product_id, SUM(quantity) as qty')->groupBy('product_id')->orderBy('qty', 'desc')->take(5)->get();
 
@@ -58,6 +69,7 @@ class DashboardController extends Controller
             'new_products' => Product::orderBy('buying_date')->take(2)->get(),
             'income_weekly' => $income_weekly,
             'income_total' => $income_total,
+            'top_sales' => $top_sales,
         ]);
     }
 }

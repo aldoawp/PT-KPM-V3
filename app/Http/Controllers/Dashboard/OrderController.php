@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
@@ -95,6 +96,7 @@ class OrderController extends Controller
         $validatedData['total'] = Cart::total();
         $validatedData['due'] = Cart::total() - $validatedData['pay'];
         $validatedData['created_at'] = Carbon::now();
+        $validatedData['user_id'] = Auth::id();
 
         $order_id = Order::insertGetId($validatedData);
 
