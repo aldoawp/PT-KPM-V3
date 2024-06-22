@@ -26,7 +26,7 @@ class CustomerFactory extends Factory
             'account_number' => fake()->randomNumber(8, true),
             'bank_name' => fake()->randomElement(['BRI', 'BNI', 'BCA', 'BSI', 'MANDIRI', 'BJB']),
             'bank_branch' => fake()->city(),
-            'city' => fake()->city(),
+            'branch_id' => fake()->numberBetween(1, \App\Models\Branch::count()),
         ];
     }
 }

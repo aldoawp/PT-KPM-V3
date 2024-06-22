@@ -19,7 +19,6 @@ class AdvanceSalaryFactory extends Factory
     {
         return [
             'employee_id' => fake()->numberBetween(1, 5),
-            'date' => fake()->date('Y-m-d'),
             'advance_salary' => fake()->randomNumber(3, false)
         ];
     }

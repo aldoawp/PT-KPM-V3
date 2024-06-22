@@ -4,12 +4,12 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Branch;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Supplier;
-use App\Models\AdvanceSalary;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // \App\Models\User::factory(10)->create();
+
+        Branch::factory(5)->create();
 
         $admin = \App\Models\User::factory()->create([
             'name' => 'Admin',
@@ -42,6 +44,8 @@ class DatabaseSeeder extends Seeder
         Customer::factory(25)->create();
         Supplier::factory(10)->create();
 
+        Category::factory(10)->create();
+
         for ($i=0; $i < 10; $i++) {
             Product::factory()->create([
                 'product_code' => IdGenerator::generate([
@@ -52,7 +56,6 @@ class DatabaseSeeder extends Seeder
                 ])
             ]);
         }
-        Category::factory(5)->create();
 
         Permission::create(['name' => 'pos.menu', 'group_name' => 'pos']);
         Permission::create(['name' => 'employee.menu', 'group_name' => 'employee']);

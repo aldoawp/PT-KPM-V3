@@ -20,14 +20,15 @@ class ProductFactory extends Factory
 
         return [
             'product_name' => fake()->word(),
-            'category_id' => fake()->randomElement([1, 2, 3, 4, 5]),
-            'supplier_id' => fake()->randomElement([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            'category_id' => fake()->randomNumber(1, \App\Models\Category::count()),
+            'supplier_id' => fake()->randomNumber(1, \App\Models\Supplier::count()),
             'product_garage' => fake()->randomElement(['A', 'B', 'C', 'D']),
             'product_store' => fake()->numberBetween(100, 1000),
             'buying_price' => fake()->numberBetween(1000, 20000),
             'selling_price' => fake()->numberBetween(1000, 20000),
             'buying_date' => Carbon::now(),
             'expire_date' => Carbon::now()->addYears(2),
+            'branch_id' => fake()->randomNumber(1, \App\Models\Branch::count())
         ];
     }
 }
