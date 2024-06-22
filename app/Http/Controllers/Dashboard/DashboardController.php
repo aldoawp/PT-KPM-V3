@@ -57,7 +57,7 @@ class DashboardController extends Controller
             'best_sellers' => $best_sellers,
             'new_products' => Product::orderBy('buying_date')->take(2)->get(),
             'income_weekly' => $income_weekly,
-            'income_total' => $income_total
+            'income_total' => $income_total,
         ]);
     }
 }
