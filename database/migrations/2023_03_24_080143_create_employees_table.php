@@ -22,8 +22,12 @@ return new class extends Migration
             $table->integer('salary')->nullable();
             $table->string('vacation')->nullable();
             $table->string('city')->nullable();
-            // $table->string('job_title')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
         });
     }
 

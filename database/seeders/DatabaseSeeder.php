@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Supplier;
 use App\Models\AdvanceSalary;
+use App\Models\Branch;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -22,8 +23,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
+        for ($i=1; $i <= 5; $i++) {
+            Branch::create([
+                'id' => $i,
+                "region" => ['all', 'tangerang', 'surabaya', 'bandung', "jakarta"][$i-1]
+            ]);
+        }
+        
         $admin = \App\Models\User::factory()->create([
             'name' => 'Admin',
             'username' => 'admin',
@@ -36,12 +42,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@gmail.com',
         ]);
 
-        Employee::factory(5)->create();
-        // AdvanceSalary::factory(25)->create();
+        
 
+        Employee::factory(5)->create();
         Customer::factory(25)->create();
         Supplier::factory(10)->create();
-
         for ($i=0; $i < 10; $i++) {
             Product::factory()->create([
                 'product_code' => IdGenerator::generate([

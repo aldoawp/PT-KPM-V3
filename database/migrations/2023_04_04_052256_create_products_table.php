@@ -24,7 +24,12 @@ return new class extends Migration
             $table->string('expire_date')->nullable();
             $table->integer('buying_price')->nullable();
             $table->integer('selling_price')->nullable();
+            $table->foreignId('user_id')->required()->default(1);
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
         });
     }
 

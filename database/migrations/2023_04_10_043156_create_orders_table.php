@@ -24,7 +24,12 @@ return new class extends Migration
             $table->string('payment_status')->nullable();
             $table->integer('pay')->nullable();
             $table->integer('due')->nullable();
+            $table->foreignId('user_id')->required()->default(1);
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
         });
     }
 

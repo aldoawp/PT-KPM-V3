@@ -16,7 +16,12 @@ return new class extends Migration
             $table->integer('employee_id');
             $table->date('date');
             $table->string('status');
+            $table->foreignId('user_id')->required()->default(1);
             $table->timestamps();
+            
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
         });
     }
 
