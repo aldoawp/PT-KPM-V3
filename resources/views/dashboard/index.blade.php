@@ -178,7 +178,6 @@
                                     </div>
                                 </li>
                             @endforeach
-
                             @if ($best_sellers->count > 0 && $best_sellers->count() <= 3)
                                 @for ($i = $best_sellers->count(); $i <= 3; $i++)
                                     <li class="col-lg-3">
