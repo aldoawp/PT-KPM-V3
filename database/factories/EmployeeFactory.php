@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Branch;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,7 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fake()->numberBetween(1, \App\Models\User::count()),
+            'user_id' => fake()->randomElement(User::pluck('id')),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->unique()->phoneNumber(),
@@ -25,7 +27,7 @@ class EmployeeFactory extends Factory
             'experience' => fake()->randomElement(['0 Year', '1 Year', '2 Year', '3 Year', '4 Year', '5 Year']),
             'salary' => fake()->numberBetween(1000000, 10000000),
             'vacation' => 12,
-            'branch_id' => fake()->numberBetween(1, \App\Models\Branch::count())
+            'branch_id' => fake()->randomElement(Branch::pluck('id'))
         ];
     }
 }

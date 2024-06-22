@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('password');
             $table->string('photo')->nullable();
             $table->integer('branch_id')->unsigned()->nullable();
-            $table->integer('role_id')->unsigned()->nullable();
+            $table->bigInteger('role_id')->unsigned()->nullable();
             $table->rememberToken();
 
             $table->foreign('role_id')->references('id')

@@ -22,41 +22,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        Branch::factory(5)->create();
-
-        $admin = \App\Models\User::factory()->create([
-            'name' => 'Admin',
-            'username' => 'admin',
-            'email' => 'admin@gmail.com',
-        ]);
-
-        $user = \App\Models\User::factory()->create([
-            'name' => 'User',
-            'username' => 'user',
-            'email' => 'user@gmail.com',
-        ]);
-
-        Employee::factory(5)->create();
-        // AdvanceSalary::factory(25)->create();
-
-        Customer::factory(25)->create();
-        Supplier::factory(10)->create();
-
-        Category::factory(10)->create();
-
-        for ($i=0; $i < 10; $i++) {
-            Product::factory()->create([
-                'product_code' => IdGenerator::generate([
-                    'table' => 'products',
-                    'field' => 'product_code',
-                    'length' => 4,
-                    'prefix' => 'PC'
-                ])
-            ]);
-        }
-
         Permission::create(['name' => 'pos.menu', 'group_name' => 'pos']);
         Permission::create(['name' => 'employee.menu', 'group_name' => 'employee']);
         Permission::create(['name' => 'customer.menu', 'group_name' => 'customer']);
@@ -75,6 +40,40 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'Admin'])->givePermissionTo(['customer.menu', 'user.menu', 'supplier.menu']);
         Role::create(['name' => 'Account'])->givePermissionTo(['customer.menu', 'user.menu', 'supplier.menu']);
         Role::create(['name' => 'Manager'])->givePermissionTo(['stock.menu', 'orders.menu', 'product.menu', 'salary.menu', 'employee.menu']);
+
+        // \App\Models\User::factory(10)->create();
+
+        Branch::factory(5)->create();
+
+        $admin = \App\Models\User::factory()->create([
+            'name' => 'Admin',
+            'username' => 'admin',
+            'email' => 'admin@gmail.com',
+            'role_id' => 1,
+        ]);
+
+        $user = \App\Models\User::factory()->create([
+            'name' => 'User',
+            'username' => 'user',
+            'email' => 'user@gmail.com',
+        ]);
+
+        Employee::factory(5)->create();
+        // AdvanceSalary::factory(25)->create();
+
+        Customer::factory(25)->create();
+        Supplier::factory(10)->create();
+
+        Category::factory(10)->create();
+
+        Product::factory(10)->create([
+            'product_code' => IdGenerator::generate([
+                'table' => 'products',
+                'field' => 'product_code',
+                'length' => 4,
+                'prefix' => 'PC'
+            ])
+        ]);
 
         $admin->assignRole('SuperAdmin');
         $user->assignRole('Account');
