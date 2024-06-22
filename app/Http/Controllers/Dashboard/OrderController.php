@@ -116,7 +116,8 @@ class OrderController extends Controller
         // Delete Cart Sopping History
         Cart::destroy();
 
-        return Redirect::route('dashboard')->with('success', 'Order has been created!');
+        // return Redirect::route('dashboard')->with('success', 'Order has been created!');
+        return Redirect::route('order.orderDetails', $order_id)->with('success', 'Pesanan berhasil dibuat!');
     }
 
     /**
@@ -153,7 +154,7 @@ class OrderController extends Controller
 
         Order::findOrFail($order_id)->update(['order_status' => 'complete']);
 
-        return Redirect::route('order.pendingOrders')->with('success', 'Order has been completed!');
+        return Redirect::route('order.invoiceDownload', $order_id)->with('success', 'Pesanan telah diselesaikan!');
     }
 
     public function invoiceDownload(Int $order_id)

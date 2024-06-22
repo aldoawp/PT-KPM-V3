@@ -19,6 +19,14 @@
     <div class="invoice-16 invoice-content">
         <div class="container">
             <div class="row">
+                @if (session()->has('success'))
+                    <div class="alert text-white bg-success" role="alert">
+                        <div class="iq-alert-text">{{ session('success') }}</div>
+                        {{-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <i class="ri-close-line"></i>
+                        </button> --}}
+                    </div>
+                @endif
                 <div class="col-lg-12">
                     <div class="invoice-inner-9" id="invoice_wrapper">
                         <div class="invoice-top">
@@ -62,8 +70,8 @@
                                 <div class="col-sm-6 text-end mb-50">
                                     <h4 class="inv-title-1">Rincian</h4>
                                     <p class="inv-from-1">Status Pembayaran: {{ $order->payment_status }}</p>
-                                    <p class="inv-from-1">Total Dibayarkan: ${{ $order->pay }}</p>
-                                    <p class="inv-from-1">Hutang: ${{ $order->due }}</p>
+                                    <p class="inv-from-1">Total Dibayarkan: Rp {{ number_format($order->pay, 0, ',', '.') }}</p>
+                                    <p class="inv-from-1">Hutang: Rp {{ number_format($order->due, 0, ',', '.') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +80,7 @@
                                 <table class="default-table invoice-table">
                                     <thead>
                                     <tr>
-                                        <th>Deskripsi</th>
+                                        <th>Produk</th>
                                         <th>Harga</th>
                                         <th>Jumlah</th>
                                         <th>Total (+VAT)</th>
@@ -83,16 +91,16 @@
                                         @foreach ($orderDetails as $item)
                                         <tr>
                                             <td>{{ $item->product->product_name }}</td>
-                                            <td>${{ $item->unitcost }}</td>
+                                            <td>Rp {{ number_format($item->unitcost, 0, ',', '.') }}</td>
                                             <td>{{ $item->quantity }}</td>
-                                            <td>${{ $item->total }}</td>
+                                            <td>Rp {{ number_format($item->total, 0, ',', '.') }}</td>
                                         </tr>
                                         @endforeach
                                         <tr>
                                             <td><strong class="text-danger">Total</strong></td>
                                             <td></td>
                                             <td></td>
-                                            <td><strong class="text-danger">${{ $order->total }}</strong></td>
+                                            <td><strong class="text-danger">Rp {{ number_format($order->total, 0, ',', '.') }}</strong></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -113,6 +121,9 @@
                         </a>
                         <a id="invoice_download_btn" class="btn btn-lg btn-download">
                             Unduh Invoice
+                        </a>
+                        <a href="{{ route('dashboard') }}" class="btn btn-primary btn-lg">
+                            Kembali ke Halaman Utama
                         </a>
                     </div>
                 </div>

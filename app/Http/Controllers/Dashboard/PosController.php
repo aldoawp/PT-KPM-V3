@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -49,7 +50,7 @@ class PosController extends Controller
             'options' => ['size' => 'large']
         ]);
 
-        return Redirect::back()->with('success', 'Product has been added!');
+        return Redirect::back()->with('success', 'Produk telah ditambahkan!');
     }
 
     public function updateCart(Request $request, $rowId)
@@ -62,14 +63,14 @@ class PosController extends Controller
 
         Cart::update($rowId, $validatedData['qty']);
 
-        return Redirect::back()->with('success', 'Cart has been updated!');
+        return Redirect::back()->with('success', 'Keranjang telah diperbarui!');
     }
 
     public function deleteCart(String $rowId)
     {
         Cart::remove($rowId);
 
-        return Redirect::back()->with('success', 'Cart has been deleted!');
+        return Redirect::back()->with('success', 'Keranjang telah dihapus!');
     }
 
     public function createInvoice(Request $request)
@@ -97,10 +98,12 @@ class PosController extends Controller
         $validatedData = $request->validate($rules);
         $customer = Customer::where('id', $validatedData['customer_id'])->first();
         $content = Cart::content();
-
+        $order = Order::where('customer_id', $customer->id)->first();
+        
         return view('pos.print-invoice', [
             'customer' => $customer,
-            'content' => $content
+            'content' => $content,
+            'order' => $order
         ]);
     }
 }

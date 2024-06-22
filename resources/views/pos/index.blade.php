@@ -121,7 +121,7 @@
                         </div>
                         <div class="col-md-12 mt-4">
                             <div class="d-flex flex-wrap align-items-center justify-content-center">
-                                <a href="{{ route('customers.create') }}" class="btn btn-primary add-list mx-1">Tambah
+                                <a href="{{ route('customers.create', ['previous_url' => url()->current()]) }}" class="btn btn-primary add-list mx-1">Tambah
                                     Pelanggan</a>
                                 <button type="submit" class="btn btn-success add-list mx-1">Buat Invoice</button>
                             </div>
@@ -136,7 +136,7 @@
                         <form action="#" method="get">
                             <div class="d-flex flex-wrap align-items-center justify-content-between">
                                 <div class="form-group row">
-                                    <label for="row" class="align-self-center mx-2">Row:</label>
+                                    <label for="row" class="align-self-center mx-2">Baris:</label>
                                     <div>
                                         <select class="form-control" name="row">
                                             <option value="10"
@@ -152,7 +152,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="control-label col-sm-3 align-self-center" for="search">Search:</label>
+                                    <label class="control-label col-sm-3 align-self-center" for="search">Cari:</label>
                                     <div class="input-group col-sm-8">
                                         <input type="text" id="search" class="form-control" name="search"
                                             placeholder="Cari produk..." value="{{ request('search') }}">

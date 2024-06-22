@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>POS Dash</title>
+        <title>PT KPM | Print Invoice</title>
 
         <!-- Favicon -->
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}"/>
@@ -22,7 +22,7 @@
                     <div class="card card-block">
                         <div class="card-header d-flex justify-content-between bg-primary">
                             <div class="iq-header-title">
-                                <h4 class="card-title mb-0">Invoice#1234567</h4>
+                                <h4 class="card-title mb-0">{{ $order->invoice_no }}</h4>
                             </div>
                         </div>
                         <div class="card-body">
@@ -38,10 +38,10 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Order Date</th>
-                                                    <th scope="col">Order Status</th>
-                                                    <th scope="col">Invoice No</th>
-                                                    <th scope="col">Billing Address</th>
+                                                    <th scope="col">Tanggal Pesanan</th>
+                                                    <th scope="col">Status Pesanan</th>
+                                                    <th scope="col">No Invoice</th>
+                                                    <th scope="col">Alamat Tagihan</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -64,16 +64,16 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h5 class="mb-3">Order Summary</h5>
+                                    <h5 class="mb-3">Ringkasan Order</h5>
                                     <div class="table-responsive-lg">
                                         <table class="table">
                                             <thead>
                                                 <tr>
                                                     <th class="text-center" scope="col">#</th>
-                                                    <th scope="col">Item</th>
-                                                    <th class="text-center" scope="col">Quantity</th>
-                                                    <th class="text-center" scope="col">Price</th>
-                                                    <th class="text-center" scope="col">Totals</th>
+                                                    <th scope="col">Produk</th>
+                                                    <th class="text-center" scope="col">Jumlah</th>
+                                                    <th class="text-center" scope="col">Harga</th>
+                                                    <th class="text-center" scope="col">Total</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -96,7 +96,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <b class="text-danger">Notes:</b>
+                                    <b class="text-danger">Catatan:</b>
                                     <p class="mb-0">It is a long established fact that a reader will be distracted by the readable content of a page
                                         when looking
                                         at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
@@ -107,31 +107,31 @@
                                 <div class="offset-lg-8 col-lg-4">
                                     <div class="or-detail rounded">
                                         <div class="p-3">
-                                            <h5 class="mb-3">Order Details</h5>
+                                            <h5 class="mb-3">Rincian Pesanan</h5>
                                             <div class="mb-2">
                                                 <h6>Bank</h6>
                                                 <p>{{ $customer->bank_name }}</p>
                                             </div>
                                             <div class="mb-2">
-                                                <h6>Acc. No</h6>
+                                                <h6>No. Rekening</h6>
                                                 <p>{{ $customer->account_number }}</p>
                                             </div>
                                             <div class="mb-2">
-                                                <h6>Due Date</h6>
+                                                <h6>Jatuh Tempo</h6>
                                                 <p>12 August 2020</p>
                                             </div>
                                             <div class="mb-2">
                                                 <h6>Sub Total</h6>
-                                                <p>${{ Cart::subtotal() }}</p>
+                                                <p>Rp {{ number_format(Cart::subtotal(), 0, ',', '.') }}</p>
                                             </div>
                                             <div>
                                                 <h6>Vat (5%)</h6>
-                                                <p>${{ Cart::tax() }}</p>
+                                                <p>Rp {{ number_format(Cart::tax(), 0, ',', '.') }}</p>
                                             </div>
                                         </div>
                                         <div class="ttl-amt py-2 px-3 d-flex justify-content-between align-items-center">
                                             <h6>Total</h6>
-                                            <h3 class="text-primary font-weight-700">${{ Cart::total() }}</h3>
+                                            <h3 class="text-primary font-weight-700">Rp {{ number_format(Cart::total(), 0, ',', '.') }}</h3>
                                         </div>
                                     </div>
                                 </div>

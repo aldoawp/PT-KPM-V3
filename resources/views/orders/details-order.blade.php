@@ -3,8 +3,16 @@
 @section('container')
 <div class="container-fluid">
     <div class="row">
-
         <div class="col-lg-12">
+            @if (session()->has('success'))
+                    <div class="alert text-white bg-success" role="alert">
+                        <div class="iq-alert-text">{{ session('success') }}</div>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <i class="ri-close-line"></i>
+                        </button>
+                    </div>
+            @endif
+            
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
