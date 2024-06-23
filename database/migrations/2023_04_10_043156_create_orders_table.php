@@ -21,13 +21,15 @@ return new class extends Migration
             $table->string('invoice_no');
             $table->integer('total');
             $table->enum('payment_status', ['Unpaid', 'Paid'])->default('Unpaid');
-            $table->integer('pay')->nullable();
+            $table->integer('pay')->default(0);
             $table->integer('due')->nullable();
+            $table->integer('branch_id')->unsigned();
             $table->bigInteger('user_id')->unsigned()->nullable();
 
             $table->foreign('customer_id')->references('id')
                 ->on('customers')->onDelete('set null');
-
+            $table->foreign('branch_id')->references('id')
+                ->on('branches')->onDelete('cascade');
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('set null');
 

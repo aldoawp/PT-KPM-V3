@@ -109,7 +109,7 @@
                     }
                 </style>
 
-                <form action="{{ route('pos.sales.createInvoice') }}" method="POST">
+                <form action="{{ route('pos.sales.order') }}" method="POST">
                     @csrf
                     <div class="row mt-3">
                         <div class="col-md-12">
@@ -132,7 +132,7 @@
                                 <a href="{{ route('customers.create', ['previous_url' => url()->current()]) }}"
                                     class="btn btn-primary add-list mx-1">Tambah
                                     Pelanggan</a>
-                                <button type="submit" class="btn btn-success add-list mx-1">Buat Invoice</button>
+                                <button type="submit" class="btn btn-success add-list mx-1">Buat Transaksi</button>
                             </div>
                         </div>
                     </div>

@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use Carbon\Carbon;
+use App\Models\Order;
+use App\Models\Product;
 use App\Models\Restock;
 use App\Models\Returns;
-use App\Models\Supplier;
-use Carbon\Carbon;
-use App\Models\Product;
 use App\Models\Customer;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 enum Carts: string
 {
@@ -166,15 +168,14 @@ class PosController extends Controller
         return Redirect::back()->with('success', 'Keranjang telah dihapus!');
     }
 
-    public function createInvoice(Request $request)
+    public function createOrder(Request $request)
     {
         $path = explode('/', $request->path());
 
         $cartName = Carts::getFromPath($request->path())->value;
 
         if ($path[1] === 'sales') {
-            $cart =
-                Cart::instance($cartName);
+            $cart = Cart::instance($cartName);
 
             if ($cart->count() === 0) {
                 return redirect()->back()->withErrors(['error' => 'Tambahkan setidaknya 1 barang!']);
@@ -189,136 +190,107 @@ class PosController extends Controller
                 return redirect()->back()->withErrors(['error' => 'Pilih 1 pelanggan!']);
             }
 
-            $customer =
-                Customer::find($request['customer_id']);
+            $invoice_no = IdGenerator::generate([
+                'table' => 'orders',
+                'field' => 'invoice_no',
+                'length' => 10,
+                'prefix' => 'INV-'
+            ]);
 
-            // Update product quantity
+            $order =
+                Order::create([
+                    'customer_id' => $request['customer_id'],
+                    'order_status' => 'Pending',
+                    'total_products' => $cart->count(),
+                    'sub_total' => $cart->subtotal(),
+                    'vat' => $cart->tax(),
+                    'invoice_no' => $invoice_no,
+                    'total' => $cart->total(),
+                    'due' => $cart->total() - $request['pay'],
+                    'branch_id' => auth()->user()->branch->id,
+                    'user_id' => auth()->user()->id,
+                ]);
+
             foreach ($cart->content() as $item) {
+                $order->orderDetails()->create([
+                    'product_id' => $item->id,
+                    'quantity' => $item->qty,
+                    'unitcost' => $item->price,
+                    'total' => $item->total
+                ]);
+
+                // Update stock
                 $product = Product::find($item->id);
-                $product->product_store += $item->qty;
+                $product->product_store -= $item->qty;
 
                 $product->save();
             }
-
-            Cart::instance($cartName)->destroy();
-
-            return view('pos.create-invoice-customer', [
-                'customer' => $customer,
-                'productItem' => $cart
-            ]);
-        } else {
-            $cart =
-                Cart::instance($cartName);
+        } else { // Uses supplier
+            $cart = Cart::instance($cartName);
 
             if ($cart->count() === 0) {
-                return Redirect::back()->withErrors(['error' => 'Tambahkan setidaknya 1 barang!']);
+                return redirect()->back()->withErrors(['error' => 'Tambahkan setidaknya 1 barang!']);
             }
 
             $validator =
                 \Validator::make($request->all(), [
-                    'customer_id' => ['required']
+                    'supplier_id' => ['required']
                 ]);
 
-            if ($validator->fails() || $cart->count() === 0) {
-                return Redirect::back()->withErrors(['error' => 'Pilih 1 pemasok!']);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors(['error' => 'Pilih 1 pemasok!']);
             }
 
-            $supplier =
-                Supplier::find($request['supplier_id']);
-            $cart = Cart::instance($cartName);
-
-            // Update product quantity
+            // Update product quantity & create record
             if ($path[1] === 'restock') {
-                $restockRecord = Restock::create([
-                    'supplier_id' => $request['supplier_id'],
-                    'branch_id' => auth()->user()->branch->id,
-                    'total' => Cart::instance($cartName)->total()
-                ]);
-
-                foreach ($cart->content() as $item) {
-                    $restockRecord->restockDetails()->create([
-                        'product_id' => $item->id,
-                        'quantity' => $item->qty
+                $restockRecord =
+                    Restock::create([
+                        'supplier_id' => $request['supplier_id'],
+                        'branch_id' => auth()->user()->branch->id,
+                        'total' => $cart->total(),
+                        'user_id' => auth()->user()->id
                     ]);
 
+                foreach ($cart->content() as $item) {
+                    $restockRecord->restockDetails()
+                        ->create([
+                            'product_id' => $item->id,
+                            'quantity' => $item->qty
+                        ]);
+
+                    // Update stock
                     $product = Product::find($item->id);
-                    $product->product_store -= $item->qty;
+                    $product->product_store += $item->qty;
 
                     $product->save();
                 }
             } else {
-                $returnsRecord = Returns::create([
-                    'supplier_id' => $request['supplier_id'],
-                    'branch_id' => auth()->user()->branch->id,
-                    'total' => Cart::instance($cartName)->total()
-                ]);
-
-                foreach ($cart->content() as $item) {
-                    $returnsRecord->restockDetails()->create([
-                        'product_id' => $item->id,
-                        'quantity' => $item->qty
+                $returnsRecord =
+                    Returns::create([
+                        'supplier_id' => $request['supplier_id'],
+                        'branch_id' => auth()->user()->branch->id,
+                        'total' => $cart->total(),
+                        'user_id' => auth()->user()->id
                     ]);
 
+                foreach ($cart->content() as $item) {
+                    $returnsRecord->returnDetails()
+                        ->create([
+                            'product_id' => $item->id,
+                            'quantity' => $item->qty
+                        ]);
+
+                    // Update stock
                     $product = Product::find($item->id);
                     $product->product_store -= $item->qty;
 
                     $product->save();
                 }
             }
-
-            Cart::instance($cartName)->destroy();
-
-            return view('pos.create-invoice-supplier', [
-                'supplier' => $supplier,
-                'productItem' => $cart
-            ]);
         }
-    }
 
-    public function printInvoice(Request $request)
-    {
-        $path = explode('/', $request->path());
+        $cart->destroy();
 
-        $cartName = Carts::getFromPath($request->path())->value;
-
-        if ($path[1] === 'sales') {
-            $rules = [
-                'customer_id' => 'required'
-            ];
-
-            $validatedData = $request->validate($rules);
-            $customer =
-                Customer::where($validatedData['customer_id']);
-            $content =
-                Cart::instance($cartName)->content();
-            $order =
-                Customer::find($validatedData['customer_id'])->orders();
-
-            return view('pos.print-invoice', [
-                'customer' => $customer,
-                'content' => $content,
-                'order' => $order
-            ]);
-        } else {
-            $rules = [
-                'supplier_id' => 'required'
-            ];
-
-            $cartName = Carts::getFromPath($request->path())->value;
-
-            $validatedData = $request->validate($rules);
-            $supplier =
-                Supplier::where($validatedData['supplier_id']);
-            $content =
-                Cart::instance($cartName)->content();
-            $order =
-                Customer::find($validatedData['supplier_id'])->orders();
-
-            return view('pos.print-invoice', [
-                'supplier' => $supplier,
-                'content' => $content,
-                'order' => $order
-            ]);
-        }
+        return redirect()->back()->with('success', 'Pesanan berhasil dibuat!');
     }
 }

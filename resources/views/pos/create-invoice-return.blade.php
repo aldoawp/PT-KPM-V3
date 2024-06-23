@@ -11,9 +11,9 @@
                     </div>
 
                     <div class="invoice-btn d-flex">
-                        <form action="{{ route('pos.printInvoice') }}" method="post">
+                        <form action="{{ route('pos.restock.printInvoice') }}" method="post">
                             @csrf
-                            <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                            <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
                             <button type="submit" class="btn btn-primary-dark mr-2"><i class="las la-print"></i>Cetak</button>
                         </form>
 
@@ -23,12 +23,12 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header bg-white">
-                                        <h3 class="modal-title text-center mx-auto">Invoice dari {{ $customer->name }}<br/>Total Tagihan: Rp {{ number_format($productItem->total(), 0, ',', '.') }}</h3>
+                                        <h3 class="modal-title text-center mx-auto">Invoice dari {{ $supplier->name }}<br/>Total Tagihan: Rp {{ number_format($productItem->total(), 0, ',', '.') }}</h3>
                                     </div>
                                     <form action="{{ route('pos.storeOrder') }}" method="post">
                                         @csrf
                                         <div class="modal-body">
-                                            <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                                            <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
 
                                             <div class="col-md-12">
                                                 <div class="form-group">
@@ -73,7 +73,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <img src="{{ asset('assets/images/logo.png') }}" class="logo-invoice img-fluid mb-3">
-                            <h5 class="mb-3">Hello, {{ $customer->name }}</h5>
+                            <h5 class="mb-3">Hello, {{ $supplier->name }}</h5>
                         </div>
                     </div>
 
@@ -93,10 +93,10 @@
                                             <td>{{ Carbon\Carbon::now()->format('M d, Y') }}</td>
                                             <td><span class="badge badge-danger">Unpaid</span></td>
                                             <td>
-                                                <p class="mb-0">{{ $customer->address }}<br>
-                                                    Shop Name: {{ $customer->shopname ? $customer->shopname : '-' }}<br>
-                                                    Phone: {{ $customer->phone }}<br>
-                                                    Email: {{ $customer->email }}<br>
+                                                <p class="mb-0">{{ $supplier->address }}<br>
+                                                    Shop Name: {{ $supplier->shopname ? $supplier->shopname : '-' }}<br>
+                                                    Phone: {{ $supplier->phone }}<br>
+                                                    Email: {{ $supplier->email }}<br>
                                                 </p>
                                             </td>
                                         </tr>
@@ -136,13 +136,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <b class="text-danger">Catatan:</b>
-                            <p class="mb-0">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
                         </div>
                     </div>
 

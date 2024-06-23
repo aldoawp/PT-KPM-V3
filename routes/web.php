@@ -1,8 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\PosController;
+use App\Http\Controllers\Dashboard\RoleController;
+use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\OrderController;
+use App\Http\Controllers\Dashboard\ReturnController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Controllers\Dashboard\RestockController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\CustomerController;
 use App\Http\Controllers\Dashboard\EmployeeController;
@@ -12,10 +18,6 @@ use App\Http\Controllers\Dashboard\PaySalaryController;
 use App\Http\Controllers\Dashboard\AttendenceController;
 use App\Http\Controllers\Dashboard\AdvanceSalaryController;
 use App\Http\Controllers\Dashboard\DatabaseBackupController;
-use App\Http\Controllers\Dashboard\OrderController;
-use App\Http\Controllers\Dashboard\PosController;
-use App\Http\Controllers\Dashboard\RoleController;
-use App\Http\Controllers\Dashboard\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,15 +107,14 @@ Route::middleware(['permission:pos.menu'])->group(function () {
     Route::get('/pos/restock/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.restock.deleteCart');
     Route::get('/pos/return/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.return.deleteCart');
 
-    Route::post('/pos/sales/invoice/create', [PosController::class, 'createInvoice'])->name('pos.sales.createInvoice');
-    Route::post('/pos/restock/invoice/create', [PosController::class, 'createInvoice'])->name('pos.restock.createInvoice');
-    Route::post('/pos/return/invoice/create', [PosController::class, 'createInvoice'])->name('pos.return.createInvoice');
-
-
-    Route::post('/pos/invoice/print', [PosController::class, 'printInvoice'])->name('pos.printInvoice');
+    Route::post('/pos/sales/order', [PosController::class, 'createOrder'])->name('pos.sales.order');
+    Route::post('/pos/restock/order', [PosController::class, 'createOrder'])->name('pos.restock.order');
+    Route::post('/pos/return/order', [PosController::class, 'createOrder'])->name('pos.return.order');
 
     // Create Order
-    Route::post('/pos/order', [OrderController::class, 'storeOrder'])->name('pos.storeOrder');
+    Route::post('/pos/order/sales', [OrderController::class, 'storeOrder'])->name('pos.sales.storeOrder');
+    Route::post('/pos/order/restock', [RestockController::class, 'storeOrder'])->name('pos.restock.storeOrder');
+    Route::post('/pos/order/return', [ReturnController::class, 'storeOrder'])->name('pos.return.storeOrder');
 });
 
 // ====== ORDERS ======

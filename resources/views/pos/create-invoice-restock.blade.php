@@ -11,7 +11,7 @@
                     </div>
 
                     <div class="invoice-btn d-flex">
-                        <form action="{{ route('pos.printInvoice') }}" method="post">
+                        <form action="{{ route('pos.restock.printInvoice') }}" method="post">
                             @csrf
                             <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
                             <button type="submit" class="btn btn-primary-dark mr-2"><i class="las la-print"></i>Cetak</button>
@@ -136,13 +136,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <b class="text-danger">Catatan:</b>
-                            <p class="mb-0">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
                         </div>
                     </div>
 

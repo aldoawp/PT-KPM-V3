@@ -51,9 +51,10 @@
                                 <td>{{ $item->price }}</td>
                                 <td>{{ $item->subtotal }}</td>
                                 <td>
-                                    <a href="{{ route('pos.return.deleteCart', $item->rowId) }}" class="btn btn-danger border-none"
-                                        data-toggle="tooltip" data-placement="top" title=""
-                                        data-original-title="Delete"><i class="fa-solid fa-trash mr-0"></i></a>
+                                    <a href="{{ route('pos.return.deleteCart', $item->rowId) }}"
+                                        class="btn btn-danger border-none" data-toggle="tooltip" data-placement="top"
+                                        title="" data-original-title="Delete"><i
+                                            class="fa-solid fa-trash mr-0"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -108,7 +109,7 @@
                     }
                 </style>
 
-                <form action="{{ route('pos.return.createInvoice') }}" method="POST">
+                <form action="{{ route('pos.return.order') }}" method="POST">
                     @csrf
                     <div class="row mt-3">
                         <div class="col-md-12">
@@ -121,12 +122,17 @@
                                 </select>
                             </div>
                         </div>
+                        @error('error')
+                            <div class="col-md-12">
+                                <span class="alert alert-danger mt-2">{{ $errors->first('error') }}</span>
+                            </div>
+                        @enderror
                         <div class="col-md-12 mt-4">
                             <div class="d-flex flex-wrap align-items-center justify-content-center">
                                 <a href="{{ route('suppliers.create', ['previous_url' => url()->current()]) }}"
                                     class="btn btn-primary add-list mx-1">Tambah
                                     Pemasok</a>
-                                <button type="submit" class="btn btn-success add-list mx-1">Buat Invoice</button>
+                                <button type="submit" class="btn btn-success add-list mx-1">Buat Transaksi</button>
                             </div>
                         </div>
                     </div>

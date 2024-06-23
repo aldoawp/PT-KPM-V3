@@ -13,6 +13,7 @@ class Restock extends Model
         'branch_id',
         'supplier_id',
         'total',
+        'user_id'
     ];
 
     public function restockDetails()
