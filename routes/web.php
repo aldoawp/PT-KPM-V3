@@ -102,11 +102,11 @@ Route::middleware(['permission:pos.menu'])->group(function () {
     Route::post('/pos/restock/add', [PosController::class, 'addCart'])->name('pos.restock.addCart')->middleware('notSalesMiddleware');
     Route::post('/pos/return/add', [PosController::class, 'addCart'])->name('pos.return.addCart')->middleware('notSalesMiddleware');
 
-    Route::put('/pos/sales/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.sales.updateCart')->middleware('notSalesMiddleware');
+    Route::put('/pos/sales/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.sales.updateCart');
     Route::put('/pos/restock/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.restock.updateCart')->middleware('notSalesMiddleware');
     Route::put('/pos/return/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.return.updateCart')->middleware('notSalesMiddleware');
 
-    Route::get('/pos/sales/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.sales.deleteCart')->middleware('notSalesMiddleware');
+    Route::get('/pos/sales/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.sales.deleteCart');
     Route::get('/pos/restock/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.restock.deleteCart')->middleware('notSalesMiddleware');
     Route::get('/pos/return/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.return.deleteCart')->middleware('notSalesMiddleware');
 
