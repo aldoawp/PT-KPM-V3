@@ -81,7 +81,7 @@
                                 <th>@sortablelink('category.name', 'kategori')</th>
                                 <th>@sortablelink('supplier.name', 'pemasok')</th>
                                 <th>@sortablelink('selling_price', 'harga')</th>
-                                <th>@sortablelink('product_garage', 'stok')</th>
+                                <th>@sortablelink('product_store', 'stok')</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>

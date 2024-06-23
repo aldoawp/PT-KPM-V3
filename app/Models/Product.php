@@ -28,7 +28,7 @@ class Product extends Model
     public $sortable = [
         'product_name',
         'selling_price',
-        'product_garage'
+        'product_store'
     ];
 
     protected $guarded = [
