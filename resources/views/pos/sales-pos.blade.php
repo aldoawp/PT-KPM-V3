@@ -2,7 +2,6 @@
 
 @section('container')
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-lg-12">
                 @if (session()->has('success'))
@@ -14,7 +13,7 @@
                     </div>
                 @endif
                 <div>
-                    <h4 class="mb-3">Point of Sale</h4>
+                    <h4 class="mb-3">Transaksi Penjualan</h4>
                 </div>
             </div>
 
@@ -30,15 +29,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($productItem as $item)
+                        @foreach ($productItem->content() as $item)
                             <tr>
                                 <td>{{ $item->name }}</td>
                                 <td style="min-width: 140px;">
-                                    <form action="{{ route('pos.updateCart', $item->rowId) }}" method="POST">
+                                    <form action="{{ route('pos.sales.updateCart', $item->rowId) }}" method="POST">
                                         @csrf
+                                        @method('PUT')
                                         <div class="input-group">
                                             <input type="number" class="form-control" name="qty" required
-                                                value="{{ old('qty', $item->qty) }}"
+                                                value="{{ old('qty', $item->qty) }}" min="1"
                                                 max="{{ $products[$item->id - 1]->product_store }}">
                                             <div class="input-group-append">
                                                 <button type="submit" class="btn btn-success border-none"
@@ -51,9 +51,10 @@
                                 <td>{{ $item->price }}</td>
                                 <td>{{ $item->subtotal }}</td>
                                 <td>
-                                    <a href="{{ route('pos.deleteCart', $item->rowId) }}" class="btn btn-danger border-none"
-                                        data-toggle="tooltip" data-placement="top" title=""
-                                        data-original-title="Delete"><i class="fa-solid fa-trash mr-0"></i></a>
+                                    <a href="{{ route('pos.sales.deleteCart', $item->rowId) }}"
+                                        class="btn btn-danger border-none" data-toggle="tooltip" data-placement="top"
+                                        title="" data-original-title="Delete"><i
+                                            class="fa-solid fa-trash mr-0"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -65,25 +66,25 @@
                         <div class="col-md-6">
                             <div class="form-group cart-info">
                                 <p class="h6">Jumlah:</p>
-                                <p class="h5">{{ Cart::count() }}</p>
+                                <p class="h5">{{ $productItem->count() }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group cart-info">
                                 <p class="h6">Subtotal:</p>
-                                <p class="h5">Rp {{ number_format(Cart::subtotal(), 0, ',', '.') }}</p>
+                                <p class="h5">Rp {{ number_format($productItem->subtotal(), 0, ',', '.') }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group cart-info">
                                 <p class="h6">VAT:</p>
-                                <p class="h5">Rp {{ number_format(Cart::tax(), 0, ',', '.') }}</p>
+                                <p class="h5">Rp {{ number_format($productItem->tax(), 0, ',', '.') }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group cart-info">
                                 <p class="h6">Total:</p>
-                                <p class="h5">Rp {{ number_format(Cart::total(), 0, ',', '.') }}</p>
+                                <p class="h5">Rp {{ number_format($productItem->total(), 0, ',', '.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -113,24 +114,19 @@
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <div class="input-group">
-                                <select class="form-control" id="customer_id" name="customer_id">
+                                <select class="form-control" id="customer_id" name="customer_id" role="button">
                                     <option selected="" disabled="">-- Pilih Pelanggan --</option>
                                     @foreach ($customers as $customer)
                                         <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            @error('customer_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
                         </div>
                         <div class="col-md-12 mt-4">
                             <div class="d-flex flex-wrap align-items-center justify-content-center">
                                 <a href="{{ route('customers.create', ['previous_url' => url()->current()]) }}"
                                     class="btn btn-primary add-list mx-1">Tambah
-                                    Pelanggan</a>
+                                    Transaksi</a>
                                 <button type="submit" class="btn btn-success add-list mx-1">Buat Invoice</button>
                             </div>
                         </div>
@@ -160,8 +156,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="control-label col-sm-3 align-self-center" for="search">Cari:</label>
-                                    <div class="input-group col-sm-8">
+                                    <div class="input-group">
                                         <input type="text" id="search" class="form-control" name="search"
                                             placeholder="Cari produk..." value="{{ request('search') }}">
                                         <div class="input-group-append">
@@ -198,7 +193,7 @@
                                             <td>{{ 'Rp ' . number_format($product->selling_price, 0, ',', '.') }}</td>
                                             <td>{{ $product->product_store }}</td>
                                             <td>
-                                                <form action="{{ route('pos.addCart') }}" method="POST"
+                                                <form action="{{ route('pos.sales.addCart') }}" method="POST"
                                                     style="margin-bottom: 5px">
                                                     @csrf
                                                     <input type="hidden" name="id" value="{{ $product->id }}">

@@ -4,7 +4,7 @@
             <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid rounded-normal light-logo" alt="logo">
             <h5 class="logo-title light-logo ml-4" style="white-space: nowrap;">PT. KPM</h5>
         </a>
-        <div class="iq-menu-bt-sidebar ml-0">
+        <div class="iq-menu-bt-sidebar ml-0" role="button">
             <i class="las la-bars wrapper-menu"></i>
         </div>
     </div>
@@ -27,11 +27,35 @@
                 </li>
 
                 @if (auth()->user()->can('pos.menu'))
-                    <li class="{{ Request::is('pos*') ? 'active' : '' }}">
-                        <a href="{{ route('pos.index') }}" class="svg-icon">
+                    <li>
+                        {{-- Real route 'pos.index' --}}
+                        <a href="#transaksi" class="collapsed" data-toggle="collapse" aria-expanded="false">
                             <i class="fa-solid fa-cart-shopping"></i>
                             <span class="ml-3">Transaksi</span>
+                            <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="10 15 15 20 20 15"></polyline>
+                                <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                            </svg>
                         </a>
+                        <ul id="transaksi" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
+                            <li class="{{ Request::is('pos/sales*') ? 'active' : '' }}">
+                                <a href="{{ route('pos.salesPos') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Penjualan</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('pos/restock*') ? 'active' : '' }}">
+                                <a href="{{ route('pos.restockPos') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Restok</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('pos/return*') ? 'active' : '' }}">
+                                <a href="{{ route('pos.returnPos') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Retur</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 @endif
 
@@ -50,7 +74,6 @@
                             </svg>
                         </a>
                         <ul id="orders" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
-
                             <li class="{{ Request::is('orders/pending*') ? 'active' : '' }}">
                                 <a href="{{ route('order.pendingOrders') }}">
                                     <i class="fa-solid fa-arrow-right"></i><span>Pesanan Baru</span>
@@ -82,12 +105,14 @@
                             <span class="ml-3">Gudang</span>
                             <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
                                 <polyline points="10 15 15 20 20 15"></polyline>
                                 <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                             </svg>
                         </a>
-                        <ul id="products" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
+                        <ul id="products" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
+                            style="">
                             <li class="{{ Request::is(['products']) ? 'active' : '' }}">
                                 <a href="{{ route('products.index') }}">
                                     <i class="fa-solid fa-arrow-right"></i><span>Semua Produk</span>
@@ -149,9 +174,7 @@
                                 <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                             </svg>
                         </a>
-                        <ul id="advance-salary" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
-                            style="">
-
+                        <ul id="advance-salary" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                             <li
                                 class="{{ Request::is(['advance-salary', 'advance-salary/*/edit']) ? 'active' : '' }}">
                                 <a href="{{ route('advance-salary.index') }}">
@@ -190,9 +213,7 @@
                                 <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                             </svg>
                         </a>
-                        <ul id="attendence" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
-                            style="">
-
+                        <ul id="attendence" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                             <li class="{{ Request::is(['employee/attendence']) ? 'active' : '' }}">
                                 <a href="{{ route('attendence.index') }}">
                                     <i class="fa-solid fa-arrow-right"></i><span>Semua Absensi</span>
@@ -209,7 +230,6 @@
 
                 <hr>
 
-
                 @if (auth()->user()->can('roles.menu'))
                     <li>
                         <a href="#permission" class="collapsed" data-toggle="collapse" aria-expanded="false">
@@ -223,8 +243,7 @@
                                 <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                             </svg>
                         </a>
-                        <ul id="permission" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
-                            style="">
+                        <ul id="permission" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                             <li
                                 class="{{ Request::is(['permission', 'permission/create', 'permission/edit/*']) ? 'active' : '' }}">
                                 <a href="{{ route('permission.index') }}">

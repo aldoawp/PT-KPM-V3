@@ -52,6 +52,11 @@ class Product extends Model
         return $this->hasMany(OrderDetails::class);
     }
 
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id', 'id');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
