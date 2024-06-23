@@ -53,6 +53,7 @@ class EmployeeController extends Controller
         ];
 
         $validatedData = $request->validate($rules);
+        $validatedData['branch_id'] = auth()->user()->branch->id;
 
         /**
          * Handle upload image with Storage.
