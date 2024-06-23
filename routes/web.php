@@ -124,9 +124,6 @@ Route::middleware(['permission:orders.menu'])->group(function () {
     Route::get('/pending/due', [OrderController::class, 'pendingDue'])->name('order.pendingDue');
     Route::get('/order/due/{id}', [OrderController::class, 'orderDueAjax'])->name('order.orderDueAjax');
     Route::post('/update/due', [OrderController::class, 'updateDue'])->name('order.updateDue');
-
-    // Stock Management
-    Route::get('/stock', [OrderController::class, 'stockManage'])->name('order.stockManage');
 });
 
 // ====== DATABASE BACKUP ======

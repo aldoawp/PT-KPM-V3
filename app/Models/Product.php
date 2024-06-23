@@ -28,6 +28,7 @@ class Product extends Model
     public $sortable = [
         'product_name',
         'selling_price',
+        'product_garage'
     ];
 
     protected $guarded = [
@@ -36,7 +37,8 @@ class Product extends Model
 
     protected $with = [
         'category',
-        'supplier'
+        'supplier',
+        'branch'
     ];
 
     public function category(){
