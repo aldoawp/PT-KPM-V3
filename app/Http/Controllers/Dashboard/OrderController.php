@@ -74,7 +74,7 @@ class OrderController extends Controller
     {
         $rules = [
             'customer_id' => 'required|numeric',
-            'payment_status' => 'required|string',
+            'payment_status' => 'required|string|not_in:',
             'pay' => 'numeric|nullable',
             'due' => 'numeric|nullable',
         ];
@@ -87,7 +87,6 @@ class OrderController extends Controller
         ]);
 
         $validatedData = $request->validate($rules);
-        $validatedData['order_date'] = Carbon::now()->format('Y-m-d');
         $validatedData['order_status'] = 'pending';
         $validatedData['total_products'] = Cart::count();
         $validatedData['sub_total'] = Cart::subtotal();
@@ -130,7 +129,7 @@ class OrderController extends Controller
         $order = Order::where('id', $order_id)->first();
         $orderDetails = OrderDetails::with('product')
                         ->where('order_id', $order_id)
-                        ->orderBy('id', 'DESC')
+                        ->orderBy('order_id', 'DESC')
                         ->get();
 
         return view('orders.details-order', [
@@ -164,7 +163,7 @@ class OrderController extends Controller
         $order = Order::where('id', $order_id)->first();
         $orderDetails = OrderDetails::with('product')
                         ->where('order_id', $order_id)
-                        ->orderBy('id', 'DESC')
+                        ->orderBy('order_id', 'DESC')
                         ->get();
 
         // show data (only for debugging)

@@ -5083,6 +5083,7 @@ if (jQuery('#layout1-chart-2').length) {
               "income": income.income
           };
       });
+      
       chart.data = pieData;
 
       // Add and configure Series

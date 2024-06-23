@@ -17,7 +17,7 @@ class DashboardController extends Controller
         // $income_weekly = Order::whereBetween('created_at', [now()->subWeek(), now()])->sum('total');
 
         $income_weekly = Order::where('order_status', 'complete')
-            ->selectRaw('DATE(created_at) as date, SUM(total) as total')
+            ->selectRaw('DATE(updated_at) as date, SUM(pay) as total')
             ->groupBy('date')
             ->get()
             ->map(function ($income) {
@@ -28,7 +28,7 @@ class DashboardController extends Controller
             });
 
         $income_total = [
-            'total' => Order::where('order_status', 'complete')->sum('total')
+            'total' => Order::where('order_status', 'complete')->sum('pay')
         ];
 
         /*
@@ -44,7 +44,7 @@ class DashboardController extends Controller
         $income_per_location = DB::table('orders')
             ->leftJoin('users', 'orders.user_id', '=', 'users.id')
             ->leftJoin('branches', 'users.branch_id', '=', 'branches.id')
-            ->select('branches.region', DB::raw('SUM(orders.total) as total_income'))
+            ->select('branches.region', DB::raw('SUM(orders.pay) as total_income'))
             ->where('orders.order_status', 'complete')
             ->groupBy('orders.user_id', 'branches.region')
             ->get()
@@ -56,9 +56,14 @@ class DashboardController extends Controller
             });
 
         // Today's insights
-        $today_income = Order::whereDate('created_at', Carbon::now())->sum('total');
-        $today_product = Order::whereDate('created_at', Carbon::now())->sum('total_products');
-        $today_complete_orders = Order::whereDate('created_at', Carbon::now())->where('order_status', 'complete')->get();
+        $today_income = Order::where('order_status', 'complete')
+            ->whereDate('updated_at', Carbon::now())->sum('pay');
+        $today_product = Order::where('order_status', 'complete')
+            ->whereDate('created_at', Carbon::now())->sum('total_products');
+        $today_complete_orders = Order::where('order_status', 'complete')
+            ->whereDate('created_at', Carbon::now())
+            ->get();
+
 
         // Product best seller
         $best_sellers = DB::table('order_details')

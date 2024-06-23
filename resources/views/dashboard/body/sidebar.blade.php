@@ -152,11 +152,10 @@
                         </a>
                         <ul id="advance-salary" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
                             style="">
-
                             <li
                                 class="{{ Request::is(['advance-salary', 'advance-salary/*/edit']) ? 'active' : '' }}">
                                 <a href="{{ route('advance-salary.index') }}">
-                                    <i class="fa-solid fa-arrow-right"></i><span>Semua Pinjaman</span>
+                                    <i class="fa-solid fa-arrow-right"></i><span>Daftar Pinjaman</span>
                                 </a>
                             </li>
                             <li class="{{ Request::is('advance-salary/create*') ? 'active' : '' }}">

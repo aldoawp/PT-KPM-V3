@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('customer_id')->unsigned()->nullable();
-            $table->enum('order_status', ['Pending', 'Complete']);
+            $table->enum('order_status', ['pending', 'complete']);
             $table->integer('total_products');
             $table->integer('sub_total');
             $table->integer('vat')->nullable();
             $table->string('invoice_no');
             $table->integer('total');
-            $table->enum('payment_status', ['Unpaid', 'Paid'])->default('Unpaid');
-            $table->integer('pay')->nullable();
-            $table->integer('due')->nullable();
+            $table->enum('payment_status', ['tunai', 'cek', 'bon']);
+            $table->integer('pay')->default(0);
+            $table->integer('due')->default(0);
             $table->bigInteger('user_id')->unsigned()->nullable();
 
             $table->foreign('customer_id')->references('id')

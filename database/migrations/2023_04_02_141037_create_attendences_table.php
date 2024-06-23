@@ -11,8 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Schema::create('attendences', function (Blueprint $table) {
+        //     $table->bigInteger('employee_id')->unsigned();
+        //     $table->enum('status', ['Hadir', 'Ijin', 'Tanpa Kabar'])
+        //         ->default('Tanpa Kabar');
+
+        //     $table->foreign('employee_id')->references('id')
+        //         ->on('employees')->onDelete('cascade');
+
+        //     $table->timestamps();
+        // });
+
         Schema::create('attendences', function (Blueprint $table) {
             $table->bigInteger('employee_id')->unsigned();
+            $table->date('date');
             $table->enum('status', ['Hadir', 'Ijin', 'Tanpa Kabar'])
                 ->default('Tanpa Kabar');
 

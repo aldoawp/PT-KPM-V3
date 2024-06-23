@@ -23,35 +23,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i=1; $i <= 4; $i++) {
-            Branch::create([
-                'id' => $i,
-                "region" => ['tangerang', 'surabaya', 'bandung', "jakarta"][$i-1]
-            ]);
-        }
-        
-        $admin = \App\Models\User::factory()->create([
-            'name' => 'Admin',
-            'username' => 'admin',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('1234'),
-        ]);
-
-        Employee::factory(5)->create();
-        Customer::factory(25)->create();
-        Supplier::factory(10)->create();
-        Category::factory(5)->create();
-        for ($i=0; $i < 10; $i++) {
-            Product::factory()->create([
-                'product_code' => IdGenerator::generate([
-                    'table' => 'products',
-                    'field' => 'product_code',
-                    'length' => 4,
-                    'prefix' => 'PC'
-                ])
-            ]);
-        }
-
         Permission::create(['name' => 'pos.menu', 'group_name' => 'pos']);
         Permission::create(['name' => 'employee.menu', 'group_name' => 'employee']);
         Permission::create(['name' => 'customer.menu', 'group_name' => 'customer']);
@@ -70,6 +41,37 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'Owner'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu', 'user.menu']);
         Role::create(['name' => 'Manager'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu']);
         Role::create(['name' => 'Sales'])->givePermissionTo(['pos.menu']);
+
+        for ($i=1; $i <= 5; $i++) {
+            Branch::create([
+                'id' => $i,
+                "region" => ['malang', 'tangerang', 'surabaya', 'bandung', "jakarta"][$i-1]
+            ]);
+        }
+        
+        $admin = \App\Models\User::factory()->create([
+            'name' => 'Admin',
+            'username' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => '$2y$10$6c2Yc4tuj1Sqj8AqosGUQ.EbzkLk9qW77JkOPOuSGYO3UoU6KLDEe',
+            'role_id' => 1,
+            'branch_id' => 1,
+        ]);
+
+        Employee::factory(5)->create();
+        Customer::factory(25)->create();
+        Supplier::factory(10)->create();
+        Category::factory(5)->create();
+        for ($i=0; $i < 10; $i++) {
+            Product::factory()->create([
+                'product_code' => IdGenerator::generate([
+                    'table' => 'products',
+                    'field' => 'product_code',
+                    'length' => 4,
+                    'prefix' => 'PC'
+                ])
+            ]);
+        }
 
         $admin->assignRole('SuperAdmin');
     }
