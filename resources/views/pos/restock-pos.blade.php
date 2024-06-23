@@ -2,7 +2,6 @@
 
 @section('container')
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-lg-12">
                 @if (session()->has('success'))
@@ -14,7 +13,7 @@
                     </div>
                 @endif
                 <div>
-                    <h4 class="mb-3">Point of Sale</h4>
+                    <h4 class="mb-3">Transaksi Restok</h4>
                 </div>
             </div>
 
@@ -30,12 +29,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($productItem as $item)
+                        @foreach ($productItem->content() as $item)
                             <tr>
                                 <td>{{ $item->name }}</td>
                                 <td style="min-width: 140px;">
-                                    <form action="{{ route('pos.updateCart', $item->rowId) }}" method="POST">
+                                    <form action="{{ route('pos.restock.updateCart', $item->rowId) }}" method="POST">
                                         @csrf
+                                        @method('PUT')
                                         <div class="input-group">
                                             <input type="number" class="form-control" name="qty" required
                                                 value="{{ old('qty', $item->qty) }}"
@@ -51,9 +51,10 @@
                                 <td>{{ $item->price }}</td>
                                 <td>{{ $item->subtotal }}</td>
                                 <td>
-                                    <a href="{{ route('pos.deleteCart', $item->rowId) }}" class="btn btn-danger border-none"
-                                        data-toggle="tooltip" data-placement="top" title=""
-                                        data-original-title="Delete"><i class="fa-solid fa-trash mr-0"></i></a>
+                                    <a href="{{ route('pos.restock.deleteCart', $item->rowId) }}"
+                                        class="btn btn-danger border-none" data-toggle="tooltip" data-placement="top"
+                                        title="" data-original-title="Delete"><i
+                                            class="fa-solid fa-trash mr-0"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -65,25 +66,25 @@
                         <div class="col-md-6">
                             <div class="form-group cart-info">
                                 <p class="h6">Jumlah:</p>
-                                <p class="h5">{{ Cart::count() }}</p>
+                                <p class="h5">{{ $productItem->count() }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group cart-info">
                                 <p class="h6">Subtotal:</p>
-                                <p class="h5">Rp {{ number_format(Cart::subtotal(), 0, ',', '.') }}</p>
+                                <p class="h5">Rp {{ number_format($productItem->subtotal(), 0, ',', '.') }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group cart-info">
                                 <p class="h6">VAT:</p>
-                                <p class="h5">Rp {{ number_format(Cart::tax(), 0, ',', '.') }}</p>
+                                <p class="h5">Rp {{ number_format($productItem->tax(), 0, ',', '.') }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group cart-info">
                                 <p class="h6">Total:</p>
-                                <p class="h5">Rp {{ number_format(Cart::total(), 0, ',', '.') }}</p>
+                                <p class="h5">Rp {{ number_format($productItem->total(), 0, ',', '.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -108,30 +109,30 @@
                     }
                 </style>
 
-                <form action="{{ route('pos.createInvoice') }}" method="POST">
+                <form action="{{ route('pos.restock.order') }}" method="POST">
                     @csrf
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <div class="input-group">
-                                <select class="form-control" id="customer_id" name="customer_id">
-                                    <option selected="" disabled="">-- Pilih Pelanggan --</option>
-                                    @foreach ($customers as $customer)
-                                        <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                <select class="form-control" id="supplier_id" name="supplier_id" role="button">
+                                    <option selected="" disabled="">-- Pilih Pemasok --</option>
+                                    @foreach ($suppliers as $supplier)
+                                        <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            @error('customer_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
                         </div>
+                        @error('error')
+                            <div class="col-md-12">
+                                <span class="alert alert-danger mt-2">{{ $errors->first('error') }}</span>
+                            </div>
+                        @enderror
                         <div class="col-md-12 mt-4">
                             <div class="d-flex flex-wrap align-items-center justify-content-center">
-                                <a href="{{ route('customers.create', ['previous_url' => url()->current()]) }}"
+                                <a href="{{ route('suppliers.create', ['previous_url' => url()->current()]) }}"
                                     class="btn btn-primary add-list mx-1">Tambah
-                                    Pelanggan</a>
-                                <button type="submit" class="btn btn-success add-list mx-1">Buat Invoice</button>
+                                    Pemasok</a>
+                                <button type="submit" class="btn btn-success add-list mx-1">Buat Transaksi</button>
                             </div>
                         </div>
                     </div>
@@ -160,8 +161,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="control-label col-sm-3 align-self-center" for="search">Cari:</label>
-                                    <div class="input-group col-sm-8">
+                                    <div class="input-group">
                                         <input type="text" id="search" class="form-control" name="search"
                                             placeholder="Cari produk..." value="{{ request('search') }}">
                                         <div class="input-group-append">
@@ -198,7 +198,7 @@
                                             <td>{{ 'Rp ' . number_format($product->selling_price, 0, ',', '.') }}</td>
                                             <td>{{ $product->product_store }}</td>
                                             <td>
-                                                <form action="{{ route('pos.addCart') }}" method="POST"
+                                                <form action="{{ route('pos.restock.addCart') }}" method="POST"
                                                     style="margin-bottom: 5px">
                                                     @csrf
                                                     <input type="hidden" name="id" value="{{ $product->id }}">

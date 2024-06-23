@@ -29,6 +29,7 @@ class Product extends Model
     public $sortable = [
         'product_name',
         'selling_price',
+        'product_store'
     ];
 
     protected $guarded = [
@@ -37,7 +38,8 @@ class Product extends Model
 
     protected $with = [
         'category',
-        'supplier'
+        'supplier',
+        'branch'
     ];
 
     public function category(){
@@ -51,6 +53,11 @@ class Product extends Model
     public function orderDetails()
     {
         return $this->hasMany(OrderDetails::class);
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id', 'id');
     }
 
     public function scopeFilter($query, array $filters)

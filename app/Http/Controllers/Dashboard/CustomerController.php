@@ -23,8 +23,22 @@ class CustomerController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
+        $customers = [];
+
+        $userRole = auth()->user()->role->name;
+
+        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+            $customers = Customer::filter(request(['search']));
+        } else {
+            $customers =
+                auth()->user()->branch->customers()->filter(request(['search']));
+        }
+
         return view('customers.index', [
-            'customers' => Customer::filter(request(['search']))->sortable()->paginate($row)->appends(request()->query()),
+            'customers' => $customers
+                ->sortable()
+                ->paginate($row)
+                ->appends(request()->query())
         ]);
     }
 

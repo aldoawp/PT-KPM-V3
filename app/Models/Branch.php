@@ -15,4 +15,14 @@ class Branch extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
