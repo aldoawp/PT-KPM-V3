@@ -35,7 +35,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-2">Pendapatan Harian</p>
-                                        <h4>Rp {{ number_format($today_income, 0, ',', '.') }}</h4>
+                                        <h4 class="text-truncate" style="max-width: 150px">Rp {{ number_format($today_income, 0, ',', '.') }}</h4>
                                     </div>
                                 </div>
                                 <div class="iq-progress-bar mt-2">
@@ -179,7 +179,7 @@
                                 </li>
                             @endforeach
 
-                            @if ($best_sellers->count() <= 3 && $best_sellers->count() != 0)
+                            @if ($best_sellers->count() > 0 && $best_sellers->count() <= 3)
                                 @for ($i = $best_sellers->count(); $i <= 3; $i++)
                                     <li class="col-lg-3">
                                         <div class="card card-block card-stretch card-height mb-0 d-none">
