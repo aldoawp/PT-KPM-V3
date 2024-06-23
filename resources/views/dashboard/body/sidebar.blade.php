@@ -1,7 +1,8 @@
 <div class="iq-sidebar sidebar-default ">
     <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
         <a href="{{ route('dashboard') }}" class="header-logo">
-            <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid rounded-normal light-logo" alt="logo">
+            <img src="{{ asset('assets/images/logo-kpm.png') }}" class="img-fluid rounded-normal light-logo"
+                alt="logo">
             <h5 class="logo-title light-logo ml-4" style="white-space: nowrap;">PT. KPM</h5>
         </a>
         <div class="iq-menu-bt-sidebar ml-0" role="button">
@@ -169,11 +170,12 @@
                                 <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                             </svg>
                         </a>
-                        <ul id="advance-salary" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <ul id="advance-salary" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
+                            style="">
                             <li
                                 class="{{ Request::is(['advance-salary', 'advance-salary/*/edit']) ? 'active' : '' }}">
                                 <a href="{{ route('advance-salary.index') }}">
-                                    <i class="fa-solid fa-arrow-right"></i><span>Semua Pinjaman</span>
+                                    <i class="fa-solid fa-arrow-right"></i><span>Daftar Pinjaman</span>
                                 </a>
                             </li>
                             <li class="{{ Request::is('advance-salary/create*') ? 'active' : '' }}">

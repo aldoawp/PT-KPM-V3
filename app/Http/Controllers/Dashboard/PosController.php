@@ -200,7 +200,6 @@ class PosController extends Controller
             $order =
                 Order::create([
                     'customer_id' => $request['customer_id'],
-                    'order_status' => 'Pending',
                     'total_products' => $cart->count(),
                     'sub_total' => $cart->subtotal(),
                     'vat' => $cart->tax(),

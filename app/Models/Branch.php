@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Branch extends Model
 {
     use HasFactory;
-
+    
+    protected $table = 'branches';
+    
     public function users()
     {
         return $this->hasMany(User::class);

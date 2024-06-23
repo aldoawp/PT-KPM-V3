@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Supplier;
+use App\Models\AdvanceSalary;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -37,45 +38,41 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'database.menu', 'group_name' => 'database']);
 
         Role::create(['name' => 'SuperAdmin'])->givePermissionTo(Permission::all());
-        Role::create(['name' => 'Admin'])->givePermissionTo(['customer.menu', 'user.menu', 'supplier.menu']);
-        Role::create(['name' => 'Account'])->givePermissionTo(['customer.menu', 'user.menu', 'supplier.menu']);
-        Role::create(['name' => 'Manager'])->givePermissionTo(['stock.menu', 'orders.menu', 'product.menu', 'salary.menu', 'employee.menu']);
+        Role::create(['name' => 'Owner'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu', 'user.menu']);
+        Role::create(['name' => 'Manager'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu']);
+        Role::create(['name' => 'Sales'])->givePermissionTo(['pos.menu']);
 
-        // \App\Models\User::factory(10)->create();
-
-        Branch::factory(5)->create();
-
+        for ($i=1; $i <= 5; $i++) {
+            Branch::create([
+                'id' => $i,
+                "region" => ['malang', 'tangerang', 'surabaya', 'bandung', "jakarta"][$i-1]
+            ]);
+        }
+        
         $admin = \App\Models\User::factory()->create([
             'name' => 'Admin',
             'username' => 'admin',
             'email' => 'admin@gmail.com',
+            'password' => '$2y$10$6c2Yc4tuj1Sqj8AqosGUQ.EbzkLk9qW77JkOPOuSGYO3UoU6KLDEe',
             'role_id' => 1,
-        ]);
-
-        $user = \App\Models\User::factory()->create([
-            'name' => 'User',
-            'username' => 'user',
-            'email' => 'user@gmail.com',
+            'branch_id' => 1,
         ]);
 
         Employee::factory(5)->create();
-        // AdvanceSalary::factory(25)->create();
-
         Customer::factory(25)->create();
         Supplier::factory(10)->create();
-
-        Category::factory(10)->create();
-
-        Product::factory(10)->create([
-            'product_code' => IdGenerator::generate([
-                'table' => 'products',
-                'field' => 'product_code',
-                'length' => 4,
-                'prefix' => 'PC'
-            ])
-        ]);
+        Category::factory(5)->create();
+        for ($i=0; $i < 10; $i++) {
+            Product::factory()->create([
+                'product_code' => IdGenerator::generate([
+                    'table' => 'products',
+                    'field' => 'product_code',
+                    'length' => 4,
+                    'prefix' => 'PC'
+                ])
+            ]);
+        }
 
         $admin->assignRole('SuperAdmin');
-        $user->assignRole('Account');
     }
 }

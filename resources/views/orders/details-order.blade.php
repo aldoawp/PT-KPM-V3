@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Tanggal Pesanan</label>
-                            <input type="text" class="form-control bg-white" value="{{ $order->order_date }}" readonly>
+                            <input type="text" class="form-control bg-white" value="{{ \Carbon\Carbon::parse($order->created_at)->format('d-m-Y') }}" readonly>
                         </div>
                         <div class="form-group col-md-6">
                             <label>No. Invoice </label>

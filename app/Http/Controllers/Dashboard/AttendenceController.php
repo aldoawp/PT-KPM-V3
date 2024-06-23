@@ -37,7 +37,9 @@ class AttendenceController extends Controller
     public function create()
     {
         return view('attendence.create', [
-            'employees' => Employee::all()->sortBy('name'),
+            'employees' => Employee::where('branch_id', auth()->user()->branch_id)
+                ->get()
+                ->sortBy('name')
         ]);
     }
 
@@ -56,7 +58,7 @@ class AttendenceController extends Controller
         // Delete if the date is already created (it is just for updating new attendance). If not it will create new attendance
         Attendence::where('date', $validatedData['date'])->delete();
 
-        for ($i=1; $i <= $countEmployee; $i++) {
+        for ($i = 1; $i <= $countEmployee; $i++) {
             $status = 'status' . $i;
             $attend = new Attendence();
 

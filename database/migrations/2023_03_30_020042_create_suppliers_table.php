@@ -25,8 +25,12 @@ return new class extends Migration
             $table->string('bank_name')->nullable();
             $table->string('bank_branch')->nullable();
             $table->string('city')->nullable();
-            
+            $table->foreignId('user_id')->required()->default(1);
             $table->timestamps();
+            
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
         });
     }
 

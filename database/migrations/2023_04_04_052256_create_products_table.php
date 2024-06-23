@@ -24,13 +24,12 @@ return new class extends Migration {
             $table->integer('buying_price')->nullable();
             $table->integer('selling_price')->nullable();
             $table->integer('branch_id')->unsigned();
+            $table->timestamps();
 
             $table->foreign('category_id')->references('id')
                 ->on('categories')->onDelete('cascade');
             $table->foreign('branch_id')->references('id')
                 ->on('branches')->onDelete('cascade');
-
-            $table->timestamps();
         });
     }
 

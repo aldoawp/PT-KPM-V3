@@ -54,19 +54,19 @@
                                                         <div class="input-group justify-content-center">
                                                             <div class="input-group-text">
                                                                 <div class="custom-radio">
-                                                                    <input type="radio" id="present{{ $key }}" name="status{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="present" {{ $attendence->status == 'present' ? 'checked' : '' }}>
+                                                                    <input type="radio" id="present{{ $key }}" name="status{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="Hadir" {{ $attendence->status == 'Hadir' ? 'checked' : '' }}>
                                                                     <label class="custom-control-label" for="present{{ $key }}"> Hadir </label>
                                                                 </div>
                                                             </div>
                                                             <div class="input-group-text mx-2">
                                                                 <div class="custom-radio">
-                                                                    <input type="radio" id="leave{{ $key }}" name="status{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="leave" {{ $attendence->status == 'leave' ? 'checked' : '' }}>
+                                                                    <input type="radio" id="leave{{ $key }}" name="status{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="Ijin" {{ $attendence->status == 'Ijin' ? 'checked' : '' }}>
                                                                     <label class="custom-control-label" for="leave{{ $key }}"> Ijin </label>
                                                                 </div>
                                                             </div>
                                                             <div class="input-group-text">
                                                                 <div class="custom-radio">
-                                                                    <input type="radio" id="absent{{ $key }}" name="status{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="absent" {{ $attendence->status == 'absent' ? 'checked' : '' }}>
+                                                                    <input type="radio" id="absent{{ $key }}" name="status{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="Tidak Hadir" {{ $attendence->status == 'Tidak Hadir' ? 'checked' : '' }}>
                                                                     <label class="custom-control-label" for="absent{{ $key }}"> Tanpa Kabar </label>
                                                                 </div>
                                                             </div>

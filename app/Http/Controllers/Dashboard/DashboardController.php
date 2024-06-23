@@ -14,10 +14,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $income_weekly = Order::whereBetween('created_at', [now()->subWeek(), now()])->sum('total');
+        // $income_weekly = Order::whereBetween('created_at', [now()->subWeek(), now()])->sum('total');
 
         $income_weekly = Order::where('order_status', 'complete')
-            ->selectRaw('DATE(created_at) as date, SUM(total) as total')
+            ->selectRaw('DATE(updated_at) as date, SUM(pay) as total')
             ->groupBy('date')
             ->get()
             ->map(function ($income) {
@@ -28,13 +28,42 @@ class DashboardController extends Controller
             });
 
         $income_total = [
-            'total' => Order::where('order_status', 'complete')->sum('total')
+            'total' => Order::where('order_status', 'complete')->sum('pay')
         ];
 
+        /*
+         Income per location algorithm:
+         1. Take the data from orders table
+         2. From orders table, join it with users table using user_id as the foreign key
+         3. Then, join the users table with branches table using branch_id as the foreign key
+         4. After that, group by branch_id and sum up the total amount per location from the 'total' column on orders table, where 'order_status' is 'complete'
+         5. Take the region name from branches table and the sum of each region based on branch_id
+         */
+
+
+        $income_per_location = DB::table('orders')
+            ->leftJoin('users', 'orders.user_id', '=', 'users.id')
+            ->leftJoin('branches', 'users.branch_id', '=', 'branches.id')
+            ->select('branches.region', DB::raw('SUM(orders.pay) as total_income'))
+            ->where('orders.order_status', 'complete')
+            ->groupBy('orders.user_id', 'branches.region')
+            ->get()
+            ->map(function ($income) {
+                return [
+                    'region' => $income->region,
+                    'income' => $income->total_income
+                ];
+            });
+
         // Today's insights
-        $today_income = Order::whereDate('created_at', Carbon::now())->sum('total');
-        $today_product = Order::whereDate('created_at', Carbon::now())->sum('total_products');
-        $today_complete_orders = Order::whereDate('created_at', Carbon::now())->where('order_status', 'complete')->get();
+        $today_income = Order::where('order_status', 'complete')
+            ->whereDate('updated_at', Carbon::now())->sum('pay');
+        $today_product = Order::where('order_status', 'complete')
+            ->whereDate('created_at', Carbon::now())->sum('total_products');
+        $today_complete_orders = Order::where('order_status', 'complete')
+            ->whereDate('created_at', Carbon::now())
+            ->get();
+
 
         // Product best seller
         $best_sellers = DB::table('order_details')
@@ -46,9 +75,15 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-
-        // $product_qty = OrderDetails::selectRaw('product_id, SUM(quantity) as qty')->groupBy('product_id')->orderBy('qty', 'desc')->take(5)->get();
-
+        // Top sales
+        $top_sales = DB::table('orders')
+            ->select('users.name', DB::raw('SUM(orders.total) as total_sales'), DB::raw('SUM(orders.total_products) as total_products'))
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->where('orders.order_status', 'complete')
+            ->groupBy('user_id')
+            ->orderBy('total_sales', 'desc')
+            ->take(5)
+            ->get();
 
         return view('dashboard.index', [
             'today_income' => $today_income,
@@ -58,6 +93,8 @@ class DashboardController extends Controller
             'new_products' => Product::orderBy('buying_date')->take(2)->get(),
             'income_weekly' => $income_weekly,
             'income_total' => $income_total,
+            'top_sales' => $top_sales,
+            'income_per_location' => $income_per_location,
         ]);
     }
 }

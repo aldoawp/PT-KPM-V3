@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
@@ -92,7 +93,7 @@ class OrderController extends Controller
     {
         $rules = [
             'customer_id' => 'required|numeric',
-            'payment_status' => 'required|string',
+            'payment_status' => 'required|string|not_in:',
             'pay' => 'numeric|nullable',
             'due' => 'numeric|nullable'
         ];
@@ -107,15 +108,15 @@ class OrderController extends Controller
         $cart = Cart::instance(Carts::Sales->value);
 
         $validatedData = $request->validate($rules);
-        $validatedData['order_status'] = 'Unpaid';
-        $validatedData['total_products'] = $cart->count();
-        $validatedData['sub_total'] = $cart->subtotal();
-        $validatedData['vat'] = $cart->tax();
+        $validatedData['order_date'] = Carbon::now()->format('Y-m-d');
+        $validatedData['order_status'] = 'pending';
+        $validatedData['total_products'] = Cart::count();
+        $validatedData['sub_total'] = Cart::subtotal();
+        $validatedData['vat'] = Cart::tax();
         $validatedData['invoice_no'] = $invoice_no;
-        $validatedData['total'] = $cart->total();
-        $validatedData['due'] = $cart->total() - $validatedData['pay'];
-        $validatedData['branch_id'] = auth()->user()->branch->id;
-        $validatedData['user_id'] = auth()->user()->id;
+        $validatedData['total'] = Cart::total();
+        $validatedData['due'] = Cart::total() - $validatedData['pay'];
+        $validatedData['created_at'] = Carbon::now();
 
         $order_id = Order::insertGetId($validatedData);
 
@@ -147,9 +148,9 @@ class OrderController extends Controller
     {
         $order = Order::where('id', $order_id)->first();
         $orderDetails = OrderDetails::with('product')
-            ->where('order_id', $order_id)
-            ->orderBy('id', 'DESC')
-            ->get();
+                        ->where('order_id', $order_id)
+                        ->orderBy('id', 'DESC')
+                        ->get();
 
         return view('orders.details-order', [
             'order' => $order,
@@ -181,9 +182,9 @@ class OrderController extends Controller
     {
         $order = Order::where('id', $order_id)->first();
         $orderDetails = OrderDetails::with('product')
-            ->where('order_id', $order_id)
-            ->orderBy('id', 'DESC')
-            ->get();
+                        ->where('order_id', $order_id)
+                        ->orderBy('id', 'DESC')
+                        ->get();
 
         // show data (only for debugging)
         return view('orders.invoice-order', [
