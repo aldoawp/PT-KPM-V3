@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
-                        <h4 class="card-title">Edit User</h4>
+                        <h4 class="card-title">Ubah Pengguna</h4>
                     </div>
                 </div>
 
@@ -43,7 +43,7 @@
                         <!-- begin: Input Data -->
                         <div class=" row align-items-center">
                             <div class="form-group col-md-12">
-                                <label for="name">Name <span class="text-danger">*</span></label>
+                                <label for="name">Nama <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $userData->name) }}" required>
                                 @error('name')
                                 <div class="invalid-feedback">
@@ -80,7 +80,7 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="password_confirmation">Confirm Password</label>
+                                <label for="password_confirmation">Konfirmasi Password</label>
                                 <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation">
                                 @error('password_confirmation')
                                 <div class="invalid-feedback">
@@ -90,7 +90,7 @@
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="role">Role</label>
+                                <label for="role">Peranan</label>
                                 <select class="form-control @error('role') is-invalid @enderror" name="role">
                                     <option selected="" disabled>-- Select Role --</option>
                                     @foreach ($roles as $role)
@@ -98,6 +98,21 @@
                                     @endforeach
                                 </select>
                                 @error('role')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="branch_id">Daerah</label>
+                                <select class="form-control @error('branch_id') is-invalid @enderror" name="branch_id">
+                                    <option selected="" disabled>-- Pilih Daerah --</option>
+                                    @foreach ($branches as $branch)
+                                        <option @if ($userData->branch_id == $branch->id) selected @endif value="{{ $branch->id }}">{{ $branch->region }}</option>
+                                    @endforeach
+                                </select>
+                                @error('branch_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>

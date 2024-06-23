@@ -95,6 +95,7 @@ class UserController extends Controller
         return view('users.edit', [
             'userData' => $user,
             'roles' => Role::all(),
+            'branches' => Branch::all(),
         ]);
     }
 
@@ -108,6 +109,7 @@ class UserController extends Controller
             'photo' => 'image|file|max:1024',
             'email' => 'required|email|max:50|unique:users,email,'.$user->id,
             'username' => 'required|min:4|max:25|alpha_dash:ascii|unique:users,username,'.$user->id,
+            'branch_id' => 'required|nullable|exists:branches,id',
         ];
 
         if($request->password || $request->confirm_password) {

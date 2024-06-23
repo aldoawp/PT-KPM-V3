@@ -25,10 +25,14 @@ class AttendenceController extends Controller
             'attendences' => Attendence::sortable()
                 ->select('date')
                 ->groupBy('date')
+                ->when(auth()->user()->branch_id != 1, function ($query) {
+                    return $query->where('branch_id', auth()->user()->branch_id);
+                })
                 ->orderBy('date', 'desc')
                 ->paginate($row)
                 ->appends(request()->query()),
         ]);
+        
     }
 
     /**
@@ -59,12 +63,20 @@ class AttendenceController extends Controller
         Attendence::where('date', $validatedData['date'])->delete();
 
         for ($i = 1; $i <= $countEmployee; $i++) {
+            
             $status = 'status' . $i;
             $attend = new Attendence();
 
             $attend->date = $validatedData['date'];
             $attend->employee_id = $request->employee_id[$i];
-            $attend->status = $request->$status;
+            
+            if (!isset($request->$status)) {
+                $attend->status = 'Tanpa Kabar';
+            } else {
+                $attend->status = $request->$status;
+            }
+
+            $attend->branch_id = auth()->user()->branch_id;
 
             $attend->save();
         }
