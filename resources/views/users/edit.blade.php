@@ -90,8 +90,8 @@
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="role">Role</label>
-                                <select class="form-control @error('role') is-invalid @enderror" name="role">
+                                <label for="role_id">Role</label>
+                                <select class="form-control @error('role') is-invalid @enderror" name="role_id">
                                     <option selected="" disabled>-- Select Role --</option>
                                     @foreach ($roles as $role)
                                         <option value="{{ $role->id }}" {{ $userData->hasRole($role->name) ? 'selected' : '' }}>{{ $role->name }}</option>

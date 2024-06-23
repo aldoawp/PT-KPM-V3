@@ -32,7 +32,8 @@ use App\Http\Controllers\Dashboard\DatabaseBackupController;
 
 // DEFAULT DASHBOARD & PROFILE
 Route::middleware('auth')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard')->middleware('notSalesMiddleware');
+
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -92,24 +93,26 @@ Route::middleware(['permission:category.menu'])->group(function () {
 // ====== POS ======
 Route::middleware(['permission:pos.menu'])->group(function () {
     Route::get('/pos/sales', [PosController::class, 'posSales'])->name('pos.salesPos');
-    Route::get('/pos/restock', [PosController::class, 'posRestock'])->name('pos.restockPos');
-    Route::get('/pos/return', [PosController::class, 'posReturn'])->name('pos.returnPos');
+    Route::get('/pos/restock', [PosController::class, 'posRestock'])->name('pos.restockPos')
+        ->middleware('notSalesMiddleware');
+    Route::get('/pos/return', [PosController::class, 'posReturn'])->name('pos.returnPos')
+        ->middleware('notSalesMiddleware');
 
     Route::post('/pos/sales/add', [PosController::class, 'addCart'])->name('pos.sales.addCart');
-    Route::post('/pos/restock/add', [PosController::class, 'addCart'])->name('pos.restock.addCart');
-    Route::post('/pos/return/add', [PosController::class, 'addCart'])->name('pos.return.addCart');
+    Route::post('/pos/restock/add', [PosController::class, 'addCart'])->name('pos.restock.addCart')->middleware('notSalesMiddleware');
+    Route::post('/pos/return/add', [PosController::class, 'addCart'])->name('pos.return.addCart')->middleware('notSalesMiddleware');
 
-    Route::put('/pos/sales/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.sales.updateCart');
-    Route::put('/pos/restock/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.restock.updateCart');
-    Route::put('/pos/return/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.return.updateCart');
+    Route::put('/pos/sales/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.sales.updateCart')->middleware('notSalesMiddleware');
+    Route::put('/pos/restock/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.restock.updateCart')->middleware('notSalesMiddleware');
+    Route::put('/pos/return/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.return.updateCart')->middleware('notSalesMiddleware');
 
-    Route::get('/pos/sales/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.sales.deleteCart');
-    Route::get('/pos/restock/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.restock.deleteCart');
-    Route::get('/pos/return/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.return.deleteCart');
+    Route::get('/pos/sales/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.sales.deleteCart')->middleware('notSalesMiddleware');
+    Route::get('/pos/restock/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.restock.deleteCart')->middleware('notSalesMiddleware');
+    Route::get('/pos/return/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.return.deleteCart')->middleware('notSalesMiddleware');
 
     Route::post('/pos/sales/order', [PosController::class, 'createOrder'])->name('pos.sales.order');
-    Route::post('/pos/restock/order', [PosController::class, 'createOrder'])->name('pos.restock.order');
-    Route::post('/pos/return/order', [PosController::class, 'createOrder'])->name('pos.return.order');
+    Route::post('/pos/restock/order', [PosController::class, 'createOrder'])->name('pos.restock.order')->middleware('notSalesMiddleware');
+    Route::post('/pos/return/order', [PosController::class, 'createOrder'])->name('pos.return.order')->middleware('notSalesMiddleware');
 
     // Create Order
     Route::post('/pos/order/sales', [OrderController::class, 'storeOrder'])->name('pos.sales.storeOrder');
