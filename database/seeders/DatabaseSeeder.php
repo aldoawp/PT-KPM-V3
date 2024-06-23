@@ -4,13 +4,13 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Branch;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Supplier;
 use App\Models\AdvanceSalary;
-use App\Models\Branch;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -23,10 +23,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i=1; $i <= 5; $i++) {
+        for ($i=1; $i <= 4; $i++) {
             Branch::create([
                 'id' => $i,
-                "region" => ['all', 'tangerang', 'surabaya', 'bandung', "jakarta"][$i-1]
+                "region" => ['tangerang', 'surabaya', 'bandung', "jakarta"][$i-1]
             ]);
         }
         
@@ -34,19 +34,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'username' => 'admin',
             'email' => 'admin@gmail.com',
+            'password' => bcrypt('1234'),
         ]);
-
-        $user = \App\Models\User::factory()->create([
-            'name' => 'User',
-            'username' => 'user',
-            'email' => 'user@gmail.com',
-        ]);
-
-        
 
         Employee::factory(5)->create();
         Customer::factory(25)->create();
         Supplier::factory(10)->create();
+        Category::factory(5)->create();
         for ($i=0; $i < 10; $i++) {
             Product::factory()->create([
                 'product_code' => IdGenerator::generate([
@@ -57,7 +51,6 @@ class DatabaseSeeder extends Seeder
                 ])
             ]);
         }
-        Category::factory(5)->create();
 
         Permission::create(['name' => 'pos.menu', 'group_name' => 'pos']);
         Permission::create(['name' => 'employee.menu', 'group_name' => 'employee']);
@@ -74,11 +67,10 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'database.menu', 'group_name' => 'database']);
 
         Role::create(['name' => 'SuperAdmin'])->givePermissionTo(Permission::all());
-        Role::create(['name' => 'Admin'])->givePermissionTo(['customer.menu', 'user.menu', 'supplier.menu']);
-        Role::create(['name' => 'Account'])->givePermissionTo(['customer.menu', 'user.menu', 'supplier.menu']);
-        Role::create(['name' => 'Manager'])->givePermissionTo(['stock.menu', 'orders.menu', 'product.menu', 'salary.menu', 'employee.menu']);
+        Role::create(['name' => 'Owner'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu', 'user.menu']);
+        Role::create(['name' => 'Manager'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu']);
+        Role::create(['name' => 'Sales'])->givePermissionTo(['pos.menu']);
 
         $admin->assignRole('SuperAdmin');
-        $user->assignRole('Account');
     }
 }

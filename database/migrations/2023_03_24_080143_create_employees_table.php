@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->unique();
@@ -20,14 +21,15 @@ return new class extends Migration
             $table->string('experience')->nullable();
             $table->string('photo')->nullable();
             $table->integer('salary')->nullable();
-            $table->string('vacation')->nullable();
-            $table->string('city')->nullable();
-            $table->foreignId('user_id')->nullable();
-            $table->timestamps();
+            $table->integer('vacation')->nullable();
+            $table->integer('branch_id')->unsigned()->nullable();
 
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users');
+            $table->foreign('user_id')->references('id')
+                ->on('users')->onDelete('set null');
+            $table->foreign('branch_id')->references('id')
+                ->on('branches')->onDelete('set null');
+
+            $table->timestamps();
         });
     }
 

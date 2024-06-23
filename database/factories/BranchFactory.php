@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Employee;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AdvanceSalary>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Branch>
  */
-class AdvanceSalaryFactory extends Factory
+class BranchFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +17,7 @@ class AdvanceSalaryFactory extends Factory
     public function definition(): array
     {
         return [
-            'employee_id' => fake()->numberBetween(1, 5),
-            'advance_salary' => fake()->randomNumber(3, false)
+            'region' => fake()->city(),
         ];
     }
 }

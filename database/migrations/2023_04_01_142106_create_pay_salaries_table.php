@@ -12,12 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pay_salaries', function (Blueprint $table) {
-            $table->id();
-            $table->integer('employee_id');
-            $table->date('date')->nullable();
+            $table->bigInteger('employee_id')->unsigned();
             $table->integer('paid_amount');
-            $table->integer('advance_salary')->nullable();
+            $table->bigInteger('advance_salary_id')->unsigned()->nullable();
             $table->integer('due_salary');
+
+            $table->foreign('employee_id')->references('id')
+                ->on('employees')->onDelete('cascade');
+
+            $table->foreign('advance_salary_id')->references('id')
+                ->on('advance_salaries')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

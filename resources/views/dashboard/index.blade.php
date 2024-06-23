@@ -35,7 +35,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-2">Pendapatan Harian</p>
-                                        <h4>Rp {{ number_format($today_income, 0, ',', '.') }}</h4>
+                                        <h4 class="text-truncate" style="max-width: 150px">Rp {{ number_format($today_income, 0, ',', '.') }}</h4>
                                     </div>
                                 </div>
                                 <div class="iq-progress-bar mt-2">
@@ -95,13 +95,13 @@
                             <div class="dropdown">
                                 <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton001"
                                     data-toggle="dropdown">
-                                    This Month<i class="ri-arrow-down-s-line ml-1"></i>
+                                    Bulan Ini<i class="ri-arrow-down-s-line ml-1"></i>
                                 </span>
                                 <div class="dropdown-menu dropdown-menu-right shadow-none"
                                     aria-labelledby="dropdownMenuButton001">
-                                    <a class="dropdown-item" href="#">Year</a>
-                                    <a class="dropdown-item" href="#">Month</a>
-                                    <a class="dropdown-item" href="#">Week</a>
+                                    <a class="dropdown-item" href="#">Tahunan</a>
+                                    <a class="dropdown-item" href="#">Bulanan</a>
+                                    <a class="dropdown-item" href="#">Mingguan</a>
                                 </div>
                             </div>
                         </div>
@@ -122,19 +122,19 @@
                             <div class="dropdown">
                                 <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton002"
                                     data-toggle="dropdown">
-                                    This Month<i class="ri-arrow-down-s-line ml-1"></i>
+                                    Bulan Ini<i class="ri-arrow-down-s-line ml-1"></i>
                                 </span>
                                 <div class="dropdown-menu dropdown-menu-right shadow-none"
                                     aria-labelledby="dropdownMenuButton002">
-                                    <a class="dropdown-item" href="#">Yearly</a>
-                                    <a class="dropdown-item" href="#">Monthly</a>
-                                    <a class="dropdown-item" href="#">Weekly</a>
+                                    <a class="dropdown-item" href="#">Tahunan</a>
+                                    <a class="dropdown-item" href="#">Bulanan</a>
+                                    <a class="dropdown-item" href="#">Mingguan</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <div id="layout1-chart-2" style="min-height: 360px;"></div>
+                        <div id="layout1-chart-2" style="min-height: 360px;" data-income-location='@json($income_per_location)''></div>
                     </div>
                 </div>
             </div>
@@ -149,13 +149,13 @@
                             <div class="dropdown">
                                 <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton006"
                                     data-toggle="dropdown">
-                                    This Month<i class="ri-arrow-down-s-line ml-1"></i>
+                                    Bulan Ini<i class="ri-arrow-down-s-line ml-1"></i>
                                 </span>
                                 <div class="dropdown-menu dropdown-menu-right shadow-none"
                                     aria-labelledby="dropdownMenuButton006">
-                                    <a class="dropdown-item" href="#">Year</a>
-                                    <a class="dropdown-item" href="#">Month</a>
-                                    <a class="dropdown-item" href="#">Week</a>
+                                    <a class="dropdown-item" href="#">Tahunan</a>
+                                    <a class="dropdown-item" href="#">Bulanan</a>
+                                    <a class="dropdown-item" href="#">Mingguan</a>
                                 </div>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                                 </li>
                             @endforeach
 
-                            @if ($best_sellers->count() <= 3 && $best_sellers->count() != 0)
+                            @if ($best_sellers->count() > 0 && $best_sellers->count() <= 3)
                                 @for ($i = $best_sellers->count(); $i <= 3; $i++)
                                     <li class="col-lg-3">
                                         <div class="card card-block card-stretch card-height mb-0 d-none">
@@ -208,27 +208,67 @@
                             <h4 class="card-title mb-0">Top Sales</h4>
                         </div>
                         <div class="card-header-toolbar d-flex align-items-center">
-                            <div><a href="#" class="btn btn-primary view-btn font-size-14">View All</a></div>
-                        </div>
-                    </div>
-                </div>
-                @foreach ($new_products as $product)
-                    <div class="card card-block card-stretch card-height-helf">
-                        <div class="card-body card-item-right">
-                            <div class="d-flex align-items-top">
-                                <div class="bg-warning-light rounded">
-                                    <img src="../assets/images/product/04.png" class="style-img img-fluid m-auto"
-                                        alt="image">
-                                </div>
-                                <div class="style-text text-left">
-                                    <h5 class="mb-2">{{ $product->product_name }}</h5>
-                                    <p class="mb-2">Stock : {{ $product->product_store }}</p>
-                                    <p class="mb-0">Price : ${{ $product->selling_price }}</p>
+                            <div class="dropdown">
+                                <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton006"
+                                    data-toggle="dropdown">
+                                    Bulan Ini<i class="ri-arrow-down-s-line ml-1"></i>
+                                </span>
+                                <div class="dropdown-menu dropdown-menu-right shadow-none"
+                                    aria-labelledby="dropdownMenuButton006">
+                                    <a class="dropdown-item" href="#">Tahunan</a>
+                                    <a class="dropdown-item" href="#">Bulanan</a>
+                                    <a class="dropdown-item" href="#">Mingguan</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                </div>
+
+                {{-- Top Sales Section --}}
+                <div class="card-container border-bottom ">
+                    @foreach ($top_sales as $sales)
+                        <div class="card card-block card-stretch card-height-helf mb-3">
+                            <div class="card-body card-item-right">
+                                <div class="d-flex align-items-top">
+                                    <div class="bg-warning-light rounded">
+                                        <img src="../assets/images/product/04.png" class="style-img img-fluid m-auto"
+                                            alt="image">
+                                    </div>
+                                    <div class="style-text text-left ml-3">
+                                        <h5 class="mb-2">{{ $sales->name }}</h5>
+                                        <p class="mb-2"><span class="badge badge-pill badge-success">Total
+                                                Pendapatan:</span><br><strong>Rp
+                                                {{ number_format($sales->total_sales, 0, ',', '.') }}</strong></p>
+                                        <p class="mb-0"><span class="badge badge-pill badge-success">Total Produk
+                                                Terjual:</span><br><strong>{{ $sales->total_products }}</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- Top sales: shown 2 cards only at a time, the rest is scrolled --}}
+                <style>
+                    .card-container {
+                        max-height: 370px;
+                        /* Adjust this value as needed */
+                        overflow-y: auto;
+                        padding-right: 10px;
+                        margin-bottom: 30px;
+                    }
+
+                    /* Optionally, add some styling for the scrollbar */
+                    .card-container::-webkit-scrollbar {
+                        width: 6px;
+                    }
+
+                    .card-container::-webkit-scrollbar-thumb {
+                        background-color: rgba(0, 0, 0, 0.2);
+                        border-radius: 4px;
+                    }
+                </style>
+
             </div>
         </div>
         <!-- Page end  -->
