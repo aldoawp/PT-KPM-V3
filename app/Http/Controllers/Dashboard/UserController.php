@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
@@ -36,6 +37,7 @@ class UserController extends Controller
     {
         return view('users.create', [
             'roles' => Role::all(),
+            'branches' => Branch::all(),
         ]);
     }
 
@@ -51,8 +53,9 @@ class UserController extends Controller
             'username' => 'required|min:4|max:25|alpha_dash:ascii|unique:users,username',
             'password' => 'min:6|required_with:password_confirmation',
             'password_confirmation' => 'min:6|same:password',
+            'branch_id' => 'required|nullable|exists:branches,id',
         ];
-
+        
         $validatedData = $request->validate($rules);
         $validatedData['password'] = Hash::make($request->password);
 

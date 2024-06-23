@@ -12,16 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attendences', function (Blueprint $table) {
-            $table->id();
-            $table->integer('employee_id');
-            $table->date('date');
-            $table->string('status');
-            $table->foreignId('user_id')->required()->default(1);
+            $table->bigInteger('employee_id')->unsigned();
+            $table->enum('status', ['Hadir', 'Ijin', 'Tanpa Kabar'])
+                ->default('Tanpa Kabar');
+
+            $table->foreign('employee_id')->references('id')
+                ->on('employees')->onDelete('cascade');
+
             $table->timestamps();
-            
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users');
         });
     }
 
