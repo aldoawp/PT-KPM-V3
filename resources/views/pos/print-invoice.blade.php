@@ -22,7 +22,7 @@
                     <div class="card card-block">
                         <div class="card-header d-flex justify-content-between bg-primary">
                             <div class="iq-header-title">
-                                <h4 class="card-title mb-0">{{ $order->invoice_no }}</h4>
+                                <h4 class="card-title mb-0">awd</h4>
                             </div>
                         </div>
                         <div class="card-body">

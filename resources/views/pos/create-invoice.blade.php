@@ -14,7 +14,7 @@
                         <form action="{{ route('pos.printInvoice') }}" method="post">
                             @csrf
                             <input type="hidden" name="customer_id" value="{{ $customer->id }}">
-                            <button type="submit" class="btn btn-primary-dark mr-2"><i class="las la-print"></i>Cetak</button>
+                            {{-- <button type="submit" class="btn btn-primary-dark mr-2"><i class="las la-print"></i>Cetak</button> --}}
                         </form>
 
                         <button type="button" class="btn btn-primary-dark mr-2" data-toggle="modal" data-target=".bd-example-modal-lg">Konfirmasi</button>
@@ -35,9 +35,9 @@
                                                     <label for="payment_status">Jenis Pembayaran</label>
                                                     <select class="form-control @error('payment_status') is-invalid @enderror" name="payment_status">
                                                         <option selected="" disabled="">-- Pilih Pembayaran --</option>
-                                                        <option value="HandCash">Tunai</option>
-                                                        <option value="Cheque">Cek</option>
-                                                        <option value="Due">Bon</option>
+                                                        <option value="tunai">Tunai</option>
+                                                        <option value="cek">Cek</option>
+                                                        <option value="bon">Bon</option>
                                                     </select>
                                                     @error('payment_status')
                                                     <div class="invalid-feedback">
@@ -49,7 +49,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="pay">Dibayarkan Sekarang</label>
-                                                    <input type="number" class="form-control @error('pay') is-invalid @enderror"  id="pay" name="pay" value="{{ old('pay') }}">
+                                                    <input type="number" class="form-control @error('pay') is-invalid @enderror"  id="pay" name="pay" value="{{ old('pay') }}" placeholder="0" required>
                                                     @error('pay')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}

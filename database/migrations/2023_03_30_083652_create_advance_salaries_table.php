@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('advance_salaries', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('employee_id')->unsigned();
-            $table->integer('advance_salary');
+            $table->integer('advance_salary')->nullable();
+            $table->date('date');
 
             $table->foreign('employee_id')->references('id')
                 ->on('employees')->onDelete('cascade');

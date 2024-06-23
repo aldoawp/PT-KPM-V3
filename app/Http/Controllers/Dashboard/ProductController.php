@@ -17,6 +17,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -80,6 +81,7 @@ class ProductController extends Controller
 
         // save product code value
         $validatedData['product_code'] = $product_code;
+        $validatedData['branch_id'] = Auth::user()->branch_id;
 
         /**
          * Handle upload image with Storage.
