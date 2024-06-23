@@ -54,7 +54,7 @@ class PosController extends Controller
             $products = Product::where('expire_date', '>', $todayDate);
         } else {
             $customers = auth()->user()->branch->customers;
-            $products = auth()->user()->branch->products->where('expire_date', '>', $todayDate);
+            $products = auth()->user()->branch->products()->where('expire_date', '>', $todayDate);
         }
 
         return view('pos.sales-pos', [
@@ -83,7 +83,7 @@ class PosController extends Controller
         if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
             $products = Product::where('expire_date', '>', $todayDate);
         } else {
-            $products = auth()->user()->branch->products->where('expire_date', '>', $todayDate);
+            $products = auth()->user()->branch->products()->where('expire_date', '>', $todayDate);
         }
 
         return view('pos.restock-pos', [
@@ -112,7 +112,7 @@ class PosController extends Controller
         if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
             $products = Product::where('expire_date', '>', $todayDate);
         } else {
-            $products = auth()->user()->branch->products->where('expire_date', '>', $todayDate);
+            $products = auth()->user()->branch->products()->where('expire_date', '>', $todayDate);
         }
 
         return view('pos.return-pos', [

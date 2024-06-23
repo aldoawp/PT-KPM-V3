@@ -53,9 +53,10 @@ class UserController extends Controller
             'username' => 'required|min:4|max:25|alpha_dash:ascii|unique:users,username',
             'password' => 'min:6|required_with:password_confirmation',
             'password_confirmation' => 'min:6|same:password',
+            'role_id' => 'required|exists:roles,id',
             'branch_id' => 'required|nullable|exists:branches,id',
         ];
-        
+
         $validatedData = $request->validate($rules);
         $validatedData['password'] = Hash::make($request->password);
 
@@ -108,6 +109,7 @@ class UserController extends Controller
             'photo' => 'image|file|max:1024',
             'email' => 'required|email|max:50|unique:users,email,'.$user->id,
             'username' => 'required|min:4|max:25|alpha_dash:ascii|unique:users,username,'.$user->id,
+            'role_id' => 'required|exists:roles,id'
         ];
 
         if($request->password || $request->confirm_password) {
@@ -116,7 +118,10 @@ class UserController extends Controller
         }
 
         $validatedData = $request->validate($rules);
-        $validatedData['password'] = Hash::make($request->password);
+
+        if ($request->password || $request->confirm_password) {
+            $validatedData['password'] = Hash::make($request->password);
+        }
 
         /**
          * Handle upload image with Storage.
