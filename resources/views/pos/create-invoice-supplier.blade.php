@@ -13,7 +13,7 @@
                     <div class="invoice-btn d-flex">
                         <form action="{{ route('pos.printInvoice') }}" method="post">
                             @csrf
-                            <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                            <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
                             <button type="submit" class="btn btn-primary-dark mr-2"><i class="las la-print"></i>Cetak</button>
                         </form>
 
@@ -23,12 +23,12 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header bg-white">
-                                        <h3 class="modal-title text-center mx-auto">Invoice dari {{ $customer->name }}<br/>Total Tagihan: Rp {{ number_format(Cart::total(), 0, ',', '.') }}</h3>
+                                        <h3 class="modal-title text-center mx-auto">Invoice dari {{ $supplier->name }}<br/>Total Tagihan: Rp {{ number_format($productItem->total(), 0, ',', '.') }}</h3>
                                     </div>
                                     <form action="{{ route('pos.storeOrder') }}" method="post">
                                         @csrf
                                         <div class="modal-body">
-                                            <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                                            <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
 
                                             <div class="col-md-12">
                                                 <div class="form-group">
@@ -73,7 +73,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <img src="{{ asset('assets/images/logo.png') }}" class="logo-invoice img-fluid mb-3">
-                            <h5 class="mb-3">Hello, {{ $customer->name }}</h5>
+                            <h5 class="mb-3">Hello, {{ $supplier->name }}</h5>
                         </div>
                     </div>
 
@@ -93,10 +93,10 @@
                                             <td>{{ Carbon\Carbon::now()->format('M d, Y') }}</td>
                                             <td><span class="badge badge-danger">Unpaid</span></td>
                                             <td>
-                                                <p class="mb-0">{{ $customer->address }}<br>
-                                                    Shop Name: {{ $customer->shopname ? $customer->shopname : '-' }}<br>
-                                                    Phone: {{ $customer->phone }}<br>
-                                                    Email: {{ $customer->email }}<br>
+                                                <p class="mb-0">{{ $supplier->address }}<br>
+                                                    Shop Name: {{ $supplier->shopname ? $supplier->shopname : '-' }}<br>
+                                                    Phone: {{ $supplier->phone }}<br>
+                                                    Email: {{ $supplier->email }}<br>
                                                 </p>
                                             </td>
                                         </tr>
@@ -121,14 +121,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($content as $item)
+                                        @foreach ($productItem->content() as $item)
                                         <tr>
                                             <th class="text-center" scope="row">{{ $loop->iteration }}</th>
                                             <td>
                                                 <h6 class="mb-0">{{ $item->name }}</h6>
                                             </td>
                                             <td class="text-center">{{ $item->qty }}</td>
-                                            <td class="text-center">Rp {{ number_format($item->price, 0, ',', '.') }}</td> 
+                                            <td class="text-center">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
                                             <td class="text-center"><b>Rp {{ number_format($item->subtotal, 0, ',', '.') }}</b></td>
                                         </tr>
 
@@ -153,16 +153,16 @@
                                     <h5 class="mb-3">Rincian Order</h5>
                                     <div class="mb-2">
                                         <h6>Sub Total</h6>
-                                        <p>Rp {{ number_format(Cart::subtotal(), 0, ',', '.') }}</p>
+                                        <p>Rp {{ number_format($productItem->subtotal(), 0, ',', '.') }}</p>
                                     </div>
                                     <div>
                                         <h6>VAT (5%)</h6>
-                                        <p>Rp {{ number_format(Cart::tax(), 0, ',', '.') }}</p>
+                                        <p>Rp {{ number_format($productItem->tax(), 0, ',', '.') }}</p>
                                     </div>
                                 </div>
                                 <div class="ttl-amt py-2 px-3 d-flex justify-content-between align-items-center">
                                     <h6>Total</h6>
-                                    <h3 class="text-primary font-weight-700">Rp {{ number_format(Cart::total(), 0, ',', '.') }}</h3>
+                                    <h3 class="text-primary font-weight-700">Rp {{ number_format($productItem->total(), 0, ',', '.') }}</h3>
                                 </div>
                             </div>
                         </div>

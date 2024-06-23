@@ -108,7 +108,7 @@
                     }
                 </style>
 
-                <form action="{{ route('pos.createInvoice') }}" method="POST">
+                <form action="{{ route('pos.restock.createInvoice') }}" method="POST">
                     @csrf
                     <div class="row mt-3">
                         <div class="col-md-12">
@@ -123,9 +123,9 @@
                         </div>
                         <div class="col-md-12 mt-4">
                             <div class="d-flex flex-wrap align-items-center justify-content-center">
-                                <a href="{{ route('customers.create', ['previous_url' => url()->current()]) }}"
+                                <a href="{{ route('suppliers.create', ['previous_url' => url()->current()]) }}"
                                     class="btn btn-primary add-list mx-1">Tambah
-                                    Transaksi</a>
+                                    Pemasok</a>
                                 <button type="submit" class="btn btn-success add-list mx-1">Buat Invoice</button>
                             </div>
                         </div>

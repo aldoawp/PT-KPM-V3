@@ -109,7 +109,7 @@
                     }
                 </style>
 
-                <form action="{{ route('pos.createInvoice') }}" method="POST">
+                <form action="{{ route('pos.sales.createInvoice') }}" method="POST">
                     @csrf
                     <div class="row mt-3">
                         <div class="col-md-12">
@@ -122,11 +122,16 @@
                                 </select>
                             </div>
                         </div>
+                        @error('error')
+                            <div class="col-md-12">
+                                <span class="alert alert-danger mt-2">{{ $errors->first('error') }}</span>
+                            </div>
+                        @enderror
                         <div class="col-md-12 mt-4">
                             <div class="d-flex flex-wrap align-items-center justify-content-center">
                                 <a href="{{ route('customers.create', ['previous_url' => url()->current()]) }}"
                                     class="btn btn-primary add-list mx-1">Tambah
-                                    Transaksi</a>
+                                    Pelanggan</a>
                                 <button type="submit" class="btn btn-success add-list mx-1">Buat Invoice</button>
                             </div>
                         </div>
@@ -169,7 +174,6 @@
                                 </div>
                             </div>
                         </form>
-
 
                         <div class="table-responsive rounded mb-3 border-none">
                             <table class="table mb-0">

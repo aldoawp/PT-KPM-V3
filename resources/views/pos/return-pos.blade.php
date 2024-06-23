@@ -65,7 +65,7 @@
                         <div class="col-md-6">
                             <div class="form-group cart-info">
                                 <p class="h6">Jumlah:</p>
-                                <p class="h5">{{ $productItem->content() }}</p>
+                                <p class="h5">{{ $productItem->count() }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -108,7 +108,7 @@
                     }
                 </style>
 
-                <form action="{{ route('pos.createInvoice') }}" method="POST">
+                <form action="{{ route('pos.return.createInvoice') }}" method="POST">
                     @csrf
                     <div class="row mt-3">
                         <div class="col-md-12">
@@ -123,9 +123,9 @@
                         </div>
                         <div class="col-md-12 mt-4">
                             <div class="d-flex flex-wrap align-items-center justify-content-center">
-                                <a href="{{ route('customers.create', ['previous_url' => url()->current()]) }}"
+                                <a href="{{ route('suppliers.create', ['previous_url' => url()->current()]) }}"
                                     class="btn btn-primary add-list mx-1">Tambah
-                                    Transaksi</a>
+                                    Pemasok</a>
                                 <button type="submit" class="btn btn-success add-list mx-1">Buat Invoice</button>
                             </div>
                         </div>

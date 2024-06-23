@@ -93,19 +93,23 @@ Route::middleware(['permission:pos.menu'])->group(function () {
     Route::get('/pos/restock', [PosController::class, 'posRestock'])->name('pos.restockPos');
     Route::get('/pos/return', [PosController::class, 'posReturn'])->name('pos.returnPos');
 
-    Route::post('/pos/sales/add', [PosController::class, 'addCartSales'])->name('pos.sales.addCart');
-    Route::post('/pos/restock/add', [PosController::class, 'addCartRestock'])->name('pos.restock.addCart');
-    Route::post('/pos/return/add', [PosController::class, 'addCartReturn'])->name('pos.return.addCart');
+    Route::post('/pos/sales/add', [PosController::class, 'addCart'])->name('pos.sales.addCart');
+    Route::post('/pos/restock/add', [PosController::class, 'addCart'])->name('pos.restock.addCart');
+    Route::post('/pos/return/add', [PosController::class, 'addCart'])->name('pos.return.addCart');
 
-    Route::put('/pos/sales/update/{rowId}', [PosController::class, 'updateCartSales'])->name('pos.sales.updateCart');
-    Route::put('/pos/restock/update/{rowId}', [PosController::class, 'updateCartRestock'])->name('pos.restock.updateCart');
-    Route::put('/pos/return/update/{rowId}', [PosController::class, 'updateCartReturn'])->name('pos.return.updateCart');
+    Route::put('/pos/sales/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.sales.updateCart');
+    Route::put('/pos/restock/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.restock.updateCart');
+    Route::put('/pos/return/update/{rowId}', [PosController::class, 'updateCart'])->name('pos.return.updateCart');
 
-    Route::get('/pos/sales/delete/{rowId}', [PosController::class, 'deleteCartSales'])->name('pos.sales.deleteCart');
-    Route::get('/pos/restock/delete/{rowId}', [PosController::class, 'deleteCartRestock'])->name('pos.restock.deleteCart');
-    Route::get('/pos/return/delete/{rowId}', [PosController::class, 'deleteCartReturn'])->name('pos.return.deleteCart');
+    Route::get('/pos/sales/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.sales.deleteCart');
+    Route::get('/pos/restock/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.restock.deleteCart');
+    Route::get('/pos/return/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.return.deleteCart');
 
-    Route::post('/pos/invoice/create', [PosController::class, 'createInvoice'])->name('pos.createInvoice');
+    Route::post('/pos/sales/invoice/create', [PosController::class, 'createInvoice'])->name('pos.sales.createInvoice');
+    Route::post('/pos/restock/invoice/create', [PosController::class, 'createInvoice'])->name('pos.restock.createInvoice');
+    Route::post('/pos/return/invoice/create', [PosController::class, 'createInvoice'])->name('pos.return.createInvoice');
+
+
     Route::post('/pos/invoice/print', [PosController::class, 'printInvoice'])->name('pos.printInvoice');
 
     // Create Order
