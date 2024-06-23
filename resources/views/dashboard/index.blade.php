@@ -134,7 +134,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div id="layout1-chart-2" style="min-height: 360px;"></div>
+                        <div id="layout1-chart-2" style="min-height: 360px;" data-income-location='@json($income_per_location)''></div>
                     </div>
                 </div>
             </div>

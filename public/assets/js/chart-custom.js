@@ -4985,8 +4985,8 @@ if (jQuery("#editor").length) {
     var incomeWeekly = JSON.parse(chartDiv.getAttribute("data-income-weekly"));
     var incomeTotal = JSON.parse(chartDiv.getAttribute("data-income-total"));
 
-    console.log("Raw JSON data:", incomeWeekly);
-    console.log("Raw JSON data:", incomeTotal);
+    // console.log("Raw JSON data:", incomeWeekly);
+    // console.log("Raw JSON data:", incomeTotal);
 
     const lineData = incomeWeekly.map(function(income) {
         return {
@@ -5048,47 +5048,68 @@ if (jQuery("#editor").length) {
 }
 
   
-if(jQuery('#layout1-chart-2').length){
+if (jQuery('#layout1-chart-2').length) {
   am4core.ready(function() {
-
       // Themes begin
       am4core.useTheme(am4themes_animated);
       // Themes end
+
+      var chartDiv = document.getElementById("layout1-chart-2");
+      var incomePerLocation = JSON.parse(chartDiv.getAttribute("data-income-location"));
+
+      // Function to capitalize each word in a string
+      function capitalizeWords(str) {
+        return str.replace(/\b\w/g, function(l) { return l.toUpperCase(); });
+      }
+
+      // Function to format number to Indonesian Rupiah
+      function formatRupiah(value) {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(value);
+      }
 
       // Create chart instance
       var chart = am4core.create("layout1-chart-2", am4charts.PieChart);
       chart.innerRadius = am4core.percent(40);
 
       // Add data
-      chart.data = [{
-        "country": "Lithuania",
-        "litres": 501.9
-      }, {
-        "country": "Czech Republic",
-        "litres": 301.9
-      }, {
-        "country": "Ireland",
-        "litres": 201.1
-      }, {
-        "country": "Germany",
-        "litres": 165.8
-      }];
+      const pieData = incomePerLocation.map(function(income) {
+          return {
+              "region": income.region ? capitalizeWords(income.region) : 'Unknown',
+              "income": income.income
+          };
+      });
+      chart.data = pieData;
 
       // Add and configure Series
       var pieSeries = chart.series.push(new am4charts.PieSeries());
-      pieSeries.dataFields.value = "litres";
-      pieSeries.dataFields.category = "country";
+      pieSeries.dataFields.value = "income";
+      pieSeries.dataFields.category = "region";
       
+      // Configure labels inside pie slices
+      pieSeries.labels.template.adapter.add("text", function(text, target) {
+        var data = target.dataItem.dataContext;
+        return data.region + ": " + formatRupiah(data.income);
+    });
+
       // Configure labels inside pie slices
       pieSeries.labels.template.text = "{category}: {value.value}";
       pieSeries.labels.template.fill = am4core.color("#000000");
       pieSeries.labels.template.fontSize = 16;
-      pieSeries.labels.template.radius = am4core.percent(0); // Set the radius negative to place labels inside
+      pieSeries.labels.template.radius = am4core.percent(-30); // Set the radius negative to place labels inside
 
       // Optional: Enable tooltips
-      pieSeries.slices.template.tooltipText = "{category}: {value.value}";
+      pieSeries.slices.template.adapter.add("tooltipText", function(text, target) {
+        var data = target.dataItem.dataContext;
+        return data.region + ": " + formatRupiah(data.income);
+    });
   }); // end am4core.ready()
 }
+
 
 
   if (jQuery("#layout1-chart-3").length) {    
