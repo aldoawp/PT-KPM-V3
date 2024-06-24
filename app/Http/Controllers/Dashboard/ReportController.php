@@ -194,7 +194,7 @@ class ReportController extends Controller
             'NO. INVOICE',
             'ALAMAT'
         ];
-      
+
         // Zero means all branch
         if ($branch_id === 0) {
             $branches = Branch::all();
@@ -335,7 +335,6 @@ class ReportController extends Controller
                 return;
             }
         }
-
 
         $columns = $baseColumns;
 
