@@ -61,6 +61,11 @@ class User extends Authenticatable
         return $this->role->name === 'Sales';
     }
 
+    public function isSuperAdmin()
+    {
+        return $this->role->name === 'SuperAdmin';
+    }
+
     public function getRouteKeyName()
     {
         return 'username';
