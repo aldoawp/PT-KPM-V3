@@ -14,6 +14,10 @@ class DatabaseBackupController extends Controller
 {
     public function index()
     {
+        if (!File::exists(storage_path('app\db_backup'))) {
+            File::makeDirectory(storage_path('app\db_backup'));
+        }
+
         return view('database.index', [
             'files' => File::allFiles(storage_path('\app\db_backup'))
         ]);
