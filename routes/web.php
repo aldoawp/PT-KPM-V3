@@ -128,7 +128,8 @@ Route::middleware(['permission:orders.menu'])->group(function () {
     Route::put('/orders/update/status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
     Route::get('/orders/invoice/download/{order_id}', [OrderController::class, 'invoiceDownload'])->name('order.invoiceDownload');
 
-    Route::get('/orders/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.deleteOrder');
+    Route::get('/orders/pending/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.pending.deleteOrder');
+    Route::get('/orders/complete/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.complete.deleteOrder');
 
     // Pending Due
     Route::get('/pending/due', [OrderController::class, 'pendingDue'])->name('order.pendingDue');

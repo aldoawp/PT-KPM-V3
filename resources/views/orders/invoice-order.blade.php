@@ -122,8 +122,8 @@
                         <a id="invoice_download_btn" class="btn btn-lg btn-download">
                             Unduh Invoice
                         </a>
-                        <a href="{{ route('dashboard') }}" class="btn btn-primary btn-lg">
-                            Kembali ke Halaman Utama
+                        <a href="{{ route('order.completeOrders') }}" class="btn btn-primary btn-lg">
+                            Kembali
                         </a>
                     </div>
                 </div>

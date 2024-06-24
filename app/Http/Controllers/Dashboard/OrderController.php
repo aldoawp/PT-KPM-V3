@@ -143,19 +143,20 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from database.
      */
-    public function deleteOrder(int $order_id)
+    public function deleteOrder(Request $request, int $order_id)
     {
         $order =
             Order::find($order_id);
 
-        // Add product stock back
-        $orderDetails = $order->orderDetails;
+        if (explode('/', $request->path())[1] === 'complete') {
+            // Add product stock back
+            $orderDetails = $order->orderDetails;
 
-        foreach ($orderDetails as $orderDetail) {
-            $product = Product::find($orderDetail->product_id);
-            dd($product);
-            $product->product_store += $orderDetail->quantity;
-            $product->save();
+            foreach ($orderDetails as $orderDetail) {
+                $product = Product::find($orderDetail->product_id);
+                $product->product_store += $orderDetail->quantity;
+                $product->save();
+            }
         }
 
         $order->delete();

@@ -227,12 +227,6 @@ class PosController extends Controller
                     'unitcost' => $item->price,
                     'total' => $item->total
                 ]);
-
-                // Update stock
-                $product = Product::find($item->id);
-                $product->product_store -= $item->qty;
-
-                $product->save();
             }
         } else { // Uses supplier
             $cart = Cart::instance($cartName);

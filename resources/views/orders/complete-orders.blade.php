@@ -88,7 +88,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center list-action">
-                                            <a href="{{ route('order.deleteOrder', $order->id) }}"
+                                            <a href="{{ route('order.complete.deleteOrder', $order->id) }}"
                                                 class="btn btn-danger border-none mr-2" data-toggle="tooltip"
                                                 data-placement="top" title="" data-original-title="Delete"><i
                                                     class="fa-solid fa-trash mr-0"></i></a>
