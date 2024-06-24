@@ -93,9 +93,8 @@
                         </div>
                         <div class="card-header-toolbar d-flex align-items-center">
                             <div class="dropdown">
-                                <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton001"
-                                    data-toggle="dropdown">
-                                    Bulan Ini<i class="ri-arrow-down-s-line ml-1"></i>
+                                <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton001">
+                                    Bulan Ini</i>
                                 </span>
                                 <div class="dropdown-menu dropdown-menu-right shadow-none"
                                     aria-labelledby="dropdownMenuButton001">
@@ -120,9 +119,8 @@
                         </div>
                         <div class="card-header-toolbar d-flex align-items-center">
                             <div class="dropdown">
-                                <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton002"
-                                    data-toggle="dropdown">
-                                    Bulan Ini<i class="ri-arrow-down-s-line ml-1"></i>
+                                <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton002">
+                                    Bulan Ini</i>
                                 </span>
                                 <div class="dropdown-menu dropdown-menu-right shadow-none"
                                     aria-labelledby="dropdownMenuButton002">
@@ -135,6 +133,7 @@
                     </div>
                     <div class="card-body">
                         <div id="layout1-chart-2" style="min-height: 360px;" data-income-location='@json($income_per_location)''></div>
+                        <div id="no-data-message-1" style="font-size: 24px; text-align: center; color: #e5e5e5; text-transform: uppercase; margin-top:20%; margin-bottom: 20%">Belum ada data</div>
                     </div>
                 </div>
             </div>
@@ -147,9 +146,8 @@
                         </div>
                         <div class="card-header-toolbar d-flex align-items-center">
                             <div class="dropdown">
-                                <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton006"
-                                    data-toggle="dropdown">
-                                    Bulan Ini<i class="ri-arrow-down-s-line ml-1"></i>
+                                <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton006">
+                                    Bulan Ini</i>
                                 </span>
                                 <div class="dropdown-menu dropdown-menu-right shadow-none"
                                     aria-labelledby="dropdownMenuButton006">
@@ -161,28 +159,13 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <ul class="list-unstyled row top-product mb-0">
-                            @foreach ($best_sellers as $product)
-                                <li class="col-lg-3">
-                                    <div class="card card-block card-stretch card-height mb-0">
-                                        <div class="card-body">
-                                            <div class="bg-warning-light rounded">
-                                                <img src="{{ $product->product_image ? asset('storage/products/' . $product->product_image) : asset('assets/images/product/default.webp') }}"
-                                                    class="style-img img-fluid m-auto p-3" alt="image">
-                                            </div>
-                                            <div class="style-text text-left mt-3">
-                                                <h5 class="mb-1">{{ $product->product_name }}</h5>
-                                                <p class="mb-0">{{ $product->total_quantity }} pcs</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            @endforeach
-
-                            @if ($best_sellers->count() > 0 && $best_sellers->count() <= 3)
-                                @for ($i = $best_sellers->count(); $i <= 3; $i++)
+                        @if ($best_sellers->isEmpty())
+                            <div id="no-data-message-1" style="font-size: 24px; text-align: center; color: #e5e5e5; text-transform: uppercase; margin-top:10%; margin-bottom: 10%">Belum ada data</div>
+                        @else
+                            <ul class="list-unstyled row top-product mb-0">
+                                @foreach ($best_sellers as $product)
                                     <li class="col-lg-3">
-                                        <div class="card card-block card-stretch card-height mb-0 d-none">
+                                        <div class="card card-block card-stretch card-height mb-0">
                                             <div class="card-body">
                                                 <div class="bg-warning-light rounded">
                                                     <img src="{{ $product->product_image ? asset('storage/products/' . $product->product_image) : asset('assets/images/product/default.webp') }}"
@@ -195,9 +178,28 @@
                                             </div>
                                         </div>
                                     </li>
-                                @endfor
-                            @endif
-                        </ul>
+                                @endforeach
+
+                                @if ($best_sellers->count() > 0 && $best_sellers->count() <= 3)
+                                    @for ($i = $best_sellers->count(); $i <= 3; $i++)
+                                        <li class="col-lg-3">
+                                            <div class="card card-block card-stretch card-height mb-0 d-none">
+                                                <div class="card-body">
+                                                    <div class="bg-warning-light rounded">
+                                                        <img src="{{ $product->product_image ? asset('storage/products/' . $product->product_image) : asset('assets/images/product/default.webp') }}"
+                                                            class="style-img img-fluid m-auto p-3" alt="image">
+                                                    </div>
+                                                    <div class="style-text text-left mt-3">
+                                                        <h5 class="mb-1">{{ $product->product_name }}</h5>
+                                                        <p class="mb-0">{{ $product->total_quantity }} pcs</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endfor
+                                @endif
+                            </ul>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -209,9 +211,8 @@
                         </div>
                         <div class="card-header-toolbar d-flex align-items-center">
                             <div class="dropdown">
-                                <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton006"
-                                    data-toggle="dropdown">
-                                    Bulan Ini<i class="ri-arrow-down-s-line ml-1"></i>
+                                <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton006">
+                                    Bulan Ini</i>
                                 </span>
                                 <div class="dropdown-menu dropdown-menu-right shadow-none"
                                     aria-labelledby="dropdownMenuButton006">
@@ -226,7 +227,10 @@
 
                 {{-- Top Sales Section --}}
                 <div class="card-container border-bottom ">
-                    @foreach ($top_sales as $sales)
+                    @if ($top_sales->isEmpty())
+                        <div id="no-data-message-1" style="font-size: 24px; text-align: center; color: #e5e5e5; text-transform: uppercase; margin-top:20%; margin-bottom: 20%">Belum ada data</div>
+                    @else
+                        @foreach ($top_sales as $sales)
                         <div class="card card-block card-stretch card-height-helf mb-3">
                             <div class="card-body card-item-right">
                                 <div class="d-flex align-items-top">
@@ -246,6 +250,8 @@
                             </div>
                         </div>
                     @endforeach
+                    @endif
+                    
                 </div>
 
                 {{-- Top sales: shown 2 cards only at a time, the rest is scrolled --}}

@@ -74,7 +74,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <img src="{{ asset('assets/images/logo.png') }}" class="logo-invoice img-fluid mb-3">
+                                <img src="{{ asset('assets/images/logo-kpm.png') }}" class="logo-invoice img-fluid mb-3">
                                 <h5 class="mb-3">Hello, {{ $customer->name }}</h5>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                                         <tbody>
                                             <tr>
                                                 <td>{{ Carbon\Carbon::now()->format('M d, Y') }}</td>
-                                                <td><span class="badge badge-danger">Unpaid</span></td>
+                                                <td><span class="badge badge-danger">Belum Dibayar</span></td>
                                                 <td>
                                                     <p class="mb-0">{{ $customer->address }}<br>
                                                         Shop Name:
@@ -147,13 +147,13 @@
                             <div class="offset-lg-8 col-lg-4">
                                 <div class="or-detail rounded">
                                     <div class="p-3">
-                                        <h5 class="mb-3">Rincian Order</h5>
+                                        <h5 class="mb-3">Rincian Pesanan</h5>
                                         <div class="mb-2">
                                             <h6>Sub Total</h6>
                                             <p>Rp {{ number_format($productItem->subtotal(), 0, ',', '.') }}</p>
                                         </div>
                                         <div>
-                                            <h6>VAT (5%)</h6>
+                                            <h6>PPN (5%)</h6>
                                             <p>Rp {{ number_format($productItem->tax(), 0, ',', '.') }}</p>
                                         </div>
                                     </div>

@@ -17,6 +17,7 @@ class DashboardController extends Controller
         // $income_weekly = Order::whereBetween('created_at', [now()->subWeek(), now()])->sum('total');
 
         $income_weekly = Order::where('order_status', 'complete')
+            ->whereMonth('created_at', '=', date('m'))
             ->selectRaw('DATE(updated_at) as date, SUM(pay) as total')
             ->groupBy('date')
             ->get()
@@ -28,7 +29,9 @@ class DashboardController extends Controller
             });
 
         $income_total = [
-            'total' => Order::where('order_status', 'complete')->sum('pay')
+            'total' => Order::where('order_status', 'complete')
+                ->whereMonth('created_at', '=', date('m'))
+                ->sum('pay')
         ];
 
         /*
@@ -40,20 +43,24 @@ class DashboardController extends Controller
          5. Take the region name from branches table and the sum of each region based on branch_id
          */
 
-
-        $income_per_location = DB::table('orders')
-            ->leftJoin('users', 'orders.user_id', '=', 'users.id')
-            ->leftJoin('branches', 'users.branch_id', '=', 'branches.id')
-            ->select('branches.region', DB::raw('SUM(orders.pay) as total_income'))
-            ->where('orders.order_status', 'complete')
-            ->groupBy('orders.user_id', 'branches.region')
-            ->get()
-            ->map(function ($income) {
-                return [
-                    'region' => $income->region,
-                    'income' => $income->total_income
-                ];
-            });
+         $income_per_location = DB::table('orders')
+         ->leftJoin('users', 'orders.user_id', '=', 'users.id')
+         ->leftJoin('branches', 'users.branch_id', '=', 'branches.id')
+         ->select(
+             DB::raw('IFNULL(branches.region, "Unknown") as region'),
+             DB::raw('SUM(orders.pay) as total_income')
+         )
+         ->where('orders.order_status', 'complete')
+         ->whereMonth('orders.created_at', '=', date('m'))
+         ->groupBy('branches.id', 'branches.region')
+         ->get()
+         ->map(function ($income) {
+             return [
+                 'region' => ucfirst($income->region),  // Capitalize region
+                 'income' => 'Rp ' . number_format($income->total_income, 0, ',', '.')  // Format to Indonesian Rupiah without decimal
+             ];
+         });
+     
 
         // Today's insights
         $today_income = Order::where('order_status', 'complete')
@@ -70,6 +77,7 @@ class DashboardController extends Controller
             ->select('products.product_name', 'categories.name as category_name', 'products.product_image', DB::raw('SUM(order_details.quantity) as total_quantity'))
             ->join('products', 'order_details.product_id', '=', 'products.id')
             ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->whereMonth('order_details.created_at', '=', date('m'))
             ->groupBy('order_details.product_id', 'products.product_name', 'products.product_image', 'categories.name')
             ->orderBy('total_quantity', 'desc')
             ->take(5)
@@ -80,6 +88,7 @@ class DashboardController extends Controller
             ->select('users.name', DB::raw('SUM(orders.total) as total_sales'), DB::raw('SUM(orders.total_products) as total_products'))
             ->join('users', 'orders.user_id', '=', 'users.id')
             ->where('orders.order_status', 'complete')
+            ->whereMonth('orders.created_at', '=', date('m'))
             ->groupBy('user_id')
             ->orderBy('total_sales', 'desc')
             ->take(5)

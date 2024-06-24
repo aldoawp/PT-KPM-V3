@@ -25,7 +25,6 @@
                         </div>
                         <div class="ml-3">
                             <h4 class="mb-1">{{ $employee->name }}</h4>
-                            <p class="mb-2">UI/UX Designer</p>
                             <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-primary font-size-14">Ubah</a>
                             <a href="{{ route('employees.index') }}" class="btn btn-danger font-size-14">Kembali</a>
                         </div>
@@ -119,7 +118,7 @@
                                     <label class="col-form-label">Gaji</label>
                                 </div>
                                 <div class="col-sm-9 col-8">
-                                    <input type="text" class="form-control bg-white" value="${{ $employee->salary }}" readonly>
+                                    <input type="text" class="form-control bg-white" value="Rp {{ number_format($employee->salary, 0, ',', '.') }}" readonly>
                                 </div>
                             </div>
                         </li>
@@ -139,7 +138,7 @@
                                     <label class="col-form-label">Kota</label>
                                 </div>
                                 <div class="col-sm-9 col-8">
-                                    <input type="text" class="form-control bg-white" value="{{ $employee->city }}" readonly>
+                                    <input type="text" class="form-control bg-white" value="{{ Str::title($employee->branch->region) }}" readonly>
                                 </div>
                             </div>
                         </li>

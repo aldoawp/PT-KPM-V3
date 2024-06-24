@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Models\Branch;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,7 +33,9 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('employees.create');
+        return view('employees.create', [
+            'branches' => Branch::all(),
+        ]);
     }
 
     /**
@@ -48,12 +51,11 @@ class EmployeeController extends Controller
             'experience' => 'max:6|nullable',
             'salary' => 'required|numeric',
             'vacation' => 'max:50|nullable',
-            'city' => 'requried|max:50',
+            'branch_id' => 'required|exists:branches,id',
             'address' => 'required|max:100',
         ];
 
         $validatedData = $request->validate($rules);
-        $validatedData['branch_id'] = auth()->user()->branch->id;
 
         /**
          * Handle upload image with Storage.
@@ -88,6 +90,7 @@ class EmployeeController extends Controller
     {
         return view('employees.edit', [
             'employee' => $employee,
+            'branches' => Branch::all(),
         ]);
     }
 
@@ -104,7 +107,7 @@ class EmployeeController extends Controller
             'experience' => 'string|max:6|nullable',
             'salary' => 'numeric',
             'vacation' => 'max:50|nullable',
-            'city' => 'max:50',
+            'branch_id' => 'required|exists:branches,id',
             'address' => 'required|max:100',
         ];
 

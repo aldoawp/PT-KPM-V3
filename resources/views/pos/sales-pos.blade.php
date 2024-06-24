@@ -77,7 +77,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group cart-info">
-                                <p class="h6">VAT:</p>
+                                <p class="h6">PPN (5%):</p>
                                 <p class="h5">Rp {{ number_format($productItem->tax(), 0, ',', '.') }}</p>
                             </div>
                         </div>
