@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use Artisan;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,8 +13,8 @@ class DatabaseBackupController extends Controller
 {
     public function index()
     {
-        if (!File::exists(storage_path('app\db_backup'))) {
-            File::makeDirectory(storage_path('app\db_backup'));
+        if (!Storage::exists(storage_path('\db_backup'))) {
+            Storage::makeDirectory('\db_backup');
         }
 
         return view('database.index', [
