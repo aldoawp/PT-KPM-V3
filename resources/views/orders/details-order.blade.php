@@ -55,11 +55,11 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Status Pembayaran</label>
-                            <input class="form-control bg-white" id="expire_date" value="{{ $order->payment_status }}" readonly />
+                            <input class="form-control bg-white" id="expire_date" value="{{ Str::title($order->payment_status) }}" readonly />
                         </div>
                         <div class="form-group col-md-6">
                             <label>Jumlah Dibayar</label>
-                            <input type="text" class="form-control bg-white" value="{{ $order->pay }}" readonly>
+                            <input type="text" class="form-control bg-white" value="Rp {{ number_format($order->pay, 0, ',', '.') }}" readonly>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Jumlah Terutang</label>
@@ -76,9 +76,9 @@
                                         @method('put')
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $order->id }}">
-                                        <button type="submit" class="btn btn-success mr-2 border-none" data-toggle="tooltip" data-placement="top" title="" data-original-title="Complete">Selesaikan Pesanan</button>
+                                        <button type="submit" class="btn btn-success mr-2 border-none" data-toggle="tooltip" data-placement="top" title="" data-original-title="Selesaikan">Selesaikan Pesanan</button>
 
-                                        <a class="btn btn-danger mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Cancel" href="{{ route('order.pendingOrders') }}">Batalkan</a>
+                                        <a class="btn btn-danger mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Kembali" href="{{ route('order.pendingOrders') }}">Kembali</a>
                                     </form>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                             <th>Kode Barang</th>
                             <th>Jumlah</th>
                             <th>Harga</th>
-                            <th>Total(+VAT)</th>
+                            <th>Total(+PPN)</th>
                         </tr>
                     </thead>
                     <tbody class="ligth-body">
@@ -114,8 +114,8 @@
                             <td>{{ $item->product->product_name }}</td>
                             <td>{{ $item->product->product_code }}</td>
                             <td>{{ $item->quantity }}</td>
-                            <td>{{ $item->unitcost }}</td>
-                            <td>{{ $item->total }}</td>
+                            <td>Rp {{ number_format($item->unitcost, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($item->total, 0, ',', '.') }}</td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -24,7 +24,7 @@ class EmployeeFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->unique()->phoneNumber(),
             'address' => fake()->address(),
-            'experience' => fake()->randomElement(['0 Year', '1 Year', '2 Year', '3 Year', '4 Year', '5 Year']),
+            'experience' => fake()->randomElement(['0 Year', '< 1 Year', '2 Year', '3 Year', '4 Year', '> 5 Year']),
             'salary' => fake()->numberBetween(1000000, 10000000),
             'vacation' => 12,
             'branch_id' => fake()->randomElement(Branch::pluck('id'))

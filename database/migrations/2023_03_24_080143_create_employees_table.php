@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('experience')->nullable();
             $table->string('photo')->nullable();
+            $table->string('city')->nullable();
             $table->integer('salary')->nullable();
             $table->integer('vacation')->nullable();
             $table->integer('branch_id')->unsigned()->nullable();

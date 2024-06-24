@@ -125,7 +125,7 @@
                                                 <p>Rp {{ number_format(Cart::subtotal(), 0, ',', '.') }}</p>
                                             </div>
                                             <div>
-                                                <h6>Vat (5%)</h6>
+                                                <h6>PPN (5%)</h6>
                                                 <p>Rp {{ number_format(Cart::tax(), 0, ',', '.') }}</p>
                                             </div>
                                         </div>

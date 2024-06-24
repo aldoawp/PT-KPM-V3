@@ -149,8 +149,10 @@ Route::middleware(['permission:branch.menu'])->group(function () {
 
 // ===== REPORT ======
 Route::middleware(['permission:report.menu'])->group(function () {
-    Route::get('/report', [ReportController::class, 'index'])->name('report.index');
-    Route::post('/generate', [ReportController::class, 'generate'])->name('report.generate');
+    Route::get('/report/distribusi', [ReportController::class, 'index_distribusi'])->name('report.index_distribusi');
+    Route::get('/report/penjualan', [ReportController::class, 'index_penjualan'])->name('report.index_penjualan');
+    Route::post('/report/distribusi/generate', [ReportController::class, 'generateDistributionReport'])->name('report.distributionReport');
+    Route::post('/report/penjualan/generate', [ReportController::class, 'generateSalesReport'])->name('report.salesReport');
 });
 
 // ====== DATABASE BACKUP ======

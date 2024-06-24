@@ -80,16 +80,16 @@
                                     <label for="experience">Pengalaman Kerja</label>
                                     <select class="form-control" name="experience">
                                         <option value="">Pilih Tahun...</option>
-                                        <option value="1 Year" @if (old('experience', $employee->experience) == '1 Tahun') selected="selected" @endif>
-                                            1 Tahun</option>
-                                        <option value="2 Year" @if (old('experience', $employee->experience) == '2 Tahun') selected="selected" @endif>
+                                        <option value="< 1 Tahun" @if (old('experience', $employee->experience) == '1 Tahun') selected="selected" @endif>
+                                            &lt 1 Tahun</option>
+                                        <option value="2 Tahun" @if (old('experience', $employee->experience) == '2 Tahun') selected="selected" @endif>
                                             2 Tahun</option>
-                                        <option value="3 Year" @if (old('experience', $employee->experience) == '3 Tahun') selected="selected" @endif>
+                                        <option value="3 Tahun" @if (old('experience', $employee->experience) == '3 Tahun') selected="selected" @endif>
                                             3 Tahun</option>
-                                        <option value="4 Year" @if (old('experience', $employee->experience) == '4 Tahun') selected="selected" @endif>
+                                        <option value="4 Tahun" @if (old('experience', $employee->experience) == '4 Tahun') selected="selected" @endif>
                                             4 Tahun</option>
-                                        <option value="5 Year" @if (old('experience', $employee->experience) == '5 Tahun') selected="selected" @endif>
-                                            5 Tahun</option>
+                                        <option value="> 5 Tahun" @if (old('experience', $employee->experience) == '5 Tahun') selected="selected" @endif>
+                                            &gt 5 Tahun</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -114,10 +114,14 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="city">Kota Karyawan<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('city') is-invalid @enderror"
-                                        id="city" name="city" value="{{ old('city', $employee->city) }}" required>
-                                    @error('city')
+                                    <label for="branch_id_employee">Kota Karyawan <span class="text-danger">*</span></label>
+                                    <select id="branch_id_employee" class="form-control" name="branch_id" required>
+                                        <option value="" selected disabled>Pilih Kota...</option>
+                                        @foreach ($branches as $branch)
+                                            <option @if ($employee->branch_id == $branch->id) selected @endif value="{{ $branch->id }}">{{ Str::title($branch->region) }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('branch_id')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>

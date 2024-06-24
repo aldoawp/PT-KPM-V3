@@ -228,14 +228,37 @@
                     </li>
                 @endif
 
-                    @if (auth()->user()->can('report.menu') && !auth()->user()->isSalesRole())
-                        <li class="{{ Request::is('report') ? 'active' : '' }}">
-                            <a href="{{ route('report.index') }}" class="svg-icon">
-                                <i class="fa  fa-pie-chart"></i>
-                                <span class="ml-3">Laporan</span>
-                            </a>
-                        </li>
-                    @endif
+                @if (auth()->user()->can('report.menu') && !auth()->user()->isSalesRole())
+                    <li>
+                        {{-- <a href="{{ route('report.index') }}" class="svg-icon">
+                            <i class="fa  fa-pie-chart"></i>
+                            <span class="ml-3">Laporan</span>
+                        </a> --}}
+                        <a href="#report" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <i class="fa-solid fa-key"></i>
+                            <span class="ml-3">Laporan</span>
+                            <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="10 15 15 20 20 15"></polyline>
+                                <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                            </svg>
+                        </a>
+                        <ul id="report" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            <li class="{{ Request::is('report/distribusi') ? 'active' : '' }}">
+                                <a href="{{ route('report.index_distribusi') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Distribusi</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('report/penjualan') ? 'active' : '' }}">
+                                <a href="{{ route('report.index_penjualan') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Penjualan</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
 
                 <hr>
 

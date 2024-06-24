@@ -25,7 +25,7 @@
                             <div class="row">
                                 <div class="col-lg-6 col-sm-6">
                                     <div class="logo">
-                                        <img class="logo" src="{{ asset('assets/images/logo.png') }}" alt="logo">
+                                        <img class="logo" src="{{ asset('assets/images/logo-kpm.png') }}" alt="logo">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-sm-6">
@@ -75,7 +75,7 @@
                                         <th>Produk</th>
                                         <th>Harga</th>
                                         <th>Jumlah</th>
-                                        <th>Total (+VAT)</th>
+                                        <th>Total (+PPN)</th>
                                     </tr>
                                     </thead>
 
