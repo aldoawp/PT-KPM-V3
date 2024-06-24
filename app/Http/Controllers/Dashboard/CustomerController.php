@@ -17,6 +17,10 @@ class CustomerController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->isSalesRole()) {
+            return abort(403, 'Anda tidak diizinkan mengakses halaman ini.');
+        }
+
         $row = (int) request('row', 10);
 
         if ($row < 1 || $row > 100) {
@@ -47,8 +51,10 @@ class CustomerController extends Controller
      */
     public function create(Request $request)
     {
-        if ($request->has('previous_url')) {
+        if ($request->has('previous_url') && !auth()->user()->isSalesRole()) {
             Session::put('previous_url', $request->query('previous_url'));
+        } else {
+            Session::put('previous_url', route('pos.salesPos'));
         }
 
         return view('customers.create');
@@ -95,6 +101,10 @@ class CustomerController extends Controller
             return redirect($previousUrl)->with('success', 'Pelanggan telah dibuat!')->withInput();
         }
 
+        if (auth()->user()->isSalesRole()) {
+            return Redirect::route('pos.salesPos');
+        }
+
         return Redirect::route('customers.index')->with('success', 'Pelanggan telah dibuat!');
     }
 
@@ -103,6 +113,10 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
+        if (auth()->user()->isSalesRole()) {
+            return abort(403, 'Anda tidak diizinkan mengakses halaman ini.');
+        }
+
         return view('customers.show', [
             'customer' => $customer,
         ]);
@@ -113,6 +127,10 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
+        if (auth()->user()->isSalesRole()) {
+            return abort(403, 'Anda tidak diizinkan mengakses halaman ini.');
+        }
+
         return view('customers.edit', [
             'customer' => $customer
         ]);
@@ -123,6 +141,10 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
+        if (auth()->user()->isSalesRole()) {
+            return abort(403, 'Anda tidak diizinkan mengakses halaman ini.');
+        }
+
         $rules = [
             'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
@@ -167,6 +189,10 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
+        if (auth()->user()->isSalesRole()) {
+            return abort(403, 'Anda tidak diizinkan mengakses halaman ini.');
+        }
+
         /**
          * Delete photo if exists.
          */

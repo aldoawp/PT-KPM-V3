@@ -142,7 +142,7 @@
                         <!-- end: Input Data -->
                         <div class="mt-2">
                             <button type="submit" class="btn btn-primary mr-2">Simpan</button>
-                            <a class="btn bg-danger" href="{{ route('customers.index') }}">Batalkan</a>
+                            <a class="btn bg-danger" href="{{ auth()->user()->isSalesRole() ? route('pos.salesPos') : route('customers.index') }}">Batalkan</a>
                         </div>
                     </form>
                 </div>
