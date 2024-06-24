@@ -46,6 +46,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $role = Role::find($request->role_id);
+
+        if ($role->name === 'SuperAdmin' && !auth()->user()->isSuperAdmin()) {
+            return Redirect::route('users.index')->with('error', 'You are not allowed to create SuperAdmin role!');
+        }
+
         $rules = [
             'name' => 'required|max:50',
             'photo' => 'image|file|max:1024',
@@ -93,6 +99,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if ($user->role->name === 'SuperAdmin' && !auth()->user()->isSuperAdmin()) {
+            return Redirect::route('users.index')->with('error', 'You are not allowed to edit SuperAdmin role!');
+        }
+
         return view('users.edit', [
             'userData' => $user,
             'roles' => Role::all(),
@@ -105,6 +115,12 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $role = Role::find($request->role_id);
+
+        if ($role->name === 'SuperAdmin' && !auth()->user()->isSuperAdmin()) {
+            return Redirect::route('users.index')->with('error', 'You are not allowed to update SuperAdmin role!');
+        }
+
         $rules = [
             'name' => 'required|max:50',
             'photo' => 'image|file|max:1024',
@@ -158,6 +174,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->role->name === 'SuperAdmin' && !auth()->user()->isSuperAdmin()) {
+            return Redirect::route('users.index')->with('error', 'You are not allowed to delete SuperAdmin account!');
+        }
+
         /**
          * Delete photo if exists.
          */
