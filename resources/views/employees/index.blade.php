@@ -82,7 +82,7 @@
                             <td>{{ $employee->email }}</td>
                             <td>{{ $employee->phone }}</td>
                             <td>Rp {{ number_format($employee->salary, 0, ',', '.') }}</td>
-                            <td>{{ $employee->branch->region }}</td>
+                            <td>@if ($employee->branch != null) {{ $employee->branch->region }} @endif</td>
                             <td>
                                 <div class="d-flex align-items-center list-action">
                                     <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tampilkan"
