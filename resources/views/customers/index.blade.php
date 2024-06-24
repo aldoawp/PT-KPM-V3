@@ -15,8 +15,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                 <div>
                     <h4 class="mb-3">Daftar Pelanggan</h4>
-                    <p class="mb-0">Dasbor pelanggan memungkinkan Anda dengan mudah mengumpulkan dan memvisualisasikan <br> data pelanggan dari mengoptimalkan 
-Pengalaman pelanggan, memastikan retensi pelanggan.</p>
+                    <p class="mb-0">Semua pelanggan anda dari berbagai daerah akan disimpan pada halaman ini.</p>
                 </div>
                 <div>
                     <a href="{{ route('customers.create') }}" class="btn btn-primary add-list"><i class="fa-solid fa-plus mr-3"></i>Tambah Pelanggan</a>

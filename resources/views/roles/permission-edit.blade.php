@@ -56,6 +56,14 @@
             'slug' => 'database',
             'name' => 'Database'
         ],
+        [
+            'slug' => 'branch',
+            'name' => 'Branch'
+        ],
+        [
+            'slug' => 'report',
+            'name' => 'Report'
+        ],
     ]
 @endphp
 

@@ -21,6 +21,7 @@ class CustomerFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->unique()->phoneNumber(),
+            'city' => fake()->city(),
             'address' => fake()->address(),
             'shopname' => fake()->company(),
             'account_holder' => fake()->name(),

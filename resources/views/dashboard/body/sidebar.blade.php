@@ -160,6 +160,14 @@
                     </li>
                 @endif
 
+                @if (auth()->user()->can('attendence.menu') && !auth()->user()->isSalesRole())
+                    <li class="{{ Request::is(['employee/attendence']) ? 'active' : '' }}">
+                        <a href="{{ route('attendence.index') }}">
+                            <i class="fa-solid fa-calendar-days"></i><span class="ml-3">Absensi</span>
+                        </a>
+                    </li>
+                @endif
+
                 @if (auth()->user()->can('salary.menu') && !auth()->user()->isSalesRole())
                     <li>
                         <a href="#advance-salary" class="collapsed" data-toggle="collapse" aria-expanded="false">
@@ -194,34 +202,6 @@
                             <li class="{{ Request::is('pay-salary/history*') ? 'active' : '' }}">
                                 <a href="{{ route('pay-salary.payHistory') }}">
                                     <i class="fa-solid fa-arrow-right"></i><span>Riwayat Penggajian</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
-
-                @if (auth()->user()->can('attendence.menu') && !auth()->user()->isSalesRole())
-                    <li>
-                        <a href="#attendence" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                            <i class="fa-solid fa-calendar-days"></i>
-                            <span class="ml-3">Absensi</span>
-                            <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="10 15 15 20 20 15"></polyline>
-                                <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                            </svg>
-                        </a>
-                        <ul id="attendence" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                            <li class="{{ Request::is(['employee/attendence']) ? 'active' : '' }}">
-                                <a href="{{ route('attendence.index') }}">
-                                    <i class="fa-solid fa-arrow-right"></i><span>Semua Absensi</span>
-                                </a>
-                            </li>
-                            <li class="{{ Request::is('employee/attendence/*') ? 'active' : '' }}">
-                                <a href="{{ route('attendence.create') }}">
-                                    <i class="fa-solid fa-arrow-right"></i><span>Tambah Absensi</span>
                                 </a>
                             </li>
                         </ul>

@@ -80,7 +80,7 @@
                                     <label for="experience">Pengalaman Kerja</label>
                                     <select class="form-control" name="experience">
                                         <option value="">Pilih Tahun...</option>
-                                        <option value="< 1 Tahun" @if (old('experience', $employee->experience) == '1 Tahun') selected="selected" @endif>
+                                        <option value="< 1 Tahun" @if (old('experience', $employee->experience) == '< 1 Tahun') selected="selected" @endif>
                                             &lt 1 Tahun</option>
                                         <option value="2 Tahun" @if (old('experience', $employee->experience) == '2 Tahun') selected="selected" @endif>
                                             2 Tahun</option>
@@ -88,7 +88,7 @@
                                             3 Tahun</option>
                                         <option value="4 Tahun" @if (old('experience', $employee->experience) == '4 Tahun') selected="selected" @endif>
                                             4 Tahun</option>
-                                        <option value="> 5 Tahun" @if (old('experience', $employee->experience) == '5 Tahun') selected="selected" @endif>
+                                        <option value="> 5 Tahun" @if (old('experience', $employee->experience) == '> 5 Tahun') selected="selected" @endif>
                                             &gt 5 Tahun</option>
                                     </select>
                                 </div>

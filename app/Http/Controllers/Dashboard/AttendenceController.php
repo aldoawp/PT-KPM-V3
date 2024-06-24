@@ -41,7 +41,9 @@ class AttendenceController extends Controller
     public function create()
     {
         return view('attendence.create', [
-            'employees' => Employee::where('branch_id', auth()->user()->branch_id)
+            'employees' => Employee::when(auth()->user()->role_id != 1, function ($query) {
+                    $query->where('branch_id', auth()->user()->branch_id);
+                })
                 ->get()
                 ->sortBy('name')
         ]);

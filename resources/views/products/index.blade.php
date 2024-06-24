@@ -23,12 +23,11 @@
                 <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                     <div>
                         <h4 class="mb-3">Daftar Produk</h4>
-                        <p class="mb-0">Dasbor produk memungkinkan Anda dengan mudah mengumpulkan dan memvisualisasikan
-                            data produk untuk <br>mengoptimalkan pengalaman produk, memastikan retensi produk.</p>
+                        <p class="mb-0">Semua produk anda akan disimpan pada halaman ini.</p>
                     </div>
                     <div>
-                        <a href="{{ route('products.importView') }}" class="btn btn-success add-list">Import</a>
-                        <a href="{{ route('products.exportData') }}" class="btn btn-warning add-list">Export</a>
+                        <a href="{{ route('products.importView') }}" class="btn btn-success add-list">Impor</a>
+                        <a href="{{ route('products.exportData') }}" class="btn btn-warning add-list">Ekspor</a>
                         <a href="{{ route('products.create') }}" class="btn btn-primary add-list">Tambah Produk</a>
                     </div>
                 </div>
