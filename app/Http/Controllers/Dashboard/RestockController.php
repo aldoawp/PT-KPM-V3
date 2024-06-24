@@ -2,45 +2,56 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Models\Product;
 use App\Models\Restock;
 use Illuminate\Http\Request;
-use App\Models\RestockDetail;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Http\Controllers\Dashboard\Enums\Carts;
 
 class RestockController extends Controller
 {
     public function storeOrder(Request $request)
     {
-        $rules = [
-            'supplier_id' => 'required|numeric',
-        ];
-
         $cart = Cart::instance(Carts::Restock->value);
 
-        $validatedData = $request->validate($rules);
-        $validatedData['total'] = $cart->total();
-        $validatedData['branch_id'] = auth()->user()->branch->id;
-        $validatedData['user_id'] = auth()->user()->id;
-
-        $return_id = Restock::insertGetId($validatedData);
-
-        // Create Order Details
-        $contents = $cart->content();
-        $oDetails = array();
-
-        foreach ($contents as $content) {
-            $oDetails['return_id'] = $return_id;
-            $oDetails['product_id'] = $content->id;
-            $oDetails['quantity'] = $content->qty;
-
-            RestockDetail::insert($oDetails);
+        if ($cart->count() === 0) {
+            return redirect()->back()->withErrors(['error' => 'Tambahkan setidaknya 1 barang!']);
         }
 
-        // Delete Cart Sopping History
+        $validator =
+            \Validator::make($request->all(), [
+                'supplier_id' => ['required']
+            ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors(['error' => 'Pilih 1 pemasok!']);
+        }
+
+        $restockRecord =
+            Restock::create([
+                'supplier_id' => $request['supplier_id'],
+                'branch_id' => auth()->user()->branch->id,
+                'total' => $cart->total(),
+                'user_id' => auth()->user()->id
+            ]);
+
+        foreach ($cart->content() as $item) {
+            $restockRecord->restockDetails()
+                ->create([
+                    'product_id' => $item->id,
+                    'quantity' => $item->qty
+                ]);
+
+            // Update stock
+            $product = Product::find($item->id);
+            $product->product_store += $item->qty;
+
+            $product->save();
+        }
+
         $cart->destroy();
 
-        return Redirect::route('pos.restockPos', $return_id)->with('success', 'Pesanan berhasil dibuat!');
+        return redirect()->back()->with('success', 'Pesanan berhasil dibuat!');
     }
 }
