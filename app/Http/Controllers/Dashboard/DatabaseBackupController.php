@@ -2,37 +2,51 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use Artisan;
 use File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 
 class DatabaseBackupController extends Controller
-{    public function index()
+{
+    public function index()
     {
         return view('database.index', [
-            'files' => File::allFiles(storage_path('/app/POS'))
+            'files' => File::allFiles(storage_path('\app\db_backup'))
         ]);
     }
 
     // Backup database is not working, and you need to enter manually in terminal with command php artisan backup:run.
-    public function create(){
-        \Artisan::call('backup:run');
+    public function create()
+    {
+        // Lock all tables
+        DB::unprepared('FLUSH TABLES WITH READ LOCK;');
 
-        return Redirect::route('backup.index')->with('success', 'Database Backup Successfully!');
+        $command = 'cd ' . base_path() . ' && php artisan backup:run --only-db --disable-notifications';
+
+        // To use this code, make sure apache user has permission to write to the storage directory
+        // and shell exec feature turned on
+        shell_exec($command);
+
+        // Unlock all tables
+        DB::unprepared('UNLOCK TABLES');
+
+        return Redirect::route('backup.index')->with('success', 'Backup Database Berhasil!');
     }
 
-    public function download(String $getFileName)
+    public function download(string $getFileName)
     {
-        $path = storage_path('app\POS/' . $getFileName);
+        $path = storage_path('app\db_backup\\' . $getFileName);
 
         return response()->download($path);
     }
 
-    public function delete(String $getFileName)
+    public function delete(string $getFileName)
     {
-        Storage::delete('POS/' . $getFileName);
+        Storage::delete('db_backup/' . $getFileName);
 
         return Redirect::route('backup.index')->with('success', 'Database Deleted Successfully!');
     }
