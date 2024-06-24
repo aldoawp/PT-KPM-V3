@@ -127,6 +127,16 @@ class PosController extends Controller
 
     public function addCart(Request $request)
     {
+        // Check if path is restock path
+        if (explode('/', $request->path())[1] !== 'restock') {
+            // Validate if prouct stock not 0
+            $product = Product::find($request['id']);
+
+            if ($product->product_store === 0) {
+                return Redirect::back()->withErrors(['error' => 'Produk tidak tersedia!']);
+            }
+        }
+
         $rules = [
             'id' => 'required|numeric',
             'name' => 'required|string',
@@ -217,12 +227,6 @@ class PosController extends Controller
                     'unitcost' => $item->price,
                     'total' => $item->total
                 ]);
-
-                // Update stock
-                $product = Product::find($item->id);
-                $product->product_store -= $item->qty;
-
-                $product->save();
             }
         } else { // Uses supplier
             $cart = Cart::instance($cartName);
