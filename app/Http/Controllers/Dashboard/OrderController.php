@@ -33,7 +33,7 @@ class OrderController extends Controller
         $userRole = auth()->user()->role->name;
 
         if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
-            $orders = Order::where('order_status', 'Pending');
+            $orders = Order::where('order_status', 'pending');
         } else {
             $orders =
                 Order::where('order_status', 'pending')->where('branch_id', auth()->user()->branch->id);
@@ -54,14 +54,13 @@ class OrderController extends Controller
 
         $orders = [];
 
-
         $userRole = auth()->user()->role->name;
 
         if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
-            $orders = Order::where('order_status', 'Complete');
+            $orders = Order::where('order_status', 'complete');
         } else {
             $orders =
-                Order::where('order_status', 'Complete')->where('branch_id', auth()->user()->branch->id);
+                Order::where('order_status', 'complete')->where('branch_id', auth()->user()->branch->id);
         }
 
         return view('orders.complete-orders', [
@@ -142,15 +141,35 @@ class OrderController extends Controller
     }
 
     /**
+     * Remove the specified resource from database.
+     */
+    public function deleteOrder(int $order_id)
+    {
+        $order =
+            Order::find($order_id);
+
+        // Add product stock back
+        $orderDetails = $order->orderDetails;
+
+        foreach ($orderDetails as $orderDetail) {
+            $product = Product::find($orderDetail->product_id);
+            dd($product);
+            $product->product_store += $orderDetail->quantity;
+            $product->save();
+        }
+
+        $order->delete();
+
+        return Redirect::back()->with('success', 'Pesanan berhasil dihapus!');
+    }
+
+    /**
      * Display the specified resource.
      */
     public function orderDetails(int $order_id)
     {
-        $order = Order::where('id', $order_id)->first();
-        $orderDetails = OrderDetails::with('product')
-                        ->where('order_id', $order_id)
-                        ->orderBy('id', 'DESC')
-                        ->get();
+        $order = Order::find($order_id);
+        $orderDetails = $order->orderDetails;
 
         return view('orders.details-order', [
             'order' => $order,
@@ -182,9 +201,9 @@ class OrderController extends Controller
     {
         $order = Order::where('id', $order_id)->first();
         $orderDetails = OrderDetails::with('product')
-                        ->where('order_id', $order_id)
-                        ->orderBy('id', 'DESC')
-                        ->get();
+            ->where('order_id', $order_id)
+            ->orderBy('order_id', 'DESC')
+            ->get();
 
         // show data (only for debugging)
         return view('orders.invoice-order', [

@@ -73,8 +73,8 @@ class UserController extends Controller
 
         $user = User::create($validatedData);
 
-        if($request->role) {
-            $user->assignRole($request->role);
+        if($request->role_id) {
+            $user->assignRole(Role::find($request->role_id));
         }
 
         return Redirect::route('users.index')->with('success', 'New User has been created!');

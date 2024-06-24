@@ -127,6 +127,16 @@ class PosController extends Controller
 
     public function addCart(Request $request)
     {
+        // Check if path is restock path
+        if (explode('/', $request->path())[1] !== 'restock') {
+            // Validate if prouct stock not 0
+            $product = Product::find($request['id']);
+
+            if ($product->product_store === 0) {
+                return Redirect::back()->withErrors(['error' => 'Produk tidak tersedia!']);
+            }
+        }
+
         $rules = [
             'id' => 'required|numeric',
             'name' => 'required|string',

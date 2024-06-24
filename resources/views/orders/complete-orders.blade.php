@@ -80,7 +80,7 @@
                                     <td>{{ $orders->currentPage() * 10 - 10 + $loop->iteration }}</td>
                                     <td>{{ $order->invoice_no }}</td>
                                     <td>{{ $order->customer->name }}</td>
-                                    <td>{{ $order->order_date }}</td>
+                                    <td>{{ date('d-m-Y', $order->create_at) }}</td>
                                     <td>{{ $order->pay }}</td>
                                     <td>{{ $order->payment_status }}</td>
                                     <td>
@@ -88,6 +88,10 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center list-action">
+                                            <a href="{{ route('order.deleteOrder', $order->id) }}"
+                                                class="btn btn-danger border-none mr-2" data-toggle="tooltip"
+                                                data-placement="top" title="" data-original-title="Delete"><i
+                                                    class="fa-solid fa-trash mr-0"></i></a>
                                             <a class="btn btn-info mr-2" data-toggle="tooltip" data-placement="top"
                                                 title="" data-original-title="Details"
                                                 href="{{ route('order.orderDetails', $order->id) }}">

@@ -128,6 +128,8 @@ Route::middleware(['permission:orders.menu'])->group(function () {
     Route::put('/orders/update/status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
     Route::get('/orders/invoice/download/{order_id}', [OrderController::class, 'invoiceDownload'])->name('order.invoiceDownload');
 
+    Route::get('/orders/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.deleteOrder');
+
     // Pending Due
     Route::get('/pending/due', [OrderController::class, 'pendingDue'])->name('order.pendingDue');
     Route::get('/order/due/{id}', [OrderController::class, 'orderDueAjax'])->name('order.orderDueAjax');
