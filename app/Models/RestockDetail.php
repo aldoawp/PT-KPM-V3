@@ -19,11 +19,11 @@ class RestockDetail extends Model
 
     public function restock()
     {
-        return $this->belongsTo(Restock::class);
+        return $this->belongsTo(Restock::class, 'restock_id', 'id');
     }
 
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 }
