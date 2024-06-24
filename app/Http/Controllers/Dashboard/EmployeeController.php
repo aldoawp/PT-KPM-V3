@@ -43,35 +43,40 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+        // Define validation rules
         $rules = [
             'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
             'email' => 'required|email|max:50|unique:employees,email',
             'phone' => 'required|string|max:15|unique:employees,phone',
-            'experience' => 'max:6|nullable',
+            'experience' => 'string|nullable',
             'salary' => 'required|numeric',
             'vacation' => 'max:50|nullable',
             'branch_id' => 'required|exists:branches,id',
             'address' => 'required|max:100',
         ];
 
+        // Validate request data
         $validatedData = $request->validate($rules);
 
-        /**
-         * Handle upload image with Storage.
-         */
-        if ($file = $request->file('photo')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/employees/';
+        // Add the current user ID to the validated data
+        $validatedData['user_id'] = auth()->user()->id;
 
+        // Handle photo upload if a file is provided
+        if ($file = $request->file('photo')) {
+            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
+            $path = 'public/employees/';
             $file->storeAs($path, $fileName);
             $validatedData['photo'] = $fileName;
         }
 
+        // Create a new employee record
         Employee::create($validatedData);
 
+        // Redirect to the employees index page with a success message
         return Redirect::route('employees.index')->with('success', 'Employee has been created!');
     }
+
 
     /**
      * Display the specified resource.
@@ -102,9 +107,9 @@ class EmployeeController extends Controller
         $rules = [
             'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
-            'email' => 'required|email|max:50|unique:employees,email,'.$employee->id,
-            'phone' => 'required|string|max:20|unique:employees,phone,'.$employee->id,
-            'experience' => 'string|max:6|nullable',
+            'email' => 'required|email|max:50|unique:employees,email,' . $employee->id,
+            'phone' => 'required|string|max:20|unique:employees,phone,' . $employee->id,
+            'experience' => 'string|nullable',
             'salary' => 'numeric',
             'vacation' => 'max:50|nullable',
             'branch_id' => 'required|exists:branches,id',
@@ -117,13 +122,13 @@ class EmployeeController extends Controller
          * Handle upload image with Storage.
          */
         if ($file = $request->file('photo')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
             $path = 'public/employees/';
 
             /**
              * Delete photo if exists.
              */
-            if($employee->photo){
+            if ($employee->photo) {
                 Storage::delete($path . $employee->photo);
             }
 
@@ -144,7 +149,7 @@ class EmployeeController extends Controller
         /**
          * Delete photo if exists.
          */
-        if($employee->photo){
+        if ($employee->photo) {
             Storage::delete('public/employees/' . $employee->photo);
         }
 

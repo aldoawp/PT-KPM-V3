@@ -97,6 +97,7 @@ class CustomerController extends Controller
         // Check if there is a 'previous_url' in the session
         if ($request->session()->has('previous_url')) {
             $previousUrl = $request->session()->get('previous_url');
+            dd($previousUrl);
             $request->session()->forget('previous_url');
             return redirect($previousUrl)->with('success', 'Pelanggan telah dibuat!')->withInput();
         }

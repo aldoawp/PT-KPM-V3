@@ -69,11 +69,12 @@ class PaySalaryController extends Controller
 
         return view('pay-salary.history', [
             'paySalaries' => PaySalary::with(['employee'])
-                ->join('employees', 'pay_salaries.employee_id', '=', 'employees.id')
+                ->leftJoin('employees', 'pay_salaries.employee_id', '=', 'employees.id')
+                ->select('pay_salaries.*', 'employees.id as employee_id', 'employees.name as employee_name') // Select necessary columns with aliases
                 ->when(auth()->user()->branch_id != 1, function ($query) {
                     $query->where('employees.branch_id', auth()->user()->branch_id);
                 })
-                ->orderByDesc('date')
+                ->orderByDesc('pay_salaries.date')
                 ->filter(request(['search']))
                 ->sortable()
                 ->paginate($row)
@@ -85,7 +86,7 @@ class PaySalaryController extends Controller
     {
         return view('pay-salary.history-details', [
             'paySalary' => PaySalary::with(['employee'])
-                ->where('id', $id)
+                ->where('employee_id', $id)
                 ->first(),
         ]);
     }
