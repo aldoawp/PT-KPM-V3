@@ -5960,15 +5960,28 @@
     }
 
     if (jQuery("#layout1-chart-2").length) {
-        am4core.ready(function () {
+        var chartDiv = document.getElementById("layout1-chart-2");
+        var noDataMessage = document.getElementById("no-data-message");
+        var isEmpty = chartDiv.getAttribute("data-empty") === 'true';
+        var incomePerLocation = JSON.parse(
+            chartDiv.getAttribute("data-income-location")
+        );
+
+        console.log("Raw JSON data:", incomePerLocation);
+        
+        if (isEmpty) {
+            chartDiv.style.display = "none";
+            noDataMessage.style.display = "block";
+        } else {
+            chartDiv.style.display = "block";
+            noDataMessage.style.display = "none";
+            
+            am4core.ready(function () {
             // Themes begin
             am4core.useTheme(am4themes_animated);
             // Themes end
 
-            var chartDiv = document.getElementById("layout1-chart-2");
-            var incomePerLocation = JSON.parse(
-                chartDiv.getAttribute("data-income-location")
-            );
+            
 
             // Function to capitalize each word in a string
             function capitalizeWords(str) {
@@ -6032,6 +6045,7 @@
                 }
             );
         }); // end am4core.ready()
+        }
     }
 
     if (jQuery("#layout1-chart-3").length) {

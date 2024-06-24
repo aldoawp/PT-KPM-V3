@@ -112,10 +112,6 @@ Route::middleware(['permission:pos.menu'])->group(function () {
     Route::get('/pos/restock/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.restock.deleteCart')->middleware('notSalesMiddleware');
     Route::get('/pos/return/delete/{rowId}', [PosController::class, 'deleteCart'])->name('pos.return.deleteCart')->middleware('notSalesMiddleware');
 
-    Route::post('/pos/sales/order', [PosController::class, 'createOrder'])->name('pos.sales.order');
-    Route::post('/pos/restock/order', [PosController::class, 'createOrder'])->name('pos.restock.order')->middleware('notSalesMiddleware');
-    Route::post('/pos/return/order', [PosController::class, 'createOrder'])->name('pos.return.order')->middleware('notSalesMiddleware');
-
     // Create Order
     Route::post('/pos/sales/order', [OrderController::class, 'storeOrder'])->name('pos.sales.storeOrder');
     Route::post('/pos/restock/order', [RestockController::class, 'storeOrder'])->name('pos.restock.storeOrder')->middleware('notSalesMiddleware');
@@ -153,7 +149,11 @@ Route::middleware(['permission:branch.menu'])->group(function () {
 
 // ===== REPORT ======
 Route::middleware(['permission:report.menu'])->group(function () {
-    Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+    Route::get('/report/distribusi', [ReportController::class, 'index_distribusi'])->name('report.index_distribusi');
+    Route::get('/report/penjualan', [ReportController::class, 'index_penjualan'])->name('report.index_penjualan');
+    Route::post('/distribution-generate', [ReportController::class, 'createDistributionReport'])->name('report.distributionReport');
+    Route::post('/sales-generate', [ReportController::class, 'createSalesReport'])->name('report.salesReport');
+    Route::post('/generate', [ReportController::class, 'generate'])->name('report.generate');
 });
 
 // ====== DATABASE BACKUP ======

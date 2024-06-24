@@ -109,7 +109,7 @@
                     }
                 </style>
 
-                <form action="{{ route('pos.return.order') }}" method="POST">
+                <form action="{{ route('pos.return.storeOrder') }}" method="POST">
                     @csrf
                     <div class="row mt-3">
                         <div class="col-md-12">

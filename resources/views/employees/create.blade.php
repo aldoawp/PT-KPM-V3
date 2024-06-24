@@ -77,11 +77,11 @@
                                     <label for="experience">Pengalaman Karyawan</label>
                                     <select class="form-control" name="experience">
                                         <option value="">Pilih Tahun...</option>
-                                        <option value="1 Tahun">1 Tahun</option>
+                                        <option value="> 1 Tahun">&lt 1 Tahun</option>
                                         <option value="2 Tahun">2 Tahun</option>
                                         <option value="3 Tahun">3 Tahun</option>
                                         <option value="4 Tahun">4 Tahun</option>
-                                        <option value="5 Tahun">5 Tahun</option>
+                                        <option value="< 5 Tahun">&gt 5 Tahun</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -105,10 +105,14 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="city">Kota Karyawan<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('city') is-invalid @enderror"
-                                        id="city" name="city" value="{{ old('city') }}" required>
-                                    @error('city')
+                                    <label for="branch_id_employee">Kota Karyawan <span class="text-danger">*</span></label>
+                                    <select id="branch_id_employee" class="form-control" name="branch_id" required>
+                                        <option value="" selected disabled>Pilih Kota...</option>
+                                        @foreach ($branches as $branch)
+                                            <option value="{{ $branch->id }}">{{ Str::title($branch->region) }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('branch_id')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>

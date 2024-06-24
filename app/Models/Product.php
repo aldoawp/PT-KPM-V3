@@ -55,6 +55,11 @@ class Product extends Model
         return $this->hasMany(OrderDetails::class);
     }
 
+    public function restockDetails()
+    {
+        return $this->hasMany(RestockDetail::class);
+    }
+
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id', 'id');
