@@ -145,6 +145,10 @@ Route::middleware(['permission:orders.menu'])->group(function () {
 Route::middleware(['permission:branch.menu'])->group(function () {
     Route::get('/branch', [BranchController::class, 'index'])->name('branch.index');
     Route::get('/branch/create', [BranchController::class, 'create'])->name('branch.create');
+    Route::post('/branch', [BranchController::class, 'store'])->name('branch.store');
+    Route::delete('/branch/{id}', [BranchController::class, 'destroy'])->name('branch.destroy');
+    Route::get('/branch/edit/{id}', [BranchController::class, 'edit'])->name('branch.edit');
+    Route::put('/branch/{id}', [BranchController::class, 'update'])->name('branch.update');
 });
 
 // ===== REPORT ======

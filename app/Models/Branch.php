@@ -11,6 +11,10 @@ class Branch extends Model
 
     protected $table = 'branches';
 
+    protected $fillable = [
+        'region',
+    ];
+
     public function users()
     {
         return $this->hasMany(User::class);

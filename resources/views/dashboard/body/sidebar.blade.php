@@ -228,14 +228,14 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->can('report.menu') && !auth()->user()->isSalesRole())
-                    <li class="{{ Request::is('users*') ? 'active' : '' }}">
-                        <a href="{{ route('report.index') }}" class="svg-icon">
-                            <i class="fa-solid fa-users"></i>
-                            <span class="ml-3">Report</span>
-                        </a>
-                    </li>
-                @endif
+                    @if (auth()->user()->can('report.menu') && !auth()->user()->isSalesRole())
+                        <li class="{{ Request::is('report') ? 'active' : '' }}">
+                            <a href="{{ route('report.index') }}" class="svg-icon">
+                                <i class="fa  fa-pie-chart"></i>
+                                <span class="ml-3">Laporan</span>
+                            </a>
+                        </li>
+                    @endif
 
                 <hr>
 
@@ -282,14 +282,14 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->can('branch.menu') && !auth()->user()->isSalesRole())
-                    <li class="{{ Request::is('users*') ? 'active' : '' }}">
-                        <a href="{{ route('branch.index') }}" class="svg-icon">
-                            <i class="fa-solid fa-users"></i>
-                            <span class="ml-3">Daerah Operasional</span>
-                        </a>
-                    </li>
-                @endif
+                    @if (auth()->user()->can('branch.menu')  && !auth()->user()->isSalesRole())
+                        <li class="{{ Request::is('branch') ? 'active' : '' }}">
+                            <a href="{{ route('branch.index') }}" class="svg-icon">
+                                <i class="fa fa-map-marker"></i>
+                                <span class="ml-3">Daerah</span>
+                            </a>
+                        </li>
+                    @endif
 
                 @if (auth()->user()->can('database.menu') && !auth()->user()->isSalesRole())
                     <li class="{{ Request::is('database/backup*') ? 'active' : '' }}">
