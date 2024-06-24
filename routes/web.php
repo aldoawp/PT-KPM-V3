@@ -5,6 +5,8 @@ use App\Http\Controllers\Dashboard\PosController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\OrderController;
+use App\Http\Controllers\Dashboard\BranchController;
+use App\Http\Controllers\Dashboard\ReportController;
 use App\Http\Controllers\Dashboard\ReturnController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\ProfileController;
@@ -135,6 +137,17 @@ Route::middleware(['permission:orders.menu'])->group(function () {
     Route::get('/pending/due', [OrderController::class, 'pendingDue'])->name('order.pendingDue');
     Route::get('/order/due/{id}', [OrderController::class, 'orderDueAjax'])->name('order.orderDueAjax');
     Route::post('/update/due', [OrderController::class, 'updateDue'])->name('order.updateDue');
+});
+
+// ===== BRANCH ======
+Route::middleware(['permission:branch.menu'])->group(function () {
+    Route::get('/branch', [BranchController::class, 'index'])->name('branch.index');
+    Route::get('/branch/create', [BranchController::class, 'create'])->name('branch.create');
+});
+
+// ===== REPORT ======
+Route::middleware(['permission:report.menu'])->group(function () {
+    Route::get('/report', [ReportController::class, 'index'])->name('report.index');
 });
 
 // ====== DATABASE BACKUP ======
