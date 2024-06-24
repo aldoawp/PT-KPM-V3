@@ -35,9 +35,9 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="region">Pilih Daerah</label>
-                                    <select class="form-control @error('region') is-invalid @enderror" id="region" name="region" required>
-                                        <option value="">Semua Daerah</option>
+                                    <label for="branch_id">Pilih Daerah</label>
+                                    <select class="form-control @error('region') is-invalid @enderror" id="branch_id" name="branch_id" required>
+                                        <option value="0">Semua Daerah</option>
                                         @foreach($branches as $branch)
                                             <option value="{{ $branch->id }}">{{ Str::title($branch->region) }}</option>
                                         @endforeach
@@ -49,7 +49,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <!-- end: Input Data -->
                             <div class="mt-4">
                                 <button type="submit" class="btn btn-primary">Download Laporan (.XLS / .XLSX)</button>

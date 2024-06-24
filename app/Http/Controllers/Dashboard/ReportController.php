@@ -175,7 +175,7 @@ class ReportController extends Controller
 
             $excelWritter = new Xls($spreadSheet);
             header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="LAPORAN_DISTRIBUSI.xls"');
+            header('Content-Disposition: attachment;filename="LAPORAN_DISTRIBUSI_' . date('d_m_Y') . '.xls"');
             header('Cache-Control: max-age=0');
             ob_end_clean();
             $excelWritter->save('php://output');
@@ -194,6 +194,148 @@ class ReportController extends Controller
             'NO. INVOICE',
             'ALAMAT'
         ];
+      
+        // Zero means all branch
+        if ($branch_id === 0) {
+            $branches = Branch::all();
+
+            try {
+                $spreadSheet = new Spreadsheet();
+
+                $iter = 1;
+
+                foreach ($branches as $branch) {
+                    $spreadSheet->createSheet();
+                    $spreadSheet->setActiveSheetIndex($iter++);
+                    $workSheet = $spreadSheet->getActiveSheet();
+
+                    $workSheet->setTitle($branch->region);
+
+                    $columns = $baseColumns;
+
+                    $products = $branch->products;
+
+                    foreach ($products as $product) {
+                        array_push($columns[0], strtoupper($product->product_name) . ' (' . 'Rp ' . number_format($product->selling_price, 0, ',', '.') . ')');
+                    }
+
+                    array_push($columns[0], 'TOTAL PENJUALAN');
+                    array_push($columns[0], 'SALES');
+
+                    $productStarts = 5;
+                    $productsEnds = count($columns[0]) - 3;
+
+                    $orders = Order::where('branch_id', $branch->id)->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->get();
+
+                    $index = 1;
+
+                    for ($i = 0; $i < count($orders); $i++) {
+                        $order = $orders[$i];
+
+                        $columns[$index] = [
+                            'NO' => $i + 1,
+                            'TANGGAL' => Carbon::parse($order->created_at)->format('d/m/Y'),
+                            'NAMA PELANGGAN' => $order->customer->name,
+                            'NO. INVOICE' => ltrim(last(explode('-', $order->invoice_no)), '0'),
+                            'ALAMAT' => $order->customer->address
+                        ];
+
+                        $totalPenjualan = 0;
+
+                        for ($j = $productStarts; $j <= $productsEnds; $j++) {
+                            $product = $products[$j - $productStarts];
+
+                            $orderDetail = $order->orderDetails()->where('product_id', $product->id)->first();
+
+                            $columns[$index][$columns[0][$j]] = $orderDetail->quantity ?? 0;
+
+                            $totalPenjualan += $orderDetail->quantity ?? 0 * $product->selling_price;
+                        }
+
+                        $columns[$index]['TOTAL PENJUALAN'] = $totalPenjualan;
+                        $columns[$index]['SALES'] = $order->user->name;
+
+                        $index++;
+                    }
+
+                    $columns[$index] = [
+                        'NO' => 'GRAND TOTAL',
+                        'TANGGAL' => '',
+                        'NAMA PELANGGAN' => '',
+                        'NO. INVOICE' => '',
+                        'ALAMAT' => ''
+                    ];
+
+                    $totalPenjualan = 0;
+
+                    for ($j = $productStarts; $j <= $productsEnds; $j++) {
+                        $quantitySum = OrderDetails::where('product_id', $products[$j - $productStarts]->id)->whereHas('order', function ($query) use ($branch, $startDate, $endDate) {
+                            $query->where('branch_id', $branch->id)->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate);
+                        })->sum('quantity');
+
+                        $columns[$index][$columns[0][$j]] = $quantitySum;
+
+                        $totalPenjualan += $quantitySum * $product->selling_price;
+                    }
+
+                    $columns[$index]['TOTAL PENJUALAN'] = $totalPenjualan;
+                    $columns[$index]['SALES'] = '';
+
+                    $formatedStartDate = Carbon::parse($startDate)->locale('id-ID')->translatedFormat('d F Y');
+                    $formatedEndDate = Carbon::parse($endDate)->locale('id-ID')->translatedFormat('d F Y');
+
+                    $workSheet->setCellValue('A1', 'LAPORAN PENJUALAN GROSIR TUNAI AREA ' . strtoupper($branch->region));
+                    $workSheet->setCellValue('A2', 'PERIODE ' . $formatedStartDate . ' s/d ' . $formatedEndDate);
+
+                    $workSheet->getStyle('A1:A2')->getFont()->setBold(true);
+
+                    $workSheet->getDefaultColumnDimension()->setWidth(20);
+                    $workSheet->fromArray($columns, null, 'A4', true);
+
+                    $workSheet->getStyle('A4:' . chr(ord('A') + count($columns[0]) - 1) . '4')->getFont()->setBold(true);
+
+                    $workSheet->getStyle('A4:' . chr(ord('A') + count($columns[0]) - 1) . '4')->getFill()->setFillType('solid')->getStartColor()->setARGB('FFA07A');
+
+                    $workSheet->getStyle('A5:' . chr(ord('A') + count($columns[0]) - 1) . (count($columns) + 3))->getAlignment()->setHorizontal('center');
+
+                    $workSheet->getStyle('A4:' . chr(ord('A') + count($columns[0]) - 1) . (count($columns) + 3))->getAlignment()->setVertical('center');
+
+                    $workSheet->getStyle('A4:' . chr(ord('A') + count($columns[0]) - 1) . (count($columns) + 3))->getAlignment()->setWrapText(true);
+
+                    $workSheet->getColumnDimension('A')->setWidth(5);
+
+                    $workSheet->getStyle('A4:' . chr(ord('A') + count($columns[0]) - 1) . (count($columns) + 3))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN)->setColor(new Color('000000'));
+
+                    $workSheet->getStyle('B4:' . chr(ord('A') + count($columns[0]) - 1) . (count($columns) + 3))->getAlignment()->setHorizontal('center');
+
+                    foreach (range('B', chr(ord('A') + count($columns[0]) - 1)) as $column) {
+                        $workSheet->getColumnDimension($column)->setAutoSize(true);
+                    }
+
+                    $workSheet->getStyle('A' . (count($columns) + 3) . ':' . chr(ord('A') + count($columns[0]) - 1) . (count($columns) + 3))->getFill()->setFillType('solid')->getStartColor()->setARGB('FFA07A');
+
+                    $workSheet->getStyle('A' . (count($columns) + 3) . ':' . chr(ord('A') + count($columns[0]) - 1) . (count($columns) + 3))->getFont()->setBold(true);
+
+                    $workSheet->mergeCells('A' . (count($columns) + 3) . ':' . 'E' . (count($columns) + 3));
+
+                    $workSheet->getStyle('F' . (count($columns) + 3) . ':' . chr(ord('A') + count($columns[0]) - 1) . (count($columns) + 3))->getNumberFormat()->setFormatCode('"Rp "#,##0;-"Rp "#,##0');
+                }
+
+                $spreadSheet->removeSheetByIndex(0);
+                $spreadSheet->setActiveSheetIndex(0);
+
+                $excelWritter = new Xls($spreadSheet);
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename="LAPORAN_PENJUALAN_ALL_REGION_' . date('d_m_Y') . '.xls"');
+                header('Cache-Control: max-age=0');
+                ob_end_clean();
+                $excelWritter->save('php://output');
+                exit();
+            } catch (Exception $e) {
+                return;
+            }
+        }
+
 
         $columns = $baseColumns;
 
@@ -274,7 +416,8 @@ class ReportController extends Controller
             $formatedStartDate = Carbon::parse($startDate)->locale('id-ID')->translatedFormat('d F Y');
             $formatedEndDate = Carbon::parse($endDate)->locale('id-ID')->translatedFormat('d F Y');
 
-            $workSheet->setCellValue('A1', 'LAPORAN PENJUALAN GROSIR TUNAI AREA ' . $branch->region);
+            $workSheet->setCellValue('A1', 'LAPORAN PENJUALAN GROSIR TUNAI AREA ' . strtoupper($branch->region));
+
             $workSheet->setCellValue('A2', 'PERIODE ' . $formatedStartDate . ' s/d ' . $formatedEndDate);
 
             $workSheet->getStyle('A1:A2')->getFont()->setBold(true);
@@ -312,7 +455,9 @@ class ReportController extends Controller
 
             $excelWritter = new Xls($spreadSheet);
             header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="LAPORAN_PENJUALAN_' . $branch->region . '.xls"');
+
+            header('Content-Disposition: attachment;filename="LAPORAN_PENJUALAN_' . $branch->region . '_' . date('d_m_Y') . '.xls"');
+
             header('Cache-Control: max-age=0');
             ob_end_clean();
             $excelWritter->save('php://output');
@@ -322,11 +467,32 @@ class ReportController extends Controller
         }
     }
 
-    public function generate()
+    public function generateDistributionReport(Request $request)
     {
-        $startDate = '2024-05-24';
-        $endDate = '2024-06-24';
+        $rules = [
+            'start_date' => 'required|date|before_or_equal:end_date',
+            'end_date' => 'required|date|after_or_equal:start_date'
+        ];
 
-        $this->createSalesReport(1, $startDate, $endDate);
+        $validatedData = $request->validate($rules);
+
+        $this->createDistributionReport($validatedData['start_date'], $validatedData['end_date']);
+
+        return redirect()->back();
+    }
+
+    public function generateSalesReport(Request $request)
+    {
+        $rules = [
+            'branch_id' => 'required|numeric',
+            'start_date' => 'required|date|before_or_equal:end_date',
+            'end_date' => 'required|date|after_or_equal:start_date'
+        ];
+
+        $validatedData = $request->validate($rules);
+
+        $this->createSalesReport(intval($validatedData['branch_id']), $validatedData['start_date'], $validatedData['end_date']);
+
+        return redirect()->back();
     }
 }

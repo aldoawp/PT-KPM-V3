@@ -151,9 +151,8 @@ Route::middleware(['permission:branch.menu'])->group(function () {
 Route::middleware(['permission:report.menu'])->group(function () {
     Route::get('/report/distribusi', [ReportController::class, 'index_distribusi'])->name('report.index_distribusi');
     Route::get('/report/penjualan', [ReportController::class, 'index_penjualan'])->name('report.index_penjualan');
-    Route::post('/distribution-generate', [ReportController::class, 'createDistributionReport'])->name('report.distributionReport');
-    Route::post('/sales-generate', [ReportController::class, 'createSalesReport'])->name('report.salesReport');
-    Route::post('/generate', [ReportController::class, 'generate'])->name('report.generate');
+    Route::post('/report/distribusi/generate', [ReportController::class, 'generateDistributionReport'])->name('report.distributionReport');
+    Route::post('/report/penjualan/generate', [ReportController::class, 'generateSalesReport'])->name('report.salesReport');
 });
 
 // ====== DATABASE BACKUP ======
