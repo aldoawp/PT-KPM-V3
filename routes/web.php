@@ -115,9 +115,11 @@ Route::middleware(['permission:pos.menu'])->group(function () {
     Route::post('/pos/return/order', [PosController::class, 'createOrder'])->name('pos.return.order')->middleware('notSalesMiddleware');
 
     // Create Order
-    Route::post('/pos/order/sales', [OrderController::class, 'storeOrder'])->name('pos.sales.storeOrder');
-    Route::post('/pos/order/restock', [RestockController::class, 'storeOrder'])->name('pos.restock.storeOrder');
-    Route::post('/pos/order/return', [ReturnController::class, 'storeOrder'])->name('pos.return.storeOrder');
+    Route::post('/pos/sales/order', [OrderController::class, 'storeOrder'])->name('pos.sales.storeOrder');
+    Route::post('/pos/restock/order', [RestockController::class, 'storeOrder'])->name('pos.restock.storeOrder')->middleware('notSalesMiddleware');
+    Route::post('/pos/return/order', [ReturnController::class, 'storeOrder'])->name('pos.return.storeOrder')->middleware('notSalesMiddleware');
+
+    Route::post('/pos/invoice/create', [PosController::class, 'createInvoice'])->name('pos.createInvoice');
 });
 
 // ====== ORDERS ======
@@ -128,6 +130,9 @@ Route::middleware(['permission:orders.menu'])->group(function () {
     Route::put('/orders/update/status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
     Route::get('/orders/invoice/download/{order_id}', [OrderController::class, 'invoiceDownload'])->name('order.invoiceDownload');
 
+    Route::get('/orders/pending/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.pending.deleteOrder');
+    Route::get('/orders/complete/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.complete.deleteOrder');
+
     // Pending Due
     Route::get('/pending/due', [OrderController::class, 'pendingDue'])->name('order.pendingDue');
     Route::get('/order/due/{id}', [OrderController::class, 'orderDueAjax'])->name('order.orderDueAjax');
@@ -137,6 +142,7 @@ Route::middleware(['permission:orders.menu'])->group(function () {
 // ====== DATABASE BACKUP ======
 Route::middleware(['permission:database.menu'])->group(function () {
     Route::get('/database/backup', [DatabaseBackupController::class, 'index'])->name('backup.index');
+
     Route::get('/database/backup/now', [DatabaseBackupController::class, 'create'])->name('backup.create');
     Route::get('/database/backup/download/{getFileName}', [DatabaseBackupController::class, 'download'])->name('backup.download');
     Route::get('/database/backup/delete/{getFileName}', [DatabaseBackupController::class, 'delete'])->name('backup.delete');

@@ -78,9 +78,7 @@
                             <td>{{ $item->username }}</td>
                             <td>{{ $item->email }}</td>
                             <td>
-                                @foreach ($item->roles as $role)
-                                    <span class="badge bg-danger">{{ $role->name }}</span>
-                                @endforeach
+                                {{ $item->role->name }}
                             </td>
                             <td>
                                 <form action="{{ route('users.destroy', $item->username) }}" method="POST" style="margin-bottom: 5px">

@@ -38,8 +38,7 @@
                                         @method('PUT')
                                         <div class="input-group">
                                             <input type="number" class="form-control" name="qty" required
-                                                value="{{ old('qty', $item->qty) }}"
-                                                max="{{ $products[$item->id - 1]->product_store }}">
+                                                value="{{ old('qty', $item->qty) }}">
                                             <div class="input-group-append">
                                                 <button type="submit" class="btn btn-success border-none"
                                                     data-toggle="tooltip" data-placement="top" title=""

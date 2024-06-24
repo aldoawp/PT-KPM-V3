@@ -19,14 +19,6 @@
     <div class="invoice-16 invoice-content">
         <div class="container">
             <div class="row">
-                @if (session()->has('success'))
-                    <div class="alert text-white bg-success" role="alert">
-                        <div class="iq-alert-text">{{ session('success') }}</div>
-                        {{-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <i class="ri-close-line"></i>
-                        </button> --}}
-                    </div>
-                @endif
                 <div class="col-lg-12">
                     <div class="invoice-inner-9" id="invoice_wrapper">
                         <div class="invoice-top">
@@ -122,8 +114,8 @@
                         <a id="invoice_download_btn" class="btn btn-lg btn-download">
                             Unduh Invoice
                         </a>
-                        <a href="{{ route('dashboard') }}" class="btn btn-primary btn-lg">
-                            Kembali ke Halaman Utama
+                        <a href="{{ route('order.completeOrders') }}" class="btn btn-primary btn-lg">
+                            Kembali
                         </a>
                     </div>
                 </div>

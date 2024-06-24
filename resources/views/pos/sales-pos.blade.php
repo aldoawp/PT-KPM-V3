@@ -39,7 +39,7 @@
                                         <div class="input-group">
                                             <input type="number" class="form-control" name="qty" required
                                                 value="{{ old('qty', $item->qty) }}" min="1"
-                                                max="{{ $products[$item->id - 1]->product_store }}">
+                                                max="{{ \App\Models\Product::find($item->id)->product_store }}">
                                             <div class="input-group-append">
                                                 <button type="submit" class="btn btn-success border-none"
                                                     data-toggle="tooltip" data-placement="top" title=""
@@ -48,8 +48,8 @@
                                         </div>
                                     </form>
                                 </td>
-                                <td>{{ $item->price }}</td>
-                                <td>{{ $item->subtotal }}</td>
+                                <td>Rp {{ number_format($item->price, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($item->price, 0, ',', '.') }}</td>
                                 <td>
                                     <a href="{{ route('pos.sales.deleteCart', $item->rowId) }}"
                                         class="btn btn-danger border-none" data-toggle="tooltip" data-placement="top"
@@ -109,7 +109,7 @@
                     }
                 </style>
 
-                <form action="{{ route('pos.sales.order') }}" method="POST">
+                <form action="{{ route('pos.createInvoice') }}" method="POST">
                     @csrf
                     <div class="row mt-3">
                         <div class="col-md-12">

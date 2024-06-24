@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use App\Http\Controllers\Dashboard\Enums\Carts;
 
 class OrderController extends Controller
 {
@@ -33,7 +34,7 @@ class OrderController extends Controller
         $userRole = auth()->user()->role->name;
 
         if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
-            $orders = Order::where('order_status', 'Pending');
+            $orders = Order::where('order_status', 'pending');
         } else {
             $orders =
                 Order::where('order_status', 'pending')->where('branch_id', auth()->user()->branch->id);
@@ -54,14 +55,13 @@ class OrderController extends Controller
 
         $orders = [];
 
-
         $userRole = auth()->user()->role->name;
 
         if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
-            $orders = Order::where('order_status', 'Complete');
+            $orders = Order::where('order_status', 'complete');
         } else {
             $orders =
-                Order::where('order_status', 'Complete')->where('branch_id', auth()->user()->branch->id);
+                Order::where('order_status', 'complete')->where('branch_id', auth()->user()->branch->id);
         }
 
         return view('orders.complete-orders', [
@@ -91,12 +91,23 @@ class OrderController extends Controller
      */
     public function storeOrder(Request $request)
     {
-        $rules = [
-            'customer_id' => 'required|numeric',
-            'payment_status' => 'required|string|not_in:',
-            'pay' => 'numeric|nullable',
-            'due' => 'numeric|nullable'
-        ];
+        $cart = Cart::instance(Carts::Sales->value);
+
+        $validator =
+            \Validator::make($request->all(), [
+                'payment_status' => ['required', 'in:tunai,cek,bon'],
+                'pay' => ['required', 'numeric']
+            ]);
+
+        if ($validator->fails()) {
+            if ($validator->errors()->has('payment_status')) {
+                return redirect()->back()->withErrors(['payment_status' => 'Pilih status pembayaran!']);
+            }
+
+            if ($validator->errors()->has('pay')) {
+                return redirect()->back()->withErrors(['pay' => 'Masukkan jumlah pembayaran!']);
+            }
+        }
 
         $invoice_no = IdGenerator::generate([
             'table' => 'orders',
@@ -105,40 +116,58 @@ class OrderController extends Controller
             'prefix' => 'INV-'
         ]);
 
-        $cart = Cart::instance(Carts::Sales->value);
+        $order =
+            Order::create([
+                'customer_id' => $request['customer_id'],
+                'payment_status' => $request['payment_status'],
+                'pay' => $request['pay'],
+                'total_products' => $cart->count(),
+                'sub_total' => $cart->subtotal(),
+                'vat' => $cart->tax(),
+                'invoice_no' => $invoice_no,
+                'total' => $cart->total(),
+                'due' => $cart->total() - $request['pay'],
+                'branch_id' => auth()->user()->branch->id,
+                'user_id' => auth()->user()->id,
+            ]);
 
-        $validatedData = $request->validate($rules);
-        $validatedData['order_date'] = Carbon::now()->format('Y-m-d');
-        $validatedData['order_status'] = 'pending';
-        $validatedData['total_products'] = Cart::count();
-        $validatedData['sub_total'] = Cart::subtotal();
-        $validatedData['vat'] = Cart::tax();
-        $validatedData['invoice_no'] = $invoice_no;
-        $validatedData['total'] = Cart::total();
-        $validatedData['due'] = Cart::total() - $validatedData['pay'];
-        $validatedData['created_at'] = Carbon::now();
-
-        $order_id = Order::insertGetId($validatedData);
-
-        // Create Order Details
-        $contents = $cart->content();
-        $oDetails = array();
-
-        foreach ($contents as $content) {
-            $oDetails['order_id'] = $order_id;
-            $oDetails['product_id'] = $content->id;
-            $oDetails['quantity'] = $content->qty;
-            $oDetails['unitcost'] = $content->price;
-            $oDetails['total'] = $content->total;
-
-            OrderDetails::insert($oDetails);
+        foreach ($cart->content() as $item) {
+            $order->orderDetails()->create([
+                'product_id' => $item->id,
+                'quantity' => $item->qty,
+                'unitcost' => $item->price,
+                'total' => $item->total
+            ]);
         }
 
-        // Delete Cart Sopping History
         $cart->destroy();
 
         // return Redirect::route('dashboard')->with('success', 'Order has been created!');
-        return Redirect::route('order.orderDetails', $order_id)->with('success', 'Pesanan berhasil dibuat!');
+        return Redirect::route('order.orderDetails', $order->id)->with('success', 'Pesanan berhasil dibuat!');
+    }
+
+    /**
+     * Remove the specified resource from database.
+     */
+    public function deleteOrder(Request $request, int $order_id)
+    {
+        $order =
+            Order::find($order_id);
+
+        if (explode('/', $request->path())[1] === 'complete') {
+            // Add product stock back
+            $orderDetails = $order->orderDetails;
+
+            foreach ($orderDetails as $orderDetail) {
+                $product = Product::find($orderDetail->product_id);
+                $product->product_store += $orderDetail->quantity;
+                $product->save();
+            }
+        }
+
+        $order->delete();
+
+        return Redirect::back()->with('success', 'Pesanan berhasil dihapus!');
     }
 
     /**
@@ -146,11 +175,8 @@ class OrderController extends Controller
      */
     public function orderDetails(int $order_id)
     {
-        $order = Order::where('id', $order_id)->first();
-        $orderDetails = OrderDetails::with('product')
-                        ->where('order_id', $order_id)
-                        ->orderBy('id', 'DESC')
-                        ->get();
+        $order = Order::find($order_id);
+        $orderDetails = $order->orderDetails;
 
         return view('orders.details-order', [
             'order' => $order,
@@ -175,16 +201,16 @@ class OrderController extends Controller
 
         Order::findOrFail($order_id)->update(['order_status' => 'complete']);
 
-        return Redirect::route('order.invoiceDownload', $order_id)->with('success', 'Pesanan telah diselesaikan!');
+        return Redirect::route('order.invoiceDownload', $order_id);
     }
 
     public function invoiceDownload(int $order_id)
     {
         $order = Order::where('id', $order_id)->first();
         $orderDetails = OrderDetails::with('product')
-                        ->where('order_id', $order_id)
-                        ->orderBy('id', 'DESC')
-                        ->get();
+            ->where('order_id', $order_id)
+            ->orderBy('order_id', 'DESC')
+            ->get();
 
         // show data (only for debugging)
         return view('orders.invoice-order', [
