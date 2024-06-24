@@ -27,6 +27,7 @@ class User extends Authenticatable
         'email',
         'password',
         'photo',
+        'role_id',
         'branch_id',
     ];
 
@@ -54,6 +55,11 @@ class User extends Authenticatable
         'username',
         'email',
     ];
+
+    public function isSalesRole()
+    {
+        return $this->role->name === 'Sales';
+    }
 
     public function getRouteKeyName()
     {

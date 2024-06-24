@@ -28,10 +28,19 @@ class OrderController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
-        $orders = Order::where('order_status', 'pending')->sortable()->paginate($row);
+        $orders = [];
+
+        $userRole = auth()->user()->role->name;
+
+        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+            $orders = Order::where('order_status', 'Pending');
+        } else {
+            $orders =
+                Order::where('order_status', 'pending')->where('branch_id', auth()->user()->branch->id);
+        }
 
         return view('orders.pending-orders', [
-            'orders' => $orders
+            'orders' => $orders->sortable()->paginate($row)
         ]);
     }
 
@@ -43,10 +52,20 @@ class OrderController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
-        $orders = Order::where('order_status', 'complete')->sortable()->paginate($row);
+        $orders = [];
+
+
+        $userRole = auth()->user()->role->name;
+
+        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+            $orders = Order::where('order_status', 'Complete');
+        } else {
+            $orders =
+                Order::where('order_status', 'Complete')->where('branch_id', auth()->user()->branch->id);
+        }
 
         return view('orders.complete-orders', [
-            'orders' => $orders
+            'orders' => $orders->sortable()->paginate($row)
         ]);
     }
 
@@ -76,7 +95,7 @@ class OrderController extends Controller
             'customer_id' => 'required|numeric',
             'payment_status' => 'required|string|not_in:',
             'pay' => 'numeric|nullable',
-            'due' => 'numeric|nullable',
+            'due' => 'numeric|nullable'
         ];
 
         $invoice_no = IdGenerator::generate([
@@ -86,7 +105,10 @@ class OrderController extends Controller
             'prefix' => 'INV-'
         ]);
 
+        $cart = Cart::instance(Carts::Sales->value);
+
         $validatedData = $request->validate($rules);
+        $validatedData['order_date'] = Carbon::now()->format('Y-m-d');
         $validatedData['order_status'] = 'pending';
         $validatedData['total_products'] = Cart::count();
         $validatedData['sub_total'] = Cart::subtotal();
@@ -95,12 +117,11 @@ class OrderController extends Controller
         $validatedData['total'] = Cart::total();
         $validatedData['due'] = Cart::total() - $validatedData['pay'];
         $validatedData['created_at'] = Carbon::now();
-        $validatedData['user_id'] = Auth::id();
 
         $order_id = Order::insertGetId($validatedData);
 
         // Create Order Details
-        $contents = Cart::content();
+        $contents = $cart->content();
         $oDetails = array();
 
         foreach ($contents as $content) {
@@ -109,13 +130,12 @@ class OrderController extends Controller
             $oDetails['quantity'] = $content->qty;
             $oDetails['unitcost'] = $content->price;
             $oDetails['total'] = $content->total;
-            $oDetails['created_at'] = Carbon::now();
 
             OrderDetails::insert($oDetails);
         }
 
         // Delete Cart Sopping History
-        Cart::destroy();
+        $cart->destroy();
 
         // return Redirect::route('dashboard')->with('success', 'Order has been created!');
         return Redirect::route('order.orderDetails', $order_id)->with('success', 'Pesanan berhasil dibuat!');
@@ -124,12 +144,12 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function orderDetails(Int $order_id)
+    public function orderDetails(int $order_id)
     {
         $order = Order::where('id', $order_id)->first();
         $orderDetails = OrderDetails::with('product')
                         ->where('order_id', $order_id)
-                        ->orderBy('order_id', 'DESC')
+                        ->orderBy('id', 'DESC')
                         ->get();
 
         return view('orders.details-order', [
@@ -150,7 +170,7 @@ class OrderController extends Controller
 
         foreach ($products as $product) {
             Product::where('id', $product->product_id)
-                    ->update(['product_store' => DB::raw('product_store-'.$product->quantity)]);
+                ->update(['product_store' => DB::raw('product_store-' . $product->quantity)]);
         }
 
         Order::findOrFail($order_id)->update(['order_status' => 'complete']);
@@ -158,12 +178,12 @@ class OrderController extends Controller
         return Redirect::route('order.invoiceDownload', $order_id)->with('success', 'Pesanan telah diselesaikan!');
     }
 
-    public function invoiceDownload(Int $order_id)
+    public function invoiceDownload(int $order_id)
     {
         $order = Order::where('id', $order_id)->first();
         $orderDetails = OrderDetails::with('product')
                         ->where('order_id', $order_id)
-                        ->orderBy('order_id', 'DESC')
+                        ->orderBy('id', 'DESC')
                         ->get();
 
         // show data (only for debugging)
@@ -190,7 +210,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function orderDueAjax(Int $id)
+    public function orderDueAjax(int $id)
     {
         $order = Order::findOrFail($id);
 

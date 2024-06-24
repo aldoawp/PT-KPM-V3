@@ -90,7 +90,7 @@
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="role">Peranan</label>
+                                <label for="role_id">Peranan</label>
                                 <select class="form-control @error('role') is-invalid @enderror" name="role">
                                     <option selected="" disabled>-- Select Role --</option>
                                     @foreach ($roles as $role)
