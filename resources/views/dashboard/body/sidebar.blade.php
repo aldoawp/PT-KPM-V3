@@ -1,6 +1,6 @@
 <div class="iq-sidebar sidebar-default ">
     <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
-        <a href="{{ route('dashboard') }}" class="header-logo">
+        <a href="{{ auth()->user()->isSalesRole() ? route('pos.salesPos') : route('dashboard') }}" class="header-logo">
             <img src="{{ asset('assets/images/logo-kpm.png') }}" class="img-fluid rounded-normal light-logo"
                 alt="logo">
             <h5 class="logo-title light-logo ml-4" style="white-space: nowrap;">PT. KPM</h5>
@@ -64,248 +64,242 @@
                     </li>
                 @endif
 
-                @if (!auth()->user()->isSalesRole())
+                <hr>
+
+                @if (auth()->user()->can('orders.menu') && !auth()->user()->isSalesRole())
+                    <li>
+                        <a href="#orders" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <i class="fa-solid fa-basket-shopping"></i>
+                            <span class="ml-3">Pesanan</span>
+                            <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="10 15 15 20 20 15"></polyline>
+                                <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                            </svg>
+                        </a>
+                        <ul id="orders" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
+                            <li class="{{ Request::is('orders/pending*') ? 'active' : '' }}">
+                                <a href="{{ route('order.pendingOrders') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Pesanan Baru</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('orders/complete*') ? 'active' : '' }}">
+                                <a href="{{ route('order.completeOrders') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Pesanan Selesai</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('pending/due*') ? 'active' : '' }}">
+                                <a href="{{ route('order.pendingDue') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Jatuh Tempo</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+                @if (auth()->user()->can('product.menu') && !auth()->user()->isSalesRole())
+                    <li>
+                        <a href="#products" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                            <span class="ml-3">Gudang</span>
+                            <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="10 15 15 20 20 15"></polyline>
+                                <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                            </svg>
+                        </a>
+                        <ul id="products" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
+                            style="">
+                            <li class="{{ Request::is(['products']) ? 'active' : '' }}">
+                                <a href="{{ route('products.index') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Semua Produk</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is(['products/create']) ? 'active' : '' }}">
+                                <a href="{{ route('products.create') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Tambah Produk</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is(['categories*']) ? 'active' : '' }}">
+                                <a href="{{ route('categories.index') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Kategori</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+                @if (auth()->user()->can('employee.menu') && !auth()->user()->isSalesRole())
                     <hr>
+                    <li class="{{ Request::is('employees*') ? 'active' : '' }}">
+                        <a href="{{ route('employees.index') }}" class="svg-icon">
+                            <i class="fa-solid fa-users"></i>
+                            <span class="ml-3">Karyawan</span>
+                        </a>
+                    </li>
+                @endif
 
-                    @if (auth()->user()->can('orders.menu'))
-                        <li>
-                            <a href="#orders" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                <i class="fa-solid fa-basket-shopping"></i>
-                                <span class="ml-3">Pesanan</span>
-                                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="10 15 15 20 20 15"></polyline>
-                                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                </svg>
-                            </a>
-                            <ul id="orders" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
-                                style="">
-                                <li class="{{ Request::is('orders/pending*') ? 'active' : '' }}">
-                                    <a href="{{ route('order.pendingOrders') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Pesanan Baru</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('orders/complete*') ? 'active' : '' }}">
-                                    <a href="{{ route('order.completeOrders') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Pesanan Selesai</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('pending/due*') ? 'active' : '' }}">
-                                    <a href="{{ route('order.pendingDue') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Jatuh Tempo</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
+                @if (auth()->user()->can('customer.menu'))
+                    <li class="{{ Request::is('customers*') ? 'active' : '' }}">
+                        <a href="{{ auth()->user()->isSalesRole() ? route('customers.create') : route('customers.index') }}" class="svg-icon">
+                            <i class="fa-solid fa-users"></i>
+                            <span class="ml-3">Pelanggan</span>
+                        </a>
+                    </li>
+                @endif
 
-                    @if (auth()->user()->can('product.menu'))
-                        <li>
-                            <a href="#products" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                <i class="fa-solid fa-boxes-stacked"></i>
-                                <span class="ml-3">Gudang</span>
-                                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="10 15 15 20 20 15"></polyline>
-                                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                </svg>
-                            </a>
-                            <ul id="products" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
-                                style="">
-                                <li class="{{ Request::is(['products']) ? 'active' : '' }}">
-                                    <a href="{{ route('products.index') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Semua Produk</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is(['products/create']) ? 'active' : '' }}">
-                                    <a href="{{ route('products.create') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Tambah Produk</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is(['categories*']) ? 'active' : '' }}">
-                                    <a href="{{ route('categories.index') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Kategori</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
+                @if (auth()->user()->can('supplier.menu') && !auth()->user()->isSalesRole())
+                    <li class="{{ Request::is('suppliers*') ? 'active' : '' }}">
+                        <a href="{{ route('suppliers.index') }}" class="svg-icon">
+                            <i class="fa-solid fa-users"></i>
+                            <span class="ml-3">Pemasok</span>
+                        </a>
+                    </li>
+                @endif
 
-                    <hr>
+                @if (auth()->user()->can('salary.menu') && !auth()->user()->isSalesRole())
+                    <li>
+                        <a href="#advance-salary" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <i class="fa-solid fa-cash-register"></i>
+                            <span class="ml-3">Penggajian</span>
+                            <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="10 15 15 20 20 15"></polyline>
+                                <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                            </svg>
+                        </a>
+                        <ul id="advance-salary" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
+                            style="">
+                            <li
+                                class="{{ Request::is(['advance-salary', 'advance-salary/*/edit']) ? 'active' : '' }}">
+                                <a href="{{ route('advance-salary.index') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Daftar Pinjaman</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('advance-salary/create*') ? 'active' : '' }}">
+                                <a href="{{ route('advance-salary.create') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Tambah Gaji</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('pay-salary') ? 'active' : '' }}">
+                                <a href="{{ route('pay-salary.index') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Pembayaran Gaji</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('pay-salary/history*') ? 'active' : '' }}">
+                                <a href="{{ route('pay-salary.payHistory') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Riwayat Penggajian</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
 
-                    @if (auth()->user()->can('employee.menu'))
-                        <li class="{{ Request::is('employees*') ? 'active' : '' }}">
-                            <a href="{{ route('employees.index') }}" class="svg-icon">
-                                <i class="fa-solid fa-users"></i>
-                                <span class="ml-3">Karyawan</span>
-                            </a>
-                        </li>
-                    @endif
+                @if (auth()->user()->can('attendence.menu') && !auth()->user()->isSalesRole())
+                    <li>
+                        <a href="#attendence" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span class="ml-3">Absensi</span>
+                            <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="10 15 15 20 20 15"></polyline>
+                                <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                            </svg>
+                        </a>
+                        <ul id="attendence" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            <li class="{{ Request::is(['employee/attendence']) ? 'active' : '' }}">
+                                <a href="{{ route('attendence.index') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Semua Absensi</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('employee/attendence/*') ? 'active' : '' }}">
+                                <a href="{{ route('attendence.create') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Tambah Absensi</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
 
-                    @if (auth()->user()->can('customer.menu'))
-                        <li class="{{ Request::is('customers*') ? 'active' : '' }}">
-                            <a href="{{ route('customers.index') }}" class="svg-icon">
-                                <i class="fa-solid fa-users"></i>
-                                <span class="ml-3">Pelanggan</span>
-                            </a>
-                        </li>
-                    @endif
+                @if (auth()->user()->can('report.menu') && !auth()->user()->isSalesRole())
+                    <li class="{{ Request::is('users*') ? 'active' : '' }}">
+                        <a href="{{ route('report.index') }}" class="svg-icon">
+                            <i class="fa-solid fa-users"></i>
+                            <span class="ml-3">Report</span>
+                        </a>
+                    </li>
+                @endif
 
-                    @if (auth()->user()->can('supplier.menu'))
-                        <li class="{{ Request::is('suppliers*') ? 'active' : '' }}">
-                            <a href="{{ route('suppliers.index') }}" class="svg-icon">
-                                <i class="fa-solid fa-users"></i>
-                                <span class="ml-3">Pemasok</span>
-                            </a>
-                        </li>
-                    @endif
+                <hr>
 
-                    @if (auth()->user()->can('salary.menu'))
-                        <li>
-                            <a href="#advance-salary" class="collapsed" data-toggle="collapse"
-                                aria-expanded="false">
-                                <i class="fa-solid fa-cash-register"></i>
-                                <span class="ml-3">Penggajian</span>
-                                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="10 15 15 20 20 15"></polyline>
-                                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                </svg>
-                            </a>
-                            <ul id="advance-salary" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
-                                style="">
-                                <li
-                                    class="{{ Request::is(['advance-salary', 'advance-salary/*/edit']) ? 'active' : '' }}">
-                                    <a href="{{ route('advance-salary.index') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Daftar Pinjaman</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('advance-salary/create*') ? 'active' : '' }}">
-                                    <a href="{{ route('advance-salary.create') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Tambah Gaji</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('pay-salary') ? 'active' : '' }}">
-                                    <a href="{{ route('pay-salary.index') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Pembayaran Gaji</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('pay-salary/history*') ? 'active' : '' }}">
-                                    <a href="{{ route('pay-salary.payHistory') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Riwayat Penggajian</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
+                @if (auth()->user()->can('roles.menu') && !auth()->user()->isSalesRole())
+                    <li>
+                        <a href="#permission" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <i class="fa-solid fa-key"></i>
+                            <span class="ml-3">Peran & Hak Akses</span>
+                            <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="10 15 15 20 20 15"></polyline>
+                                <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                            </svg>
+                        </a>
+                        <ul id="permission" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            <li
+                                class="{{ Request::is(['permission', 'permission/create', 'permission/edit/*']) ? 'active' : '' }}">
+                                <a href="{{ route('permission.index') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Hak Akses</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is(['role', 'role/create', 'role/edit/*']) ? 'active' : '' }}">
+                                <a href="{{ route('role.index') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Peranan</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::is(['role/permission*']) ? 'active' : '' }}">
+                                <a href="{{ route('rolePermission.index') }}">
+                                    <i class="fa-solid fa-arrow-right"></i><span>Hak Akses Peranan</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
 
-                    @if (auth()->user()->can('attendence.menu'))
-                        <li>
-                            <a href="#attendence" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span class="ml-3">Absensi</span>
-                                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="10 15 15 20 20 15"></polyline>
-                                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                </svg>
-                            </a>
-                            <ul id="attendence" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                <li class="{{ Request::is(['employee/attendence']) ? 'active' : '' }}">
-                                    <a href="{{ route('attendence.index') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Semua Absensi</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('employee/attendence/*') ? 'active' : '' }}">
-                                    <a href="{{ route('attendence.create') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Tambah Absensi</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
+                @if (auth()->user()->can('user.menu') && !auth()->user()->isSalesRole())
+                    <li class="{{ Request::is('users*') ? 'active' : '' }}">
+                        <a href="{{ route('users.index') }}" class="svg-icon">
+                            <i class="fa-solid fa-users"></i>
+                            <span class="ml-3">Pengguna</span>
+                        </a>
+                    </li>
+                @endif
 
-                    @if (auth()->user()->can('report.menu'))
-                        <li class="{{ Request::is('users*') ? 'active' : '' }}">
-                            <a href="{{ route('report.index') }}" class="svg-icon">
-                                <i class="fa-solid fa-users"></i>
-                                <span class="ml-3">Report</span>
-                            </a>
-                        </li>
-                    @endif
+                @if (auth()->user()->can('branch.menu') && !auth()->user()->isSalesRole())
+                    <li class="{{ Request::is('users*') ? 'active' : '' }}">
+                        <a href="{{ route('branch.index') }}" class="svg-icon">
+                            <i class="fa-solid fa-users"></i>
+                            <span class="ml-3">Daerah Operasional</span>
+                        </a>
+                    </li>
+                @endif
 
-                    <hr>
-
-                    @if (auth()->user()->can('roles.menu'))
-                        <li>
-                            <a href="#permission" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                                <i class="fa-solid fa-key"></i>
-                                <span class="ml-3">Peran & Hak Akses</span>
-                                <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="10 15 15 20 20 15"></polyline>
-                                    <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                                </svg>
-                            </a>
-                            <ul id="permission" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                                <li
-                                    class="{{ Request::is(['permission', 'permission/create', 'permission/edit/*']) ? 'active' : '' }}">
-                                    <a href="{{ route('permission.index') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Hak Akses</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is(['role', 'role/create', 'role/edit/*']) ? 'active' : '' }}">
-                                    <a href="{{ route('role.index') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Peranan</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is(['role/permission*']) ? 'active' : '' }}">
-                                    <a href="{{ route('rolePermission.index') }}">
-                                        <i class="fa-solid fa-arrow-right"></i><span>Hak Akses Peranan</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-
-                    @if (auth()->user()->can('user.menu'))
-                        <li class="{{ Request::is('users*') ? 'active' : '' }}">
-                            <a href="{{ route('users.index') }}" class="svg-icon">
-                                <i class="fa-solid fa-users"></i>
-                                <span class="ml-3">Pengguna</span>
-                            </a>
-                        </li>
-                    @endif
-
-                    @if (auth()->user()->can('branch.menu'))
-                        <li class="{{ Request::is('users*') ? 'active' : '' }}">
-                            <a href="{{ route('branch.index') }}" class="svg-icon">
-                                <i class="fa-solid fa-users"></i>
-                                <span class="ml-3">Daerah Operasional</span>
-                            </a>
-                        </li>
-                    @endif
-
-                    @if (auth()->user()->can('database.menu'))
-                        <li class="{{ Request::is('database/backup*') ? 'active' : '' }}">
-                            <a href="{{ route('backup.index') }}" class="svg-icon">
-                                <i class="fa-solid fa-database"></i>
-                                <span class="ml-3">Backup Database</span>
-                            </a>
-                        </li>
-                    @endif
+                @if (auth()->user()->can('database.menu') && !auth()->user()->isSalesRole())
+                    <li class="{{ Request::is('database/backup*') ? 'active' : '' }}">
+                        <a href="{{ route('backup.index') }}" class="svg-icon">
+                            <i class="fa-solid fa-database"></i>
+                            <span class="ml-3">Backup Database</span>
+                        </a>
+                    </li>
+                @endif
             </ul>
-            @endif
         </nav>
         <div class="p-3"></div>
     </div>
