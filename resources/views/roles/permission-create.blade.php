@@ -55,6 +55,10 @@
             'slug' => 'database',
             'name' => 'Database'
         ],
+        [
+            'slug' => 'region',
+            'name' => 'Region'
+        ],
     ]
 @endphp
 

@@ -22,18 +22,24 @@ class AdvanceSalaryController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
-        if(request('search')){
+        if (request('search')) {
             Employee::firstWhere('name', request('search'));
         }
 
         return view('advance-salary.index', [
             'advance_salaries' => AdvanceSalary::with(['employee'])
-                ->orderByDesc('date')
+                ->join('employees', 'advance_salaries.employee_id', '=', 'employees.id')
+                ->when(auth()->user()->branch_id != 1, function ($query) {
+                    $query->where('employees.branch_id', auth()->user()->branch_id);
+                })
+                ->orderByDesc('advance_salaries.date')
+                ->select('advance_salaries.*') // Ensure only advance_salaries columns are selected to avoid ambiguity
                 ->filter(request(['search']))
                 ->sortable()
                 ->paginate($row)
                 ->appends(request()->query()),
         ]);
+        
     }
 
     /**
@@ -42,7 +48,10 @@ class AdvanceSalaryController extends Controller
     public function create()
     {
         return view('advance-salary.create', [
-            'employees' => Employee::all()->sortBy('name'),
+            'employees' => Employee::all()
+                ->when(auth()->user()->branch_id != 1, fn ($q) => $q
+                    ->where('branch_id', auth()->user()->branch_id))
+                ->sortBy('name'),
         ]);
     }
 

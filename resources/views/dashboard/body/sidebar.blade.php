@@ -233,6 +233,15 @@
                         </li>
                     @endif
 
+                    @if (auth()->user()->can('report.menu'))
+                        <li class="{{ Request::is('users*') ? 'active' : '' }}">
+                            <a href="{{ route('report.index') }}" class="svg-icon">
+                                <i class="fa-solid fa-users"></i>
+                                <span class="ml-3">Report</span>
+                            </a>
+                        </li>
+                    @endif
+
                     <hr>
 
                     @if (auth()->user()->can('roles.menu'))
@@ -274,6 +283,15 @@
                             <a href="{{ route('users.index') }}" class="svg-icon">
                                 <i class="fa-solid fa-users"></i>
                                 <span class="ml-3">Pengguna</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (auth()->user()->can('branch.menu'))
+                        <li class="{{ Request::is('users*') ? 'active' : '' }}">
+                            <a href="{{ route('branch.index') }}" class="svg-icon">
+                                <i class="fa-solid fa-users"></i>
+                                <span class="ml-3">Daerah Operasional</span>
                             </a>
                         </li>
                     @endif

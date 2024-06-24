@@ -36,9 +36,11 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'roles.menu', 'group_name' => 'roles']);
         Permission::create(['name' => 'user.menu', 'group_name' => 'user']);
         Permission::create(['name' => 'database.menu', 'group_name' => 'database']);
+        Permission::create(['name' => 'branch.menu', 'group_name' => 'branch']);
+        Permission::create(['name' => 'report.menu', 'group_name' => 'report']);
 
         Role::create(['name' => 'SuperAdmin'])->givePermissionTo(Permission::all());
-        Role::create(['name' => 'Owner'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu', 'user.menu']);
+        Role::create(['name' => 'Owner'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu', 'user.menu', 'branch.menu', 'report.menu']);
         Role::create(['name' => 'Manager'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu']);
         Role::create(['name' => 'Sales'])->givePermissionTo(['pos.menu']);
 

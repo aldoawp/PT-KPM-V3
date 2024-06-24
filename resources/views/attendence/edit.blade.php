@@ -66,7 +66,7 @@
                                                             </div>
                                                             <div class="input-group-text">
                                                                 <div class="custom-radio">
-                                                                    <input type="radio" id="absent{{ $key }}" name="status{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="Tidak Hadir" {{ $attendence->status == 'Tidak Hadir' ? 'checked' : '' }}>
+                                                                    <input type="radio" id="absent{{ $key }}" name="status{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="Tanpa Kabar" {{ $attendence->status == 'Tanpa Kabar' ? 'checked' : '' }}>
                                                                     <label class="custom-control-label" for="absent{{ $key }}"> Tanpa Kabar </label>
                                                                 </div>
                                                             </div>
