@@ -86,7 +86,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="product_garage">Lokasi Gudang</label>
-                                <input type="text" class="form-control @error('product_garage') is-invalid @enderror" id="product_garage" name="product_garage" value="{{ old('product_garage') }}">
+                                <input type="text" placeholder="-" class="form-control @error('product_garage') is-invalid @enderror" id="product_garage" name="product_garage" value="{{ old('product_garage') }}">
                                 @error('product_garage')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -95,7 +95,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="product_store">Stok Produk</label>
-                                <input type="text" class="form-control @error('product_store') is-invalid @enderror" id="product_store" name="product_store" value="{{ old('product_store') }}">
+                                <input type="number" min="0" placeholder="0" class="form-control @error('product_store') is-invalid @enderror" id="product_store" name="product_store" value="{{ old('product_store') }}">
                                 @error('product_store')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -104,7 +104,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="buying_date">Tanggal Pembelian</label>
-                                <input id="buying_date" class="form-control @error('buying_date') is-invalid @enderror" name="buying_date" value="{{ old('buying_date') }}" />
+                                <input placeholder="dd/mm/yyyy" id="buying_date" class="form-control @error('buying_date') is-invalid @enderror" name="buying_date" value="{{ old('buying_date') }}" />
                                 @error('buying_date')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -113,7 +113,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="expire_date">Tanggal Kadaluarsa</label>
-                                <input id="expire_date" class="form-control @error('expire_date') is-invalid @enderror" name="expire_date" value="{{ old('expire_date') }}" />
+                                <input placeholder="dd/mm/yyyy" id="expire_date" class="form-control @error('expire_date') is-invalid @enderror" name="expire_date" value="{{ old('expire_date') }}" />
                                 @error('expire_date')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -122,7 +122,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="buying_price">Harga Modal <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control @error('buying_price') is-invalid @enderror" id="buying_price" name="buying_price" value="{{ old('buying_price') }}" required>
+                                <input placeholder="0" min="0" type="number" class="form-control @error('buying_price') is-invalid @enderror" id="buying_price" name="buying_price" value="{{ old('buying_price') }}" required>
                                 @error('buying_price')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -131,7 +131,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="selling_price">Harga Jual <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control @error('selling_price') is-invalid @enderror" id="selling_price" name="selling_price" value="{{ old('selling_price') }}" required>
+                                <input placeholder="0" min="0" type="number" class="form-control @error('selling_price') is-invalid @enderror" id="selling_price" name="selling_price" value="{{ old('selling_price') }}" required>
                                 @error('selling_price')
                                 <div class="invalid-feedback">
                                     {{ $message }}

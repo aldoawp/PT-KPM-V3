@@ -132,8 +132,8 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div id="layout1-chart-2" style="min-height: 360px;" data-income-location='@json($income_per_location)''></div>
-                        <div id="no-data-message-1" style="font-size: 24px; text-align: center; color: #e5e5e5; text-transform: uppercase; margin-top:20%; margin-bottom: 20%">Belum ada data</div>
+                        <div id="layout1-chart-2" style="min-height: 360px;" data-income-location='@json($income_per_location)' data-empty='{{ $income_per_location->isEmpty() ? 'true' : 'false' }}'></div>
+                        <div id="no-data-message" style="display: none; font-size: 24px; text-align: center; color: #e5e5e5; text-transform: uppercase; margin-top:20%; margin-bottom: 20%">Belum ada data</div>
                     </div>
                 </div>
             </div>

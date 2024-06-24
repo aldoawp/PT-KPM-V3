@@ -14,9 +14,16 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index_distribusi()
     {
-        return view('report.index');
+        return view('report.index-distribusi');
+    }
+
+    public function index_penjualan()
+    {
+        return view('report.index-penjualan', [
+            'branches' => Branch::all()
+        ]);
     }
 
     private function createDistributionReport($startDate, $endDate)
@@ -127,6 +134,11 @@ class ReportController extends Controller
         } catch (Exception $e) {
             return;
         }
+    }
+
+    public function createSalesReport()
+    {
+        dd();
     }
 
     public function generate()

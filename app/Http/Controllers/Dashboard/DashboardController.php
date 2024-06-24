@@ -85,7 +85,7 @@ class DashboardController extends Controller
 
         // Top sales
         $top_sales = DB::table('orders')
-            ->select('users.name', DB::raw('SUM(orders.total) as total_sales'), DB::raw('SUM(orders.total_products) as total_products'))
+            ->select('users.name', DB::raw('SUM(orders.pay) as total_sales'), DB::raw('SUM(orders.total_products) as total_products'))
             ->join('users', 'orders.user_id', '=', 'users.id')
             ->where('orders.order_status', 'complete')
             ->whereMonth('orders.created_at', '=', date('m'))

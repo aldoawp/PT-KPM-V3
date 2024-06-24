@@ -81,7 +81,7 @@
                                     <td>{{ $order->invoice_no }}</td>
                                     <td>{{ $order->customer->name }}</td>
                                     <td>{{ date('d-m-Y', $order->create_at) }}</td>
-                                    <td>{{ $order->pay }}</td>
+                                    <td>Rp {{ number_format($order->pay, 0, ',', '.') }}</td>
                                     <td>{{ $order->payment_status }}</td>
                                     <td>
                                         <span class="badge badge-success">{{ $order->order_status }}</span>

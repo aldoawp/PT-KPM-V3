@@ -74,15 +74,15 @@
                             <td>{{ $order->invoice_no }}</td>
                             <td>{{ $order->customer->name }}</td>
                             <td>{{ Carbon\Carbon::parse($order->order_date)->format('Y m, d') }}</td>
-                            <td>{{ $order->payment_status }}</td>
+                            <td>{{ Str::title($order->payment_status) }}</td>
                             <td>
                                 <span class="btn btn-warning text-white">
-                                    {{ $order->pay }}
+                                    {{ number_format($order->pay, 0, ',', '.') }}
                                 </span>
                             </td>
                             <td>
                                 <span class="btn btn-danger text-white">
-                                    {{ $order->due }}
+                                    {{ number_format($order->due, 0, ',', '.') }}
                                 </span>
                             </td>
                             <td>
