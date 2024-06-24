@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Dashboard;
 
 use Exception;
 use Carbon\Carbon;
-use App\Models\Order;
 use App\Models\Branch;
-use App\Models\Restock;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Color;
@@ -37,7 +36,7 @@ class ReportController extends Controller
 
         $index = 0;
 
-        $cell = 0;
+        $cell = 1;
         $totalCells = [];
 
         foreach ($branches as $branch) {
@@ -100,16 +99,17 @@ class ReportController extends Controller
             $columns[] = [
                 'DISTRIBUSI' => '',
                 'NAMA PRODUK' => '',
-                'STOCK AWAL' => 'Rp ' . number_format(array_sum($stockAwalArr), 0, ',', '.'),
-                'PENGIRIMAN' => 'Rp ' . number_format(array_sum($pengirimanArr), 0, ',', '.'),
-                'JUMLAH' => 'Rp ' . number_format(array_sum($jumlahArr), 0, ',', '.'),
-                'PENJUALAN' => 'Rp ' . number_format(array_sum($penjualanArr), 0, ',', '.'),
-                'SISA STOCK' => 'Rp ' . number_format(array_sum($sisaStockArr), 0, ',', '.')
+                'STOCK AWAL' => array_sum($stockAwalArr),
+                'PENGIRIMAN' => array_sum($pengirimanArr),
+                'JUMLAH' => array_sum($jumlahArr),
+                'PENJUALAN' => array_sum($penjualanArr),
+                'SISA STOCK' => array_sum($sisaStockArr)
             ];
 
             array_push($totalCells, $cell);
 
             $index = 0;
+            $cell++;
         }
 
         ini_set('max_execution_time', 0);
@@ -128,18 +128,32 @@ class ReportController extends Controller
             $workSheet->getStyle('A1:A2')->getFont()->setBold(true);
 
             $workSheet->getDefaultColumnDimension()->setWidth(20);
-            $workSheet->fromArray($columns, null, 'A4');
+            $workSheet->fromArray($columns, null, 'A4', true);
 
             $workSheet->getStyle('A4:G4')->getFont()->setBold(true);
+
             $workSheet->getStyle('A4:G4')->getAlignment()->setHorizontal('center');
+
             $workSheet->getStyle('A4:G4')->getFill()->setFillType('solid')->getStartColor()->setARGB('FFA07A');
+
             $workSheet->getStyle('A5:A' . (count($columns) + 2))->getAlignment()->setHorizontal('center');
+
             $workSheet->getStyle('A5:A' . (count($columns) + 2))->getFont()->setBold(true);
+
             $workSheet->getStyle('A4:G' . (count($columns) + 3))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN)->setColor(new Color('000000'));
 
-            foreach ($totalCells as $key => $cell) {
-                $cell = $cell + 3;
+            for ($i = 0; $i < count($totalCells); $i++) {
+                $cell = $totalCells[$i] + 4;
+
+                $workSheet->mergeCells('A' . ($totalCells[$i - 1] ?? 0) + 5 . ':A' . $cell);
+
+                $workSheet->getStyle('A' . ($totalCells[$i - 1] ?? 0) + 5 . ':A' . $cell)->getAlignment()->setVertical('center');
+
+                $workSheet->getStyle('A' . ($totalCells[$i - 1] ?? 0) + 5 . ':A' . $cell)->getAlignment()->setWrapText(true);
+
                 $workSheet->getStyle('B' . $cell . ':G' . $cell)->getFont()->setBold(true);
+
+                $workSheet->getStyle('B' . $cell . ':G' . $cell)->getNumberFormat()->setFormatCode('"Rp "#,##0;-"Rp "#,##0');
 
                 $workSheet->getStyle('B' . $cell . ':D' . $cell)->getFill()->setFillType('solid')->getStartColor()->setARGB('f5bd28');
 
