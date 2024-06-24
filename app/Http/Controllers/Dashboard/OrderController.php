@@ -201,7 +201,7 @@ class OrderController extends Controller
 
         Order::findOrFail($order_id)->update(['order_status' => 'complete']);
 
-        return Redirect::route('order.invoiceDownload', $order_id)->with('success', 'Pesanan telah diselesaikan!');
+        return Redirect::route('order.invoiceDownload', $order_id);
     }
 
     public function invoiceDownload(int $order_id)
