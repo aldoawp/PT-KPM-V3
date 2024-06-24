@@ -19,7 +19,7 @@
                                 <div class="form-group col-md-6">
                                     <label for="region">Nama Daerah <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('region') is-invalid @enderror"
-                                        id="region" name="region" value="{{ old('region') }}" required
+                                        id="region" name="region" value="{{ old('region', $branch->region) }}" required
                                         autocomplete="off">
                                     @error('region')
                                         <div class="invalid-feedback">

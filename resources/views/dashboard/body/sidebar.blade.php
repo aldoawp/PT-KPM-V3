@@ -234,10 +234,10 @@
                     @endif
 
                     @if (auth()->user()->can('report.menu'))
-                        <li class="{{ Request::is('users*') ? 'active' : '' }}">
+                        <li class="{{ Request::is('report') ? 'active' : '' }}">
                             <a href="{{ route('report.index') }}" class="svg-icon">
-                                <i class="fa-solid fa-users"></i>
-                                <span class="ml-3">Report</span>
+                                <i class="fa  fa-pie-chart"></i>
+                                <span class="ml-3">Laporan</span>
                             </a>
                         </li>
                     @endif
@@ -288,10 +288,10 @@
                     @endif
 
                     @if (auth()->user()->can('branch.menu'))
-                        <li class="{{ Request::is('users*') ? 'active' : '' }}">
+                        <li class="{{ Request::is('branch') ? 'active' : '' }}">
                             <a href="{{ route('branch.index') }}" class="svg-icon">
-                                <i class="fa-solid fa-users"></i>
-                                <span class="ml-3">Daerah Operasional</span>
+                                <i class="fa fa-map-marker"></i>
+                                <span class="ml-3">Daerah</span>
                             </a>
                         </li>
                     @endif
