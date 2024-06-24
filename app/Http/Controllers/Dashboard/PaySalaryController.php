@@ -22,17 +22,24 @@ class PaySalaryController extends Controller
             abort(400, 'The row parameter must be an integer between 1 and 100.');
         }
 
-        if(request('search')){
+        if (request('search')) {
             Employee::firstWhere('name', request('search'));
         }
 
         return view('pay-salary.index', [
-            'advanceSalaries' => AdvanceSalary::with(['employee'])
-                ->orderByDesc('date')
+            'advanceSalaries' =>
+            AdvanceSalary::with(['employee'])
+                ->join('employees', 'advance_salaries.employee_id', '=', 'employees.id')
+                ->when(auth()->user()->branch_id != 1, function ($query) {
+                    $query->where('employees.branch_id', auth()->user()->branch_id);
+                })
+                ->orderByDesc('advance_salaries.date')
+                ->select('advance_salaries.*')
                 ->filter(request(['search']))
                 ->sortable()
                 ->paginate($row)
-                ->appends(request()->query()),
+                ->appends(request()->query())
+
         ]);
     }
 
@@ -56,17 +63,21 @@ class PaySalaryController extends Controller
             abort(400, 'The row parameter must be an integer between 1 and 100.');
         }
 
-        if(request('search')){
+        if (request('search')) {
             Employee::firstWhere('name', request('search'));
         }
 
         return view('pay-salary.history', [
             'paySalaries' => PaySalary::with(['employee'])
-            ->orderByDesc('date')
-            ->filter(request(['search']))
-            ->sortable()
-            ->paginate($row)
-            ->appends(request()->query()),
+                ->join('employees', 'pay_salaries.employee_id', '=', 'employees.id')
+                ->when(auth()->user()->branch_id != 1, function ($query) {
+                    $query->where('employees.branch_id', auth()->user()->branch_id);
+                })
+                ->orderByDesc('date')
+                ->filter(request(['search']))
+                ->sortable()
+                ->paginate($row)
+                ->appends(request()->query()),
         ]);
     }
 
@@ -74,8 +85,8 @@ class PaySalaryController extends Controller
     {
         return view('pay-salary.history-details', [
             'paySalary' => PaySalary::with(['employee'])
-            ->where('id', $id)
-            ->first(),
+                ->where('id', $id)
+                ->first(),
         ]);
     }
 

@@ -68,7 +68,7 @@
                                                                 <div class="custom-radio">
                                                                     <input type="radio" id="absent{{ $key }}" name="status{{ $key }}" class="custom-control-input position-relative" style="height: 20px" value="Tanpa Kabar">
                                                                     <label class="custom-control-label" for="absent{{ $key }}"> Tanpa Kabar </label>
-                                                                </div>
+                                                                </div>w
                                                             </div>
                                                         </div>
                                                     </div>
