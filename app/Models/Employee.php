@@ -22,7 +22,8 @@ class Employee extends Model
         'salary',
         'vacation',
         'city',
-        'branch_id'
+        'branch_id',
+        'user_id',
     ];
 
     public $sortable = [
