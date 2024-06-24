@@ -57,7 +57,7 @@ class DashboardController extends Controller
          ->map(function ($income) {
              return [
                  'region' => ucfirst($income->region),  // Capitalize region
-                 'income' => 'Rp ' . number_format($income->total_income, 0, ',', '.')  // Format to Indonesian Rupiah without decimal
+                 'income' => $income->total_income // Format to Indonesian Rupiah without decimal
              ];
          });
      

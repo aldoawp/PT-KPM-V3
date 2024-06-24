@@ -63,7 +63,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Jumlah Terutang</label>
-                            <input type="text" class="form-control bg-white" value="{{ $order->due }}" readonly>
+                            <input type="text" class="form-control bg-white" value="Rp {{ number_format($order->due, 0, ',', '.') }}" readonly>
                         </div>
                     </div>
                     <!-- end: Show Data -->

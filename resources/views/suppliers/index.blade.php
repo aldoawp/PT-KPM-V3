@@ -15,8 +15,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                 <div>
                     <h4 class="mb-3">Daftar Pemasok</h4>
-                    <p class="mb-0">Dasbor pemasok memungkinkan Anda dengan mudah mengumpulkan dan memvisualisasikan <br> data pemasok dari mengoptimalkan
-Pengalaman pemasok, memastikan retensi pemasok. </p>
+                    <p class="mb-0">Semua pemasok anda dari berbagai daerah akan disimpan pada halaman ini.</p>
                 </div>
                 <div>
                     <a href="{{ route('suppliers.create') }}" class="btn btn-primary add-list"><i class="fa-solid fa-plus mr-3"></i>Tambah Pemasok</a>

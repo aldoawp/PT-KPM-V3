@@ -194,7 +194,7 @@ class ReportController extends Controller
             'NO. INVOICE',
             'ALAMAT'
         ];
-
+      
         // Zero means all branch
         if ($branch_id === 0) {
             $branches = Branch::all();
@@ -336,6 +336,7 @@ class ReportController extends Controller
             }
         }
 
+
         $columns = $baseColumns;
 
         $products = Branch::find($branch_id)->products;
@@ -416,6 +417,7 @@ class ReportController extends Controller
             $formatedEndDate = Carbon::parse($endDate)->locale('id-ID')->translatedFormat('d F Y');
 
             $workSheet->setCellValue('A1', 'LAPORAN PENJUALAN GROSIR TUNAI AREA ' . strtoupper($branch->region));
+
             $workSheet->setCellValue('A2', 'PERIODE ' . $formatedStartDate . ' s/d ' . $formatedEndDate);
 
             $workSheet->getStyle('A1:A2')->getFont()->setBold(true);
@@ -453,7 +455,9 @@ class ReportController extends Controller
 
             $excelWritter = new Xls($spreadSheet);
             header('Content-Type: application/vnd.ms-excel');
+
             header('Content-Disposition: attachment;filename="LAPORAN_PENJUALAN_' . $branch->region . '_' . date('d_m_Y') . '.xls"');
+
             header('Cache-Control: max-age=0');
             ob_end_clean();
             $excelWritter->save('php://output');

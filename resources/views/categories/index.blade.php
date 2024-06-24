@@ -15,9 +15,7 @@
                 <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                     <div>
                         <h4 class="mb-3">Daftar Kategori</h4>
-                        <p class="mb-0">Dasbor Kategori memungkinkan Anda mengumpulkan dan memvisualisasikan data Kategori
-                            <br> dengan mudah dari mengoptimalkan pengalaman Kategori, untuk memastikan retensi Kategori.
-                        </p>
+                        <p class="mb-0">Pada halaman ini anda bisa menambahkan atau mengedit jenis-jenis rokok yang anda miliki.</p>
                     </div>
                     <div>
                         <a href="{{ route('categories.create') }}" class="btn btn-primary add-list"><i

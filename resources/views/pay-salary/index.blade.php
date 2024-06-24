@@ -65,7 +65,7 @@ Pengalaman gaji pembayaran, memastikan <br> retensi gaji gaji. </p>
                             <th>@sortablelink('date')</th>
                             <th>@sortablelink('employee.salary', 'gaji')</th>
                             <th>@sortablelink('advance_salary', 'pinjaman')</th>
-                            <th>Due</th>
+                            <th>Belum Dibayar</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -79,12 +79,12 @@ Pengalaman gaji pembayaran, memastikan <br> retensi gaji gaji. </p>
                             <td>{{ $advanceSalary->employee->name }}</td>
                             <td>{{ Carbon\Carbon::parse($advanceSalary->date)->format('M/Y') }}</td>
                             <td>Rp {{ number_format($advanceSalary->employee->salary, 0, ',', '.') }}</td>
-                            <td>{{ $advanceSalary->advance_salary ? '$'.$advanceSalary->advance_salary : 'Tidak Ada Pinjaman' }}</td>
+                            <td>{{ $advanceSalary->advance_salary ? 'Rp '.number_format($advanceSalary->advance_salary, 0, ',', '.') : 'Tidak Ada Pinjaman' }}</td>
                             <td>Rp {{ number_format($advanceSalary->employee->salary - $advanceSalary->advance_salary, 0, ',', '.') }}</td> 
                             <td>
                                 <div class="d-flex align-items-center list-action">
-                                    <a class="btn btn-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Pay Now"
-                                        href="{{ route('pay-salary.paySalary', $advanceSalary->id) }}">Pay Now</i>
+                                    <a class="btn btn-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bayar"
+                                        href="{{ route('pay-salary.paySalary', $advanceSalary->id) }}">Bayar</i>
                                     </a>
                                 </div>
                             </td>

@@ -19,8 +19,7 @@
                 <div class="card card-transparent card-block card-stretch card-height border-none">
                     <div class="card-body p-0 mt-lg-2 mt-0">
                         <h3 class="mb-3">Halo {{ auth()->user()->name }},</h3>
-                        <p class="mb-0 mr-4">Semoga hari ini menjadi hari yang penuh berkah dan kebahagiaan. Jangan lupa
-                            berdoa!</p>
+                        <p class="mb-0 mr-4">Semoga hari ini menjadi hari yang penuh berkah dan kebahagiaan. Selamat beraktifitas!</p>
                     </div>
                 </div>
             </div>

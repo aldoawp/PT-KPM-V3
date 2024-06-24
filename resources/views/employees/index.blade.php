@@ -15,7 +15,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                 <div>
                     <h4 class="mb-3">Daftar Karyawan</h4>
-                    <p class="mb-0">Dasbor karyawan memungkinkan Anda dengan mudah mengumpulkan dan memvisualisasikan <br> data karyawan untuk mengoptimalkan pengalaman karyawan, memastikan retensi karyawan.</p>
+                    <p class="mb-0">Semua karyawan anda dari berbagai daerah akan disimpan pada halaman ini.</p>
                 </div>
                 <div>
                 <a href="{{ route('employees.create') }}" class="btn btn-primary add-list"><i class="fa-solid fa-plus mr-3"></i>Tambah Karyawan</a>
@@ -73,8 +73,8 @@
                     <tbody class="ligth-body">
                         @forelse ($employees as $employee)
                         <tr>
-                            {{-- <td>{{ (($employees->currentPage() * 10) - 10) + $loop->iteration  }}</td> --}}
-                            <td>{{ $employee->id }}</td>
+                            <td>{{ (($employees->currentPage() * 10) - 10) + $loop->iteration  }}</td>
+                            {{-- <td>{{ $employee->id }}</td> --}}
                             <td>
                                 <img class="avatar-60 rounded" src="{{ $employee->photo ? asset('storage/employees/'.$employee->photo) : asset('assets/images/user/1.png') }}">
                             </td>
