@@ -47,7 +47,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $file->getFileName() }}</td>
-                                    <td>{{ $file->getSize() }}</td>
+                                    <td>{{ round($file->getSize() / 1024 / 1024, 2) }} MB</td>
                                     <td>{{ $file->getPath() }}</td>
                                     <td>
                                         <div class="d-flex align-items-center list-action">
