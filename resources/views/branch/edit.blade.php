@@ -12,8 +12,9 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('branch.store') }}" method="POST">
+                        <form action="{{ route('branch.update', $branch->id) }}" method="POST">
                             @csrf
+                            @method('PUT')
                             <!-- begin: Input Data -->
                             <div class=" row align-items-center">
                                 <div class="form-group col-md-6">

@@ -44,13 +44,12 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'Manager'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu']);
         Role::create(['name' => 'Sales'])->givePermissionTo(['pos.menu', 'customer.menu']);
 
-        for ($i=1; $i <= 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             Branch::create([
-                'id' => $i,
-                "region" => ['malang', 'tangerang', 'surabaya', 'bandung', "jakarta"][$i-1]
+                "region" => ['malang', 'tangerang', 'surabaya', 'bandung', "jakarta"][$i]
             ]);
         }
-        
+
         $admin = \App\Models\User::factory()->create([
             'name' => 'Admin',
             'username' => 'admin',
@@ -64,7 +63,7 @@ class DatabaseSeeder extends Seeder
         Customer::factory(25)->create();
         Supplier::factory(10)->create();
         Category::factory(5)->create();
-        for ($i=0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             Product::factory()->create([
                 'product_code' => IdGenerator::generate([
                     'table' => 'products',
