@@ -148,14 +148,14 @@
                                 <div class="or-detail rounded">
                                     <div class="p-3">
                                         <h5 class="mb-3">Rincian Pesanan</h5>
-                                        <div class="mb-2">
+                                        {{-- <div class="mb-2">
                                             <h6>Sub Total</h6>
                                             <p>Rp {{ number_format($productItem->subtotal(), 0, ',', '.') }}</p>
                                         </div>
                                         <div>
                                             <h6>PPN (5%)</h6>
                                             <p>Rp {{ number_format($productItem->tax(), 0, ',', '.') }}</p>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="ttl-amt py-2 px-3 d-flex justify-content-between align-items-center">
                                         <h6>Total</h6>

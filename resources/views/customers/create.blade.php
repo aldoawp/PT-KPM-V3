@@ -60,8 +60,8 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="email">Email Pelanggan <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required>
+                                <label for="email">Email Pelanggan {{-- <span class="text-danger">*</span> --}}</label>
+                                <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" {{-- required --}}>
                                 @error('email')
                                 <div class="invalid-feedback">
                                     {{ $message }}

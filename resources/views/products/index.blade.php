@@ -81,7 +81,7 @@
                                 <th>@sortablelink('supplier.name', 'pemasok')</th>
                                 <th>@sortablelink('selling_price', 'harga')</th>
                                 <th>@sortablelink('product_store', 'stok')</th>
-                                <th>Status</th>
+                                {{-- <th>Status</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -106,13 +106,13 @@
                                                 class="badge rounded-pill bg-warning">{{ $product->product_store }}</span>
                                         @endif
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         @if ($product->expire_date > Carbon\Carbon::now()->format('Y-m-d'))
                                             <span class="badge rounded-pill bg-success">Valid</span>
                                         @else
                                             <span class="badge rounded-pill bg-danger">Invalid</span>
                                         @endif
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         <form action="{{ route('products.destroy', $product->id) }}" method="POST"
                                             style="margin-bottom: 5px">

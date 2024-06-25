@@ -75,7 +75,7 @@
                                         <th>Produk</th>
                                         <th>Harga</th>
                                         <th>Jumlah</th>
-                                        <th>Total (+PPN)</th>
+                                        <th>Total {{-- (+PPN) --}}</th>
                                     </tr>
                                     </thead>
 

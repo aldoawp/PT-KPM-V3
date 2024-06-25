@@ -16,23 +16,111 @@ class DashboardController extends Controller
     {
         // $income_weekly = Order::whereBetween('created_at', [now()->subWeek(), now()])->sum('total');
 
-        $income_weekly = Order::where('order_status', 'complete')
-            ->whereMonth('created_at', '=', date('m'))
-            ->selectRaw('DATE(updated_at) as date, SUM(pay) as total')
-            ->groupBy('date')
-            ->get()
-            ->map(function ($income) {
-                return [
-                    'date' => Carbon::parse($income->date)->toIso8601String(),
-                    'total' => $income->total
-                ];
-            });
+        $income_weekly = [];
+        $income_total = [];
+        $income_per_location = [];
 
-        $income_total = [
-            'total' => Order::where('order_status', 'complete')
+        $today_income = [];
+        $today_product = [];
+        $today_complete_orders = [];
+
+        if (!auth()->user()->isSuperAdmin() && !auth()->user()->isOwner()) {
+            $income_weekly = Order::where('order_status', 'complete')
+                ->where('branch_id', auth()->user()->branch->id)
                 ->whereMonth('created_at', '=', date('m'))
-                ->sum('pay')
-        ];
+                ->selectRaw('DATE(updated_at) as date, SUM(pay) as total')
+                ->groupBy('date')
+                ->get()
+                ->map(function ($income) {
+                    return [
+                        'date' => Carbon::parse($income->date)->toIso8601String(),
+                        'total' => $income->total
+                    ];
+                });
+
+            $income_total = [
+                'total' => Order::where('order_status', 'complete')
+                    ->where('branch_id', auth()->user()->branch->id)
+                    ->whereMonth('created_at', '=', date('m'))
+                    ->sum('pay')
+            ];
+
+            $income_per_location = DB::table('orders')
+                ->leftJoin('users', 'orders.user_id', '=', 'users.id')
+                ->leftJoin('branches', 'users.branch_id', '=', 'branches.id')
+                ->select(
+                    DB::raw('IFNULL(branches.region, "Unknown") as region'),
+                    DB::raw('SUM(orders.pay) as total_income')
+                )
+                ->where('orders.branch_id', auth()->user()->branch->id)
+                ->where('orders.order_status', 'complete')
+                ->whereMonth('orders.created_at', '=', date('m'))
+                ->groupBy('branches.id', 'branches.region')
+                ->get()
+                ->map(function ($income) {
+                    return [
+                        'region' => ucfirst($income->region),  // Capitalize region
+                        'income' => $income->total_income // Format to Indonesian Rupiah without decimal
+                    ];
+                });
+
+            // Today's insights
+            $today_income = Order::where('order_status', 'complete')
+                ->where('branch_id', auth()->user()->branch_id)
+                ->whereDate('updated_at', Carbon::now())->sum('pay');
+            $today_product = Order::where('order_status', 'complete')
+                ->where('branch_id', auth()->user()->branch_id)
+                ->whereDate('created_at', Carbon::now())->sum('total_products');
+            $today_complete_orders = Order::where('order_status', 'complete')
+                ->where('branch_id', auth()->user()->branch_id)
+                ->whereDate('created_at', Carbon::now())
+                ->get();
+        } else {
+            $income_weekly = Order::where('order_status', 'complete')
+                ->whereMonth('created_at', '=', date('m'))
+                ->selectRaw('DATE(updated_at) as date, SUM(pay) as total')
+                ->groupBy('date')
+                ->get()
+                ->map(function ($income) {
+                    return [
+                        'date' => Carbon::parse($income->date)->toIso8601String(),
+                        'total' => $income->total
+                    ];
+                });
+
+            $income_total = [
+                'total' => Order::where('order_status', 'complete')
+                    ->whereMonth('created_at', '=', date('m'))
+                    ->sum('pay')
+            ];
+
+            $income_per_location = DB::table('orders')
+                ->leftJoin('users', 'orders.user_id', '=', 'users.id')
+                ->leftJoin('branches', 'users.branch_id', '=', 'branches.id')
+                ->select(
+                    DB::raw('IFNULL(branches.region, "Unknown") as region'),
+                    DB::raw('SUM(orders.pay) as total_income')
+                )
+                ->where('orders.order_status', 'complete')
+                ->whereMonth('orders.created_at', '=', date('m'))
+                ->groupBy('branches.id', 'branches.region')
+                ->get()
+                ->map(function ($income) {
+                    return [
+                        'region' => ucfirst($income->region),  // Capitalize region
+                        'income' => $income->total_income // Format to Indonesian Rupiah without decimal
+                    ];
+                });
+
+            // Today's insights
+            $today_income = Order::where('order_status', 'complete')
+                ->whereDate('updated_at', Carbon::now())->sum('pay');
+            $today_product = Order::where('order_status', 'complete')
+                ->whereDate('created_at', Carbon::now())->sum('total_products');
+            $today_complete_orders = Order::where('order_status', 'complete')
+                ->whereDate('created_at', Carbon::now())
+                ->get();
+        }
 
         /*
          Income per location algorithm:
@@ -42,35 +130,6 @@ class DashboardController extends Controller
          4. After that, group by branch_id and sum up the total amount per location from the 'total' column on orders table, where 'order_status' is 'complete'
          5. Take the region name from branches table and the sum of each region based on branch_id
          */
-
-         $income_per_location = DB::table('orders')
-         ->leftJoin('users', 'orders.user_id', '=', 'users.id')
-         ->leftJoin('branches', 'users.branch_id', '=', 'branches.id')
-         ->select(
-             DB::raw('IFNULL(branches.region, "Unknown") as region'),
-             DB::raw('SUM(orders.pay) as total_income')
-         )
-         ->where('orders.order_status', 'complete')
-         ->whereMonth('orders.created_at', '=', date('m'))
-         ->groupBy('branches.id', 'branches.region')
-         ->get()
-         ->map(function ($income) {
-             return [
-                 'region' => ucfirst($income->region),  // Capitalize region
-                 'income' => $income->total_income // Format to Indonesian Rupiah without decimal
-             ];
-         });
-     
-
-        // Today's insights
-        $today_income = Order::where('order_status', 'complete')
-            ->whereDate('updated_at', Carbon::now())->sum('pay');
-        $today_product = Order::where('order_status', 'complete')
-            ->whereDate('created_at', Carbon::now())->sum('total_products');
-        $today_complete_orders = Order::where('order_status', 'complete')
-            ->whereDate('created_at', Carbon::now())
-            ->get();
-
 
         // Product best seller
         $best_sellers = DB::table('order_details')

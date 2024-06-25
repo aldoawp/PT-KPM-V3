@@ -31,10 +31,10 @@ class PosController extends Controller
 
         if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
             $customers = Customer::all();
-            $products = Product::where('expire_date', '>', $todayDate);
+            $products = Product::filter(request(['search']));
         } else {
             $customers = auth()->user()->branch->customers;
-            $products = auth()->user()->branch->products()->where('expire_date', '>', $todayDate);
+            $products = auth()->user()->branch->products()->filter(request(['search']));
         }
 
         return view('pos.sales-pos', [
@@ -61,9 +61,9 @@ class PosController extends Controller
         $userRole = auth()->user()->role->name;
 
         if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
-            $products = Product::where('expire_date', '>', $todayDate);
+            $products = Product::filter(request(['search']));
         } else {
-            $products = auth()->user()->branch->products()->where('expire_date', '>', $todayDate);
+            $products = auth()->user()->branch->products()->filter(request(['search']));
         }
 
         return view('pos.restock-pos', [
@@ -90,9 +90,9 @@ class PosController extends Controller
         $userRole = auth()->user()->role->name;
 
         if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
-            $products = Product::where('expire_date', '>', $todayDate);
+            $products = Product::filter(request(['search']));
         } else {
-            $products = auth()->user()->branch->products()->where('expire_date', '>', $todayDate);
+            $products = auth()->user()->branch->products()->filter(request(['search']));
         }
 
         return view('pos.return-pos', [
