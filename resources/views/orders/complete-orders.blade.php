@@ -71,6 +71,8 @@
                                 <th>@sortablelink('Dibayarkan')</th>
                                 <th>Jenis Pembayaran</th>
                                 <th>Status</th>
+                                <th>Sales</th>
+                                <th>Region</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -83,6 +85,8 @@
                                     <td>{{ date('d-m-Y', $order->create_at) }}</td>
                                     <td>Rp {{ number_format($order->pay, 0, ',', '.') }}</td>
                                     <td>{{ $order->payment_status }}</td>
+                                    <td>{{ $order->user->name }}</td>
+                                    <td>{{ $order->customer->branch->region }}</td>
                                     <td>
                                         <span class="badge badge-success">{{ $order->order_status }}</span>
                                     </td>
