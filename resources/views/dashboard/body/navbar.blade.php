@@ -5,7 +5,7 @@
                 <i class="ri-menu-line wrapper-menu"></i>
                 <a href="{{ route('dashboard') }}" class="header-logo">
                     <img src="../assets/images/logo-kpm.png" class="img-fluid rounded-normal" alt="logo">
-                    <h5 class="logo-title ml-3">PT. KPM</h5>
+                    <h5 class="logo-title ml-3" id="logo-title">PT. Karyamega Putra Mandiri</h5>
                 </a>
             </div>
             <div class="iq-search-bar device-search invisible">
@@ -75,3 +75,16 @@
         </nav>
     </div>
 </div>
+<script type="module">
+    const logoTitle = document.querySelector('#logo-title');
+
+    addEventListener('resize', () => {
+        if (matchMedia('(max-width: 800px)').matches) {
+            logoTitle.textContent = 'PT. KPM';
+        } else {
+            logoTitle.textContent = 'PT. Karyamega Putra Mandiri';
+        }
+    });
+
+    dispatchEvent(new Event('resize'));
+</script>
