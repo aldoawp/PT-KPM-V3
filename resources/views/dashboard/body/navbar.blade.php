@@ -75,3 +75,16 @@
         </nav>
     </div>
 </div>
+<script type="module">
+    const logoTitle = document.querySelector('#logo-title');
+
+    addEventListener('resize', () => {
+        if (matchMedia('(max-width: 800px)').matches) {
+            logoTitle.textContent = 'PT. KPM';
+        } else {
+            logoTitle.textContent = 'PT. Karyamega Putra Mandiri';
+        }
+    });
+
+    dispatchEvent(new Event('resize'));
+</script>
