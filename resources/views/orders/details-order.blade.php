@@ -26,7 +26,7 @@
                         <div class="col-md-12">
                             <div class="profile-img-edit">
                                 <div class="crm-profile-img-edit">
-                                    <img class="crm-profile-pic rounded-circle avatar-100" id="image-preview" src="{{ $order->customer->photo ? asset('storage/customers/'.$order->customer->photo) : asset('storage/customers/default.png') }}" alt="profile-pic">
+                                    <img class="crm-profile-pic rounded-circle avatar-100" id="image-preview" src="{{ $order->customer->photo ? asset('storage/customers/'.$order->customer->photo) : asset('assets/images/user/1.png') }}" alt="profile-pic">
                                 </div>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                             <th>Kode Barang</th>
                             <th>Jumlah</th>
                             <th>Harga</th>
-                            <th>Total(+PPN)</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody class="ligth-body">
@@ -109,7 +109,7 @@
                         <tr>
                             <td>{{ $loop->iteration  }}</td>
                             <td>
-                                <img class="avatar-60 rounded" src="{{ $item->product->product_image ? asset('storage/products/'.$item->product_image) : asset('storage/products/default.webp') }}">
+                                <img class="avatar-60 rounded" src="{{ $item->product->product_image ? asset('storage/products/' . $item->product->product_image) : asset('assets/images/product/default.webp') }}">
                             </td>
                             <td>{{ $item->product->product_name }}</td>
                             <td>{{ $item->product->product_code }}</td>

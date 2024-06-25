@@ -229,7 +229,7 @@
                     @if ($top_sales->isEmpty())
                         <div id="no-data-message-1" style="font-size: 24px; text-align: center; color: #e5e5e5; text-transform: uppercase; margin-top:20%; margin-bottom: 20%">Belum ada data</div>
                     @else
-                        @foreach ($top_sales as $sales)
+                        @foreach ($top_sales as $index => $sales)
                         <div class="card card-block card-stretch card-height-helf mb-3">
                             <div class="card-body card-item-right">
                                 <div class="d-flex align-items-top">
@@ -239,11 +239,11 @@
                                     </div>
                                     <div class="style-text text-left ml-3">
                                         <h5 class="mb-2">{{ $sales->name }}</h5>
-                                        <p class="mb-2"><span class="badge badge-pill badge-success">Total
+                                        {{-- <p class="mb-2"><span class="badge badge-pill badge-success">Total
                                                 Pendapatan:</span><br><strong>Rp
                                                 {{ number_format($sales->total_sales, 0, ',', '.') }}</strong></p>
                                         <p class="mb-0"><span class="badge badge-pill badge-success">Total Produk
-                                                Terjual:</span><br><strong>{{ $sales->total_products }}</strong></p>
+                                                Terjual:</span><br><strong>{{ $sales->total_products }}</strong></p> --}}
                                     </div>
                                 </div>
                             </div>

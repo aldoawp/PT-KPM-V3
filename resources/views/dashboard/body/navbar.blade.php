@@ -4,8 +4,8 @@
             <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
                 <i class="ri-menu-line wrapper-menu"></i>
                 <a href="{{ route('dashboard') }}" class="header-logo">
-                    <img src="../assets/images/logo-kpm.png" class="img-fluid rounded-normal" alt="logo">
-                    <h5 class="logo-title ml-3" id="logo-title">PT. Karyamega Putra Mandiri</h5>
+                    <img src="{{ asset('assets/images/logo-kpm.png') }}" class="img-fluid rounded-normal" alt="logo">
+                    <h5 class="logo-title ml-3">PT. Karyamega Putra Mandiri</h5>
                 </a>
             </div>
             <div class="iq-search-bar device-search invisible">

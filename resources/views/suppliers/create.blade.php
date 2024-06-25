@@ -133,8 +133,9 @@
                                 <label for="type">Tipe Pemasok <span class="text-danger">*</span></label>
                                 <select class="form-control @error('type') is-invalid @enderror" name="type" required>
                                     <option value="">Pilih Tipe..</option>
+                                    <option value="Manufaktur">Manufaktur</option>
                                     <option value="Distributor">Distributor</option>
-                                    <option value="Whole Seller">Whole Seller</option>
+                                    <option value="Grosir">Grosir</option>
                                 </select>
                                 @error('type')
                                 <div class="invalid-feedback">
