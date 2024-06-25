@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
 
         Role::create(['name' => 'SuperAdmin'])->givePermissionTo(Permission::all());
         Role::create(['name' => 'Owner'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu', 'user.menu', 'branch.menu', 'report.menu']);
-        Role::create(['name' => 'Manager'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu']);
+        Role::create(['name' => 'ASS'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu']);
         Role::create(['name' => 'Sales'])->givePermissionTo(['pos.menu', 'customer.menu']);
 
         for ($i = 0; $i < 5; $i++) {
@@ -59,20 +59,20 @@ class DatabaseSeeder extends Seeder
             'branch_id' => 1,
         ]);
 
-        Employee::factory(5)->create();
-        Customer::factory(25)->create();
-        Supplier::factory(10)->create();
-        Category::factory(5)->create();
-        for ($i = 0; $i < 10; $i++) {
-            Product::factory()->create([
-                'product_code' => IdGenerator::generate([
-                    'table' => 'products',
-                    'field' => 'product_code',
-                    'length' => 4,
-                    'prefix' => 'PC'
-                ])
-            ]);
-        }
+        // Employee::factory(5)->create();
+        // Customer::factory(25)->create();
+        // Supplier::factory(10)->create();
+        // Category::factory(5)->create();
+        // for ($i = 0; $i < 10; $i++) {
+        //     Product::factory()->create([
+        //         'product_code' => IdGenerator::generate([
+        //             'table' => 'products',
+        //             'field' => 'product_code',
+        //             'length' => 4,
+        //             'prefix' => 'PC'
+        //         ])
+        //     ]);
+        // }
 
         $admin->assignRole('SuperAdmin');
     }

@@ -29,9 +29,7 @@ class CustomerController extends Controller
 
         $customers = [];
 
-        $userRole = auth()->user()->role->name;
-
-        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
             $customers = Customer::filter(request(['search']));
         } else {
             $customers =
@@ -68,7 +66,7 @@ class CustomerController extends Controller
         $rules = [
             'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
-            'email' => 'required|email|max:50|unique:customers,email',
+            'email' => 'email|max:50|unique:customers,email',
             'phone' => 'required|string|max:15|unique:customers,phone',
             'shopname' => 'required|string|max:50',
             'account_holder' => 'max:50',
@@ -91,6 +89,8 @@ class CustomerController extends Controller
             $file->storeAs($path, $fileName);
             $validatedData['photo'] = $fileName;
         }
+
+        $validatedData['branch_id'] = auth()->user()->branch_id;
 
         Customer::create($validatedData);
 
@@ -148,7 +148,7 @@ class CustomerController extends Controller
         $rules = [
             'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
-            'email' => 'required|email|max:50|unique:customers,email,' . $customer->id,
+            'email' => 'email|max:50|unique:customers,email,' . $customer->id,
             'phone' => 'required|string|max:15|unique:customers,phone,' . $customer->id,
             'shopname' => 'required|string|max:50',
             'account_holder' => 'max:50',
