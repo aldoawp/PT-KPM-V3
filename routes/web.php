@@ -155,6 +155,10 @@ Route::middleware(['permission:report.menu'])->group(function () {
     Route::post('/report/penjualan/generate', [ReportController::class, 'generateSalesReport'])->name('report.salesReport');
 });
 
+Route::get('/struct', function () {
+    return view('orders.struct');
+});
+
 // ====== DATABASE BACKUP ======
 Route::middleware(['permission:database.menu'])->group(function () {
     Route::get('/database/backup', [DatabaseBackupController::class, 'index'])->name('backup.index');
