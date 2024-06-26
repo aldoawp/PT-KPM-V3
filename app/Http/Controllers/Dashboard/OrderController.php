@@ -201,7 +201,21 @@ class OrderController extends Controller
 
         Order::findOrFail($order_id)->update(['order_status' => 'complete']);
 
-        return Redirect::route('order.invoiceDownload', $order_id);
+        return Redirect::route('order.viewReceipt', $order_id);
+    }
+
+    public function viewReceipt(int $order_id)
+    {
+        $order = Order::where('id', $order_id)->first();
+        $orderDetails = OrderDetails::with('product')
+            ->where('order_id', $order_id)
+            ->orderBy('order_id', 'DESC')
+            ->get();
+
+        return view('orders.receipt-order', [
+            'order' => $order,
+            'orderDetails' => $orderDetails,
+        ]);
     }
 
     public function invoiceDownload(int $order_id)

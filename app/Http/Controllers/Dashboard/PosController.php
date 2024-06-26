@@ -149,6 +149,32 @@ class PosController extends Controller
         return Redirect::back()->with('success', 'Keranjang telah dihapus!');
     }
 
+    public function createReceipt(Request $request)
+    {
+        $cart = Cart::instance(Carts::Sales->value);
+
+        if ($cart->count() === 0) {
+            return redirect()->back()->withErrors(['error' => 'Tambahkan setidaknya 1 barang!']);
+        }
+
+        $validator =
+            \Validator::make($request->all(), [
+                'customer_id' => ['required']
+            ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors(['error' => 'Pilih 1 pelanggan!']);
+        }
+
+        $customer =
+            Customer::find($request['customer_id']);
+
+        return view('pos.create-receipt', [
+            'customer' => $customer,
+            'productItem' => $cart
+        ]);
+    }
+
     public function createInvoice(Request $request)
     {
         $cart = Cart::instance(Carts::Sales->value);

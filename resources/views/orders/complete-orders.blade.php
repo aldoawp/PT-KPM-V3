@@ -103,7 +103,7 @@
                                             </a>
                                             <a class="btn btn-success mr-2" data-toggle="tooltip" data-placement="top"
                                                 title="" data-original-title="Print"
-                                                href="{{ route('order.invoiceDownload', $order->id) }}">
+                                                href="{{ route('order.viewReceipt', $order->id) }}">
                                                 Print
                                             </a>
                                         </div>
