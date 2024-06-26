@@ -52,7 +52,7 @@
                                 style='width:350px; font-size:14pt; text-wrap: nowrap; font-family:calibri; border-collapse: collapse;'
                                 border = '0'>
                                 <td width='70%' align='CENTER' style='vertical-align:top'><span style='color:black;'>
-                                        <b>PT. KARYAMEGA PUTRA MANDIRI</b></br>JL XXXXXXXXXXX XXXXXXX</span></br>
+                                        <b>PT. KARYAMEGA PUTRA MANDIRI</b></br>{{ strtoupper(auth()->user()->branch->address) }}</span></br>
                                     <span style='font-size:12pt'>No :
                                         {{ ltrim(last(explode('-', $order->invoice_no)), '0') }},
                                         {{ \Carbon\Carbon::now()->locale('id-ID')->translatedFormat('d F Y') }}

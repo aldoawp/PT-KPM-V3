@@ -51,7 +51,8 @@ class DatabaseSeeder extends Seeder
         // Create branches
         for ($i = 0; $i < 8; $i++) {
             Branch::create([
-                "region" => ['malang', 'bekasi', 'bogor', 'tangerang', "cilegon", 'semarang', 'bandung', 'surabaya'][$i]
+                "region" => ['malang', 'bekasi', 'bogor', 'tangerang', "cilegon", 'semarang', 'bandung', 'surabaya'][$i],
+                "address" => ['jl. yos sudarso', 'jl. jendral sudirman', 'jl. gajah mada', 'jl. ki hajar dewantar', 'jl. sukarno hatta', 'jl. matahari', 'jl. p. diponogoro', 'jl. mulawarman'][$i]
             ]);
         }
 
@@ -127,7 +128,7 @@ class DatabaseSeeder extends Seeder
         Category::factory()->create(['name' => 'Sigaret Kretek Mesin']);
         Category::factory()->create(['name' => 'Rokok filter']);
         Category::factory()->create(['name' => 'Rokok non filter']);
-        
+
         Employee::factory(100)->create();
         Customer::factory(100)->create();
         for ($i = 0; $i < 100; $i++) {

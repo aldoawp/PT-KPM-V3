@@ -30,6 +30,7 @@
                         <tr class="ligth ligth-data">
                             <th>No.</th>
                             <th>Nama Daerah</th>
+                            <th>Alamat</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -38,6 +39,7 @@
                         <tr>
                             <td>{{ (($branches->currentPage() * 10) - 10) + $loop->iteration  }}</td>
                             <td>{{ $branch->region }}</td>
+                            <td>{{ $branch->address }}</td>
                             <td>
                                 <form action="{{ route('branch.destroy', $branch->id) }}" method="POST" style="margin-bottom: 5px">
                                     @method('delete')

@@ -96,17 +96,11 @@ class OrderController extends Controller
         $validator =
             \Validator::make($request->all(), [
                 'payment_status' => ['required', 'in:tunai,cek,bon'],
-                'pay' => ['required', 'numeric']
+                'pay' => ['required', 'numeric', 'min:0', 'max:' . $cart->total()]
             ]);
 
         if ($validator->fails()) {
-            if ($validator->errors()->has('payment_status')) {
-                return redirect()->back()->withErrors(['payment_status' => 'Pilih status pembayaran!']);
-            }
-
-            if ($validator->errors()->has('pay')) {
-                return redirect()->back()->withErrors(['pay' => 'Masukkan jumlah pembayaran!']);
-            }
+            return redirect()->route('pos.salesPos');
         }
 
         $invoice_no = IdGenerator::generate([
