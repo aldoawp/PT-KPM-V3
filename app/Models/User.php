@@ -75,13 +75,6 @@ class User extends Authenticatable
         return 'username';
     }
 
-    public function scopeFilter($query, array $filters)
-    {
-        $query->when($filters['search'] ?? false, function ($query, $search) {
-            return $query->where('name', 'like', '%' . $search . '%');
-        });
-    }
-
     public static function getPermissionGroups()
     {
         $permission_groups = Permission::select('group_name')->groupBy('group_name')->get();
@@ -127,5 +120,18 @@ class User extends Authenticatable
     public function attendence()
     {
         return $this->hasMany(Attendence::class, 'user_id', 'id');
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->leftJoin('branches', 'branches.id', '=', 'users.branch_id')
+                ->join('roles', 'roles.id', '=', 'users.role_id')
+                ->where('users.name', 'like', '%' . $search . '%')
+                ->orWhere('username', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->orWhere('branches.region', 'like', '%' . $search . '%')
+                ->orWhere('roles.name', 'like', '%' . $search . '%');
+        });
     }
 }
