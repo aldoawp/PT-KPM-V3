@@ -227,9 +227,19 @@ class OrderController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
-        $orders = Order::where('due', '>', '0')
-            ->sortable()
-            ->paginate($row);
+        $userRole = auth()->user()->role->name;
+
+        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+            $orders = Order::where('due', '>', '0')
+                ->sortable()
+                ->paginate($row);
+        } else {
+            $orders =
+                Order::where('due', '>', '0')
+                ->where('branch_id', auth()->user()->branch->id)
+                ->sortable()
+                ->paginate($row);
+        }
 
         return view('orders.pending-due', [
             'orders' => $orders

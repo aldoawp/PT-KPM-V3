@@ -65,6 +65,7 @@ Route::middleware(['permission:employee.menu'])->group(function () {
 // ====== EMPLOYEE ATTENDENCE ======
 Route::middleware(['permission:attendence.menu'])->group(function () {
     Route::resource('/employee/attendence', AttendenceController::class)->except(['show', 'update', 'destroy']);
+    Route::get('/employee/edit/{date}/{branch_id}', [AttendenceController::class, 'edit'])->name('attendence.edit');
 });
 
 // ====== SALARY EMPLOYEE ======
