@@ -61,11 +61,11 @@
                         <tr class="ligth ligth-data">
                             <th>No.</th>
                             <th>Foto</th>
-                            <th>@sortablelink('nama')</th>
+                            <th>@sortablelink('name', 'nama')</th>
                             <th>@sortablelink('email')</th>
-                            <th>@sortablelink('Np HP')</th>
-                            <th>@sortablelink('Nama Usaha')</th>
-                            <th>@sortablelink('Tipe')</th>
+                            <th>@sortablelink('phone', 'Np HP')</th>
+                            <th>@sortablelink('shopname', 'Nama Usaha')</th>
+                            <th>@sortablelink('type', 'Tipe')</th>
                             <th>Action</th>
                         </tr>
                     </thead>
