@@ -68,7 +68,7 @@
                             <tr class="ligth ligth-data">
                                 <th>No.</th>
                                 <th>Foto</th>
-                                <th>@sortablelink('nama')</th>
+                                <th>@sortablelink('name', 'nama')</th>
                                 <th>@sortablelink('username')</th>
                                 <th>@sortablelink('email')</th>
                                 <th>Peran</th>
