@@ -96,17 +96,11 @@ class OrderController extends Controller
         $validator =
             \Validator::make($request->all(), [
                 'payment_status' => ['required', 'in:tunai,cek,bon'],
-                'pay' => ['required', 'numeric']
+                'pay' => ['required', 'numeric', 'min:0', 'max:' . $cart->total()]
             ]);
 
         if ($validator->fails()) {
-            if ($validator->errors()->has('payment_status')) {
-                return redirect()->back()->withErrors(['payment_status' => 'Pilih status pembayaran!']);
-            }
-
-            if ($validator->errors()->has('pay')) {
-                return redirect()->back()->withErrors(['pay' => 'Masukkan jumlah pembayaran!']);
-            }
+            return redirect()->route('pos.salesPos');
         }
 
         $invoice_no = IdGenerator::generate([
@@ -201,7 +195,21 @@ class OrderController extends Controller
 
         Order::findOrFail($order_id)->update(['order_status' => 'complete']);
 
-        return Redirect::route('order.invoiceDownload', $order_id);
+        return Redirect::route('order.viewReceipt', $order_id);
+    }
+
+    public function viewReceipt(int $order_id)
+    {
+        $order = Order::where('id', $order_id)->first();
+        $orderDetails = OrderDetails::with('product')
+            ->where('order_id', $order_id)
+            ->orderBy('order_id', 'DESC')
+            ->get();
+
+        return view('orders.receipt-order', [
+            'order' => $order,
+            'orderDetails' => $orderDetails,
+        ]);
     }
 
     public function invoiceDownload(int $order_id)

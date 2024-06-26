@@ -28,6 +28,17 @@
                                         </div>
                                     @enderror
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <label for="address">Alamat <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control @error('address') is-invalid @enderror"
+                                        id="address" name="address" value="{{ old('address', $branch->address) }}" required
+                                        autocomplete="off">
+                                    @error('address')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
                             </div>
                             <!-- end: Input Data -->
                             <div class="mt-2">

@@ -22,24 +22,33 @@ class AdvanceSalaryController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
-        if (request('search')) {
-            Employee::firstWhere('name', request('search'));
-        }
+        $advance_salary = [];
 
-        return view('advance-salary.index', [
-            'advance_salaries' => AdvanceSalary::with(['employee'])
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
+            $advance_salary = AdvanceSalary::with(['employee'])
                 ->join('employees', 'advance_salaries.employee_id', '=', 'employees.id')
-                ->when(auth()->user()->branch_id != 1, function ($query) {
-                    $query->where('employees.branch_id', auth()->user()->branch_id);
-                })
                 ->orderByDesc('advance_salaries.date')
                 ->select('advance_salaries.*') // Ensure only advance_salaries columns are selected to avoid ambiguity
                 ->filter(request(['search']))
                 ->sortable()
                 ->paginate($row)
-                ->appends(request()->query()),
+                ->appends(request()->query());
+        } else {
+            $advance_salary = AdvanceSalary::with(['employee'])
+                ->join('employees', 'advance_salaries.employee_id', '=', 'employees.id')
+                ->orderByDesc('advance_salaries.date')
+                ->select('advance_salaries.*') // Ensure only advance_salaries columns are selected to avoid ambiguity
+                ->where('employees.branch_id', auth()->user()->branch_id)
+                ->filter(request(['search']))
+                ->sortable()
+                ->paginate($row)
+                ->appends(request()->query());
+        }
+
+        return view('advance-salary.index', [
+            'advance_salaries' => $advance_salary,
         ]);
-        
+
     }
 
     /**
@@ -49,7 +58,7 @@ class AdvanceSalaryController extends Controller
     {
         return view('advance-salary.create', [
             'employees' => Employee::all()
-                ->when(auth()->user()->branch_id != 1, fn ($q) => $q
+                ->when(auth()->user()->branch_id != 1, fn($q) => $q
                     ->where('branch_id', auth()->user()->branch_id))
                 ->sortBy('name'),
         ]);
@@ -75,7 +84,7 @@ class AdvanceSalaryController extends Controller
 
 
         $advanced = AdvanceSalary::where('employee_id', $request->employee_id)
-            ->whereDate('date', 'LIKE',  $getYm . '%')
+            ->whereDate('date', 'LIKE', $getYm . '%')
             ->get();
 
         if ($advanced->isEmpty()) {
@@ -123,7 +132,7 @@ class AdvanceSalaryController extends Controller
         $oldYm = Carbon::createFromFormat('Y-m-d', $advanceSalary->date)->format('Y-m');
 
         $advanced = AdvanceSalary::where('employee_id', $request->id)
-            ->whereDate('date', 'LIKE',  $newYm . '%')
+            ->whereDate('date', 'LIKE', $newYm . '%')
             ->first();
 
         if (!$advanced && $newYm == $oldYm) {

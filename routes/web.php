@@ -117,7 +117,9 @@ Route::middleware(['permission:pos.menu'])->group(function () {
     Route::post('/pos/restock/order', [RestockController::class, 'storeOrder'])->name('pos.restock.storeOrder')->middleware('notSalesMiddleware');
     Route::post('/pos/return/order', [ReturnController::class, 'storeOrder'])->name('pos.return.storeOrder')->middleware('notSalesMiddleware');
 
-    Route::post('/pos/invoice/create', [PosController::class, 'createInvoice'])->name('pos.createInvoice');
+    /* Route::post('/pos/invoice/create', [PosController::class, 'createInvoice'])->name('pos.createInvoice'); */
+
+    Route::post('/pos/receipt/create', [PosController::class, 'createReceipt'])->name('pos.createReceipt');
 });
 
 // ====== ORDERS ======
@@ -127,6 +129,8 @@ Route::middleware(['permission:orders.menu'])->group(function () {
     Route::get('/orders/details/{order_id}', [OrderController::class, 'orderDetails'])->name('order.orderDetails');
     Route::put('/orders/update/status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
     Route::get('/orders/invoice/download/{order_id}', [OrderController::class, 'invoiceDownload'])->name('order.invoiceDownload');
+
+    Route::get('/orders/receipt/{order_id}', [OrderController::class, 'viewReceipt'])->name('order.viewReceipt');
 
     Route::get('/orders/pending/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.pending.deleteOrder')->middleware('notSalesMiddleware');
     Route::get('/orders/complete/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.complete.deleteOrder')->middleware('notSalesMiddleware');
@@ -153,10 +157,6 @@ Route::middleware(['permission:report.menu'])->group(function () {
     Route::get('/report/penjualan', [ReportController::class, 'index_penjualan'])->name('report.index_penjualan');
     Route::post('/report/distribusi/generate', [ReportController::class, 'generateDistributionReport'])->name('report.distributionReport');
     Route::post('/report/penjualan/generate', [ReportController::class, 'generateSalesReport'])->name('report.salesReport');
-});
-
-Route::get('/struct', function () {
-    return view('orders.struct');
 });
 
 // ====== DATABASE BACKUP ======
