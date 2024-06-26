@@ -13,10 +13,10 @@
                     </div>
                 @endif
                 @if (session()->has('warning'))
-                    <div class="alert text-white bg-warning" role="alert">
+                    <div class="alert alert-danger" role="alert">
                         <div class="iq-alert-text">{{ session('warning') }}</div>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <i class="ri-close-line"></i>
+                            <i class="ri-close-line text-danger"></i>
                         </button>
                     </div>
                 @endif

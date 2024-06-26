@@ -73,7 +73,7 @@ Route::middleware(['permission:salary.menu'])->group(function () {
     // PaySalary
     Route::resource('/pay-salary', PaySalaryController::class)->except(['show', 'create', 'edit', 'update']);
     Route::get('/pay-salary/history', [PaySalaryController::class, 'payHistory'])->name('pay-salary.payHistory');
-    Route::get('/pay-salary/history/{id}', [PaySalaryController::class, 'payHistoryDetail'])->name('pay-salary.payHistoryDetail');
+    Route::get('/pay-salary/history/{date}/{employee_id}', [PaySalaryController::class, 'payHistoryDetail'])->name('pay-salary.payHistoryDetail');
     Route::get('/pay-salary/{id}', [PaySalaryController::class, 'paySalary'])->name('pay-salary.paySalary');
 
     // Advance Salary

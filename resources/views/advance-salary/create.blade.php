@@ -67,7 +67,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="advance_salary">Jumlah Pinjaman</label>
-                                <input type="text" class="form-control @error('advance_salary') is-invalid @enderror" id="advance_salary" name="advance_salary" value="{{ old('advance_salary') }}">
+                                <input type="text" class="form-control @error('advance_salary') is-invalid @enderror" id="advance_salary" name="advance_salary" value="{{ old('advance_salary') }}" placeholder="0">
                                 @error('advance_salary')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -78,7 +78,7 @@
                         <!-- end: Input Data -->
                         <div class="mt-2">
                             <button type="submit" class="btn btn-primary mr-2">Simpan</button>
-                            <a class="btn bg-danger" href="{{ route('advance-salary.index') }}">Batalkan</a>
+                            <a class="btn bg-danger" href="{{ route('pay-salary.index') }}">Kembali</a>
                         </div>
                     </form>
                 </div>
