@@ -59,7 +59,7 @@
                 <table class="table mb-0">
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
-                            <th>No</th>
+                            <th>No.</th>
                             <th>Foto</th>
                             <th>@sortablelink('name', 'nama')</th>
                             <th>@sortablelink('email')</th>
