@@ -160,7 +160,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                <div class="form-group ml-auto">
                                     <div class="input-group">
                                         <input type="text" id="search" class="form-control" name="search"
                                             placeholder="Cari produk..." value="{{ request('search') }}">

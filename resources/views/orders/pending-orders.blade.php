@@ -43,7 +43,6 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-sm-3 align-self-center" for="search">Search:</label>
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <input type="text" id="search" class="form-control" name="search"
