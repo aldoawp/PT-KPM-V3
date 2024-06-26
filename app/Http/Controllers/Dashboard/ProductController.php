@@ -34,9 +34,7 @@ class ProductController extends Controller
 
         $products = [];
 
-        $userRole = auth()->user()->role->name;
-
-        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()){
             $products = Product::with(['category', 'supplier']);
         } else {
             $products = auth()->user()->branch->products()->with(['category', 'supplier']);
@@ -45,7 +43,7 @@ class ProductController extends Controller
         return view('products.index', [
             'products' => $products
                 ->filter(request(['search']))
-                ->sortable()
+                ->sortable(['created_at' => 'desc'])
                 ->paginate($row)
                 ->appends(request()->query()),
         ]);
