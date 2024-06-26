@@ -50,7 +50,12 @@ class Customer extends Model
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
-            return $query->where('name', 'like', '%' . $search . '%')->orWhere('shopname', 'like', '%' . $search . '%');
+            return $query->leftJoin('branches', 'customers.branch_id', '=', 'branches.id')
+                ->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->orWhere('phone', 'like', '%' . $search . '%')
+                ->orWhere('shopname', 'like', '%' . $search . '%')
+                ->orWhere('branches.region', 'like', '%' . $search . '%');
         });
     }
 }
