@@ -124,7 +124,7 @@
                                         <option selected="" disabled>-- Pilih Daerah --</option>
                                         @foreach ($branches as $branch)
                                             <option @if ($userData->branch_id == $branch->id) selected @endif
-                                                value="{{ $branch->id }}">{{ $branch->region }}</option>
+                                                value="{{ $branch->id }}">{{ Str::title($branch->region) }}</option>
                                         @endforeach
                                     </select>
                                     @error('branch_id')

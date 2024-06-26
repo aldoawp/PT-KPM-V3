@@ -25,8 +25,18 @@ class UserController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
+        if (auth()->user()->hasRole('ASS')) {
+            $users = User::where('branch_id', auth()->user()->branch_id)
+                ->filter(request(['search']))
+                ->sortable()
+                ->paginate($row)
+                ->appends(request()->query());
+        } else {
+            $users = User::filter(request(['search']))->sortable()->paginate($row)->appends(request()->query());
+        }
+
         return view('users.index', [
-            'users' => User::filter(request(['search']))->sortable()->paginate($row)->appends(request()->query()),
+            'users' => $users,
         ]);
     }
 
@@ -35,9 +45,19 @@ class UserController extends Controller
      */
     public function create()
     {
+        if (auth()->user()->hasRole('ASS')) {
+            $roles = Role::where('name', 'Sales')
+                ->get();
+            $branches = Branch::where('id', auth()->user()->branch_id)
+                ->get();
+        } else {
+            $roles = Role::all();
+            $branches = Branch::all();
+        };
+
         return view('users.create', [
-            'roles' => Role::all(),
-            'branches' => Branch::all(),
+            'roles' => $roles,
+            'branches' => $branches,
         ]);
     }
 
@@ -103,10 +123,20 @@ class UserController extends Controller
             return Redirect::route('users.index')->with('error', 'You are not allowed to edit SuperAdmin role!');
         }
 
+        if (auth()->user()->hasRole('ASS')) {
+            $roles = Role::where('name', 'Sales')
+                ->get();
+            $branches = Branch::where('id', auth()->user()->branch_id)
+                ->get();
+        } else {
+            $roles = Role::all();
+            $branches = Branch::all();
+        };
+
         return view('users.edit', [
             'userData' => $user,
-            'roles' => Role::all(),
-            'branches' => Branch::all(),
+            'roles' => $roles,
+            'branches' => $branches,
         ]);
     }
 

@@ -97,7 +97,7 @@
                                             <div class="d-flex align-items-center list-action">
                                                 <a class="btn btn-info mr-2" data-toggle="tooltip" data-placement="top"
                                                     title="" data-original-title="Tampilkan"
-                                                    href="{{ route('pay-salary.payHistoryDetail', $paySalary->id) }}">
+                                                    href="{{ route('pay-salary.payHistoryDetail', ['date' => $paySalary->date, 'employee_id' => $paySalary->employee_id]) }}">
                                                     <i class="ri-eye-line mr-0"></i>
                                                 </a>
                                                 <button type="submit" class="btn btn-warning mr-2 border-none"

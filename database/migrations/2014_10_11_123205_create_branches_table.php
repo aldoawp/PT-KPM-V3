@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->integerIncrements('id');
             $table->string('region')->unique();
-            $table->string('address');
+            $table->string('address')->nullable();
 
             $table->timestamps();
         });

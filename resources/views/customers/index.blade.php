@@ -65,13 +65,14 @@
                             <th>@sortablelink('email')</th>
                             <th>@sortablelink('phone', 'No HP')</th>
                             <th>@sortablelink('shopname', 'Nama Usaha')</th>
+                            <th>@sortablelink('branch.region', 'Kota')</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="light-body">
                         @foreach ($customers as $customer)
                         <tr>
-                            <td>{{ (($customers->currentPage() * 10) - 10) + $loop->iteration  }}</td>
+                            <td class="text-center">{{ (($customers->currentPage() * 10) - 10) + $loop->iteration  }}</td>
                             <td>
                                 <img class="avatar-60 rounded" src="{{ $customer->photo ? asset('storage/customers/'.$customer->photo) : asset('assets/images/user/1.png') }}">
                             </td>
@@ -79,6 +80,7 @@
                             <td>{{ $customer->email }}</td>
                             <td>{{ $customer->phone }}</td>
                             <td>{{ $customer->shopname }}</td>
+                            <td>{{ Str::title($customer->branch->region) }}</td>
                             <td>
                                 <div class="d-flex align-items-center list-action">
                                     <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tampilkan"

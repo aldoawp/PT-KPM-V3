@@ -46,7 +46,7 @@
                                         <tbody class="ligth-body">
                                             @foreach ($employees as $employee)
                                             <tr>
-                                                <th scope="row">{{ $key = $loop->iteration  }}</th>
+                                                <td scope="row">{{ $key = $loop->iteration  }}</td>
                                                 <td>{{ $employee->name }}</td>
                                                 <td>
                                                     <input type="hidden" name="employee_id[{{ $key }}]" value="{{ $employee->id }}">

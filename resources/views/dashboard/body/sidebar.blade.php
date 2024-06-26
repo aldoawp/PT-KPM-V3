@@ -183,7 +183,7 @@
                         </a>
                         <ul id="advance-salary" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
                             style="">
-                            <li
+                            {{-- <li
                                 class="{{ Request::is(['advance-salary', 'advance-salary/*/edit']) ? 'active' : '' }}">
                                 <a href="{{ route('advance-salary.index') }}">
                                     <i class="fa-solid fa-arrow-right"></i><span>Daftar Pinjaman</span>
@@ -193,7 +193,7 @@
                                 <a href="{{ route('advance-salary.create') }}">
                                     <i class="fa-solid fa-arrow-right"></i><span>Tambah Gaji</span>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="{{ Request::is('pay-salary') ? 'active' : '' }}">
                                 <a href="{{ route('pay-salary.index') }}">
                                     <i class="fa-solid fa-arrow-right"></i><span>Pembayaran Gaji</span>

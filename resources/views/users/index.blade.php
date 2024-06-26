@@ -71,6 +71,7 @@
                                 <th>@sortablelink('name', 'nama')</th>
                                 <th>@sortablelink('username')</th>
                                 <th>@sortablelink('email')</th>
+                                <th>Daerah</th>
                                 <th>Peran</th>
                                 <th>Action</th>
                             </tr>
@@ -90,18 +91,14 @@
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->username }}</td>
                                         <td>{{ $item->email }}</td>
-                                        <td>
-                                            {{ $item->role->name }}
-                                        </td>
+                                        <td>{{ Str::title($item->branch->region) }}</td>
+                                        <td>{{ $item->role->name }}</td>
                                         <td>
                                             <form action="{{ route('users.destroy', $item->username) }}" method="POST"
                                                 style="margin-bottom: 5px">
                                                 @method('delete')
                                                 @csrf
                                                 <div class="d-flex align-items-center list-action">
-                                                    {{-- <a class="btn btn-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                            href="{{ route('users.show', $item->username) }}"><i class="ri-eye-line mr-0"></i>
-                                        </a> --}}
                                                     <a class="btn btn-success mr-2" data-toggle="tooltip"
                                                         data-placement="top" title="" data-original-title="Ubah"
                                                         href="{{ route('users.edit', $item->username) }}"><i
@@ -115,7 +112,6 @@
                                                 </div>
                                             </form>
                                         </td>
-
                                     </tr>
                                 @endif
                             @empty

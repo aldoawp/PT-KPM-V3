@@ -19,7 +19,8 @@
 Pengalaman gaji pembayaran, memastikan <br> retensi gaji gaji. </p>
                 </div>
                 <div>
-                <a href="{{ route('advance-salary.index') }}" class="btn btn-danger add-list"><i class="fa-solid fa-trash mr-3"></i>Hapus Pencarian</a>
+                    <a href="{{ route('advance-salary.create') }}" class="btn btn-primary add-list"><i class="fas fa-plus mr-3"></i></i>Tambah Gaji</a>
+                    <a href="{{ route('advance-salary.index') }}" class="btn btn-danger add-list"><i class="fa-solid fa-trash mr-3"></i>Hapus Pencarian</a>
                 </div>
             </div>
         </div>
@@ -83,6 +84,9 @@ Pengalaman gaji pembayaran, memastikan <br> retensi gaji gaji. </p>
                             <td>Rp {{ number_format($advanceSalary->employee->salary - $advanceSalary->advance_salary, 0, ',', '.') }}</td>
                             <td>
                                 <div class="d-flex align-items-center list-action">
+                                    <a class="btn btn-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
+                                            href="{{ route('advance-salary.edit', $advanceSalary->id) }}""><i class="ri-pencil-line mr-0"></i>
+                                    </a>
                                     <a class="btn btn-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bayar"
                                         href="{{ route('pay-salary.paySalary', $advanceSalary->id) }}">Bayar</i>
                                     </a>

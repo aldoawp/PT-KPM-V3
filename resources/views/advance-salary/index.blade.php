@@ -64,6 +64,8 @@
                             <th>@sortablelink('employee.name', 'nama')</th>
                             <th>@sortablelink('date', 'tanggal')</th>
                             <th>@sortablelink('advance_salary', 'Pinjaman')</th>
+                            <th>Daerah</th>
+                            <th>ASS</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -77,6 +79,8 @@
                             <td>{{ $advance_salary->employee->name }}</td>
                             <td>{{ Carbon\Carbon::parse($advance_salary->date)->format('M/Y') }}</td>
                             <td>{{ $advance_salary->advance_salary ? 'Rp '.number_format($advance_salary->advance_salary, 0, ',', '.') : 'No Advance' }}</td>
+                            <td>w</td>
+                            <td>w</td>
                             <td>
                                 <form action="{{ route('advance-salary.destroy', $advance_salary->id) }}" method="POST" style="margin-bottom: 5px">
                                     @method('delete')

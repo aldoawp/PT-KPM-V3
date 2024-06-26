@@ -51,6 +51,8 @@
                         <tr class="ligth ligth-data">
                             <th>No.</th>
                             <th>@sortablelink('date', 'tanggal')</th>
+                            <th>Daerah</th>
+                            <th>Penaggung Jawab</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -59,14 +61,13 @@
                         <tr>
                             <td>{{ (($attendences->currentPage() * 10) - 10) + $loop->iteration  }}</td>
                             <td>{{ $attendence->date }}</td>
+                            <td>{{ Str::title($attendence->branch->region) }}</td>
+                            <td>{{ Str::title($attendence->name) }}</td>
                             <td>
                                 <div class="d-flex align-items-center list-action">
                                     <a class="btn btn-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ubah"
-                                        href="{{ route('attendence.edit', $attendence->date) }}"><i class="ri-pencil-line mr-0"></i>
+                                        href="{{ route('attendence.edit', ['date' => $attendence->date,'branch_id' => $attendence->branch_id]) }}"><i class="ri-pencil-line mr-0"></i>
                                     </a>
-                                    {{-- <a class="btn btn-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                        href="{{ route('attendence.show', $attendence->date) }}"><i class="ri-eye-line mr-0"></i>
-                                    </a> --}}
                                 </div>
                             </td>
                         </tr>

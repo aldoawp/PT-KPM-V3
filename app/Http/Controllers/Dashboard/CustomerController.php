@@ -38,6 +38,7 @@ class CustomerController extends Controller
 
         return view('customers.index', [
             'customers' => $customers
+                ->with('branch')
                 ->sortable()
                 ->paginate($row)
                 ->appends(request()->query())
