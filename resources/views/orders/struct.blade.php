@@ -18,7 +18,7 @@
 <body style='font-family:tahoma; font-size:8pt;'>
     <center>
         <table style='width:350px; font-size:16pt; font-family:calibri; border-collapse: collapse;' border = '0'>
-            <td width='70%' align='CENTER' vertical-align:top'><span style='color:black;'>
+            <td width='70%' align='CENTER' style='vertical-align:top'><span style='color:black;'>
                     <b>PT. KARYAMEGA PUTRA MANDIRI</b></br>JL XXXXXXXXXXX XXXXXXX</span></br>
                 <span style='font-size:12pt'>No. : xxxxx, 11 Juni 2020 (user:xxxxx), 11:57:50</span></br>
             </td>
