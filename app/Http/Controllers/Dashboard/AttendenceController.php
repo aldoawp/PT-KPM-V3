@@ -28,7 +28,7 @@ class AttendenceController extends Controller
                 ->when(auth()->user()->branch_id != 1, function ($query) {
                     return $query->where('branch_id', auth()->user()->branch_id);
                 })
-                ->orderBy('date', 'desc')
+                ->sortable(['date' => 'desc'])
                 ->paginate($row)
                 ->appends(request()->query()),
         ]);

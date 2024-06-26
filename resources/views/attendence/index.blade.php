@@ -49,8 +49,8 @@
                 <table class="table mb-0">
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
-                            <th>No.</th>
-                            <th>@sortablelink('tanggal')</th>
+                            <th width="20">No.</th>
+                            <th>@sortablelink('date', 'tanggal')</th>
                             <th>Action</th>
                         </tr>
                     </thead>
