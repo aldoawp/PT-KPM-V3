@@ -100,7 +100,7 @@ class OrderController extends Controller
             ]);
 
         if ($validator->fails()) {
-            return redirect()->route('pos.salesPos');
+            return redirect()->route('pos.salesPos')->with('warning', 'Anda belum memilih jenis pembayaran!');
         }
 
         $invoice_no = IdGenerator::generate([
