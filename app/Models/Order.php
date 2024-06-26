@@ -53,4 +53,18 @@ class Order extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->leftJoin('customers', 'orders.customer_id', '=', 'customers.id')
+                ->leftJoin('branches', 'branches.id', '=', 'customers.branch_id')
+                ->leftJoin('users', 'users.id', '=', 'orders.user_id')
+                ->where('invoice_no', 'like', '%' . $search . '%')
+                ->orWhere('payment_status', 'like', '%' . $search . '%')
+                ->orWhere('customers.name', 'like', '%' . $search . '%')
+                ->orWhere('branches.region', 'like', '%' . $search . '%')
+                ->orWhere('users.name', 'like', '%' . $search . '%');
+        });
+    }
 }

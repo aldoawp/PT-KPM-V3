@@ -39,7 +39,7 @@ class OrderController extends Controller
         }
 
         return view('orders.pending-orders', [
-            'orders' => $orders->sortable(['created_at' => 'desc'])->paginate($row)
+            'orders' => $orders->filter(request(['search']))->sortable(['created_at' => 'desc'])->paginate($row)
         ]);
     }
 
@@ -61,7 +61,7 @@ class OrderController extends Controller
         }
 
         return view('orders.complete-orders', [
-            'orders' => $orders->sortable(['created_at' => 'desc'])->paginate($row)
+            'orders' => $orders->filter(request(['search']))->sortable(['created_at' => 'desc'])->paginate($row)
         ]);
     }
 
@@ -240,7 +240,7 @@ class OrderController extends Controller
         }
 
         return view('orders.pending-due', [
-            'orders' => $orders->sortable(['created_at' => 'desc'])->paginate($row)
+            'orders' => $orders->filter(request(['search']))->sortable(['created_at' => 'desc'])->paginate($row)
         ]);
     }
 

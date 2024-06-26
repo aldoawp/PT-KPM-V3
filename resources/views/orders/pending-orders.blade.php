@@ -42,15 +42,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input type="text" id="search" class="form-control" name="search"
-                                        placeholder="Cari pesanan..." value="{{ request('search') }}">
-                                    <div class="input-group-append">
-                                        <button type="submit" class="input-group-text bg-primary"><i
-                                                class="fa-solid fa-magnifying-glass font-size-20"></i></button>
-                                    </div>
+                        <div class="form-group ml-auto">
+                            <div class="input-group">
+                                <input type="text" id="search" class="form-control" name="search"
+                                    placeholder="Cari pesanan..." value="{{ request('search') }}">
+                                <div class="input-group-append">
+                                    <button type="submit" class="input-group-text bg-primary"><i
+                                            class="fa-solid fa-magnifying-glass font-size-20"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +68,7 @@
                                 <th>Pembayaran</th>
                                 <th>@sortablelink('total', 'total')</th>
                                 <th>Sales</th>
-                                <th>Region</th>
+                                <th>Daerah</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
