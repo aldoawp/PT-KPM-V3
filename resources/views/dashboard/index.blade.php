@@ -234,16 +234,38 @@
                             <div class="card-body card-item-right">
                                 <div class="d-flex align-items-top">
                                     <div class="bg-warning-light rounded">
-                                        <img src="../assets/images/product/04.png" class="style-img img-fluid m-auto"
+                                        <img src="../assets/images/product/04.png" class="style-img img-fluid m-auto" 
                                             alt="image">
                                     </div>
                                     <div class="style-text text-left ml-3">
-                                        <h5 class="mb-2">{{ $sales->name }}</h5>
-                                        {{-- <p class="mb-2"><span class="badge badge-pill badge-success">Total
+                                        <h5 class="mb-2"><span class="mr-2 fw-bold bg-primary px-2 py-1 rounded-circle small">
+                                            {{ $index + 1 }}</span>{{ $sales->name }}</h5>
+                                        @if (auth()->user()->hasRole('SuperAdmin') || auth()->user()->hasRole('Owner'))
+                                            <p class="mb-2"><span class="badge badge-pill badge-success">Total
                                                 Pendapatan:</span><br><strong>Rp
                                                 {{ number_format($sales->total_sales, 0, ',', '.') }}</strong></p>
-                                        <p class="mb-0"><span class="badge badge-pill badge-success">Total Produk
-                                                Terjual:</span><br><strong>{{ $sales->total_products }}</strong></p> --}}
+                                            <p class="mb-0"><span class="badge badge-pill badge-success">Total Produk
+                                                    Terjual:</span><br><strong>{{ $sales->total_products }}</strong></p>
+                                        @endif
+
+                                        @if (auth()->user()->hasRole('ASS'))
+                                            @if ($index + 1 == 1)
+                                                <div>Selamat! Kamu memiliki performa yang paling baik diantara rekanmu.</div>
+                                            @endif
+
+                                            @if ($index + 1 == 2)
+                                                <div>Bagus! Kamu di peringkat kedua. Terus kejar posisi teratas!</div>
+                                            @endif
+
+                                            @if ($index + 1 == 3)
+                                                <div>Hebat! Kamu di peringkat ketiga. Tetap semangat!</div>
+                                            @endif
+
+                                            @if ($index + 1 > 3)
+                                                <div>Tetap semangat! Tingkatkan lagi performamu!</div>
+                                            @endif
+                                        @endif
+                                        
                                     </div>
                                 </div>
                             </div>

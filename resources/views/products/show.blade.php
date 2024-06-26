@@ -71,17 +71,17 @@
                             <input type="text" class="form-control bg-white" value="{{  $product->product_garage }}" readonly>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Lokasi Toko</label>
+                            <label>Stok Produk</label>
                             <input type="text" class="form-control bg-white" value="{{  $product->product_store }}" readonly>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Tanggal Pembelian</label>
+                            <label>Tanggal Produksi</label>
                             <input class="form-control bg-white" id="buying_date" value="{{ $product->buying_date }}" readonly/>
                         </div>
-                        <div class="form-group col-md-6">
+                        {{-- <div class="form-group col-md-6">
                             <label>Tanggal Kadaluarsa</label>
                             <input class="form-control bg-white" id="expire_date" value="{{ $product->expire_date }}" readonly />
-                        </div>
+                        </div> --}}
                         <div class="form-group col-md-6">
                             <label>Harga Modal</label>
                             <input type="text" class="form-control bg-white" value="{{  $product->buying_price }}" readonly>

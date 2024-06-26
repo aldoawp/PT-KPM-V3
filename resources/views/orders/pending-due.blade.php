@@ -85,7 +85,7 @@
                                     <td>{{ Carbon\Carbon::parse($order->order_date)->format('d/m/Y') }}</td>
                                     <td>{{ Str::title($order->payment_status) }}</td>
                                     <td>{{ $order->user->name }}</td>
-                                    <td>{{ $order->customer->branch->region }}</td>
+                                    <td>{{ Str::title($order->customer->branch->region) }}</td>
                                     <td>
                                         <span class="btn btn-warning text-white">
                                             {{ number_format($order->pay, 0, ',', '.') }}

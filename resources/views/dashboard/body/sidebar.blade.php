@@ -142,9 +142,9 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->can('customer.menu'))
+                @if (auth()->user()->can('customer.menu') && !auth()->user()->isSalesRole())
                     <li class="{{ Request::is('customers*') ? 'active' : '' }}">
-                        <a href="{{ auth()->user()->isSalesRole() ? route('customers.create') : route('customers.index') }}" class="svg-icon">
+                        <a href="{{ route('customers.index') }}" class="svg-icon">
                             <i class="fa-solid fa-users"></i>
                             <span class="ml-3">Pelanggan</span>
                         </a>

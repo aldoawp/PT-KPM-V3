@@ -66,7 +66,7 @@ class CustomerController extends Controller
         $rules = [
             'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
-            'email' => 'email|max:50|unique:customers,email',
+            // 'email' => 'email|max:50|unique:customers,email',
             'phone' => 'required|string|max:15|unique:customers,phone',
             'shopname' => 'required|string|max:50',
             'account_holder' => 'max:50',
@@ -95,17 +95,23 @@ class CustomerController extends Controller
         Customer::create($validatedData);
 
         // Check if there is a 'previous_url' in the session
-        if ($request->session()->has('previous_url')) {
-            $previousUrl = $request->session()->get('previous_url');
-            $request->session()->forget('previous_url');
-            return redirect($previousUrl)->with('success', 'Pelanggan telah dibuat!')->withInput();
-        }
+        // if ($request->session()->has('previous_url')) {
+        //     $previousUrl = $request->session()->get('previous_url');
+        //     $request->session()->forget('previous_url');
+        //     return redirect($previousUrl)->with('success', 'Pelanggan telah dibuat!')->withInput();
+        // }
 
+        // Redirect for when the user is Sales
         if (auth()->user()->isSalesRole()) {
-            return Redirect::route('pos.salesPos');
+            return Redirect::route('pos.salesPos')->with('success', 'Pelanggan telah dibuat!');
         }
 
-        return Redirect::route('customers.index')->with('success', 'Pelanggan telah dibuat!');
+        // Redirect for when the user is not Sales
+        if (url()->previous() == 'http://127.0.0.1:8000/customers/create?previous_url=http%3A%2F%2F127.0.0.1%3A8000%2Fpos%2Fsales') {
+            return Redirect::route('pos.salesPos')->with('success', 'Pelanggan telah dibuat!');
+        } else {
+            return Redirect::route('customers.index')->with('success', 'Pelanggan telah dibuat!');
+        }
     }
 
     /**

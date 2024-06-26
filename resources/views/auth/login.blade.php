@@ -9,8 +9,11 @@
                         <div class="col-lg-7 align-self-center">
                             <div class="p-3">
 
-                                <h2 class="mb-2">Log In</h2>
-                                <p>Login to stay connected.</p>
+                                <img src="{{ asset('assets/images/logo-kpm-notext.png') }}" alt="logo-kpm" class="rounded avatar-50 mb-4 d-sm-none">
+                                <h2 class="mb-2">
+                                    Log In
+                                </h2>
+                                <p>Akses terbatas hanya untuk PT KPM.</p>
 
                                 <form action="{{ route('login') }}" method="POST">
                                     @csrf
@@ -52,13 +55,13 @@
                                             <a href="#" class="text-primary float-right">Forgot Password?</a>
                                         </div> --}}
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Login</button>
+                                    <button type="submit" class="btn btn-primary" style="background-color: #2F318B; border-color: #2F318B;">Login</button>
                                 </form>
                             </div>
                         </div>
 
                         <div class="col-lg-5 content-right">
-                            <img src="{{ asset('assets/images/login/01.png') }}" class="img-fluid image-right"
+                            <img src="{{ asset('assets/images/logo-kpm-notext.png') }}" class="img-fluid image-right"
                                 alt="">
                         </div>
                     </div>
