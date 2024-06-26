@@ -29,7 +29,7 @@
             </div>
 
             <div class="col-lg-12">
-                <form action="{{ route('advance-salary.index') }}" method="get">
+                <form action="{{ route('pay-salary.index') }}" method="get">
                     <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <div class="form-group row">
                             <label for="row" class="col-sm-3 align-self-center">Baris:</label>
