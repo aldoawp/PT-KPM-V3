@@ -39,13 +39,6 @@ class Employee extends Model
         'id'
     ];
 
-    public function scopeFilter($query, array $filters)
-    {
-        $query->when($filters['search'] ?? false, function ($query, $search) {
-            return $query->where('name', 'like', '%' . $search . '%');
-        });
-    }
-
     public function advance_salaries()
     {
         return $this->hasMany(AdvanceSalary::class);
@@ -54,5 +47,17 @@ class Employee extends Model
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id', 'id');
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->leftJoin('branches', 'employees.branch_id', '=', 'branches.id')
+                ->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->orWhere('phone', 'like', '%' . $search . '%')
+                ->orWhere('salary', 'like', '%' . $search . '%')
+                ->orWhere('branches.region', 'like', '%' . $search . '%');
+        });
     }
 }

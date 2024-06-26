@@ -24,13 +24,13 @@ class EmployeeController extends Controller
         }
 
         if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
-            $employees = Employee::filter(request(['search']))->sortable()->paginate($row)->appends(request()->query());
+            $employees = Employee::filter(request(['search']));
         } else {
-            $employees = Employee::filter(request(['search']))->where('branch_id', auth()->user()->branch_id)->sortable()->paginate($row)->appends(request()->query());
+            $employees = Employee::filter(request(['search']))->where('branch_id', auth()->user()->branch_id);
         }
 
         return view('employees.index', [
-            'employees' => $employees,
+            'employees' => $employees->sortable()->paginate($row)->appends(request()->query()),
         ]);
     }
 
