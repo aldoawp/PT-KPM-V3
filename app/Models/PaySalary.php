@@ -32,7 +32,8 @@ class PaySalary extends Model
 
     protected $with = ['employee'];
 
-    public function employee(){
+    public function employee()
+    {
         return $this->belongsTo(Employee::class, 'employee_id', 'id');
     }
 
@@ -40,7 +41,8 @@ class PaySalary extends Model
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
             return $query->whereHas('employee', function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%');
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('salary', 'like', '%' . $search . '%');
             });
         });
     }
