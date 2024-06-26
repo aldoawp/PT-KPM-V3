@@ -82,7 +82,7 @@
                                     <td>{{ $orders->currentPage() * 10 - 10 + $loop->iteration }}</td>
                                     <td>{{ $order->invoice_no }}</td>
                                     <td>{{ $order->customer->name }}</td>
-                                    <td>{{ date('d-m-Y', $order->create_at) }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d/m/Y') }}</td>
                                     <td>Rp {{ number_format($order->pay, 0, ',', '.') }}</td>
                                     <td>{{ Str::title($order->payment_status) }}</td>
                                     <td>{{ $order->user->name }}</td>

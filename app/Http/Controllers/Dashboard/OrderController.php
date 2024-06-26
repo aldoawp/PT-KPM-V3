@@ -41,7 +41,7 @@ class OrderController extends Controller
         }
 
         return view('orders.pending-orders', [
-            'orders' => $orders->sortable()->paginate($row)
+            'orders' => $orders->orderByDesc('id')->sortable()->paginate($row)
         ]);
     }
 
@@ -65,7 +65,7 @@ class OrderController extends Controller
         }
 
         return view('orders.complete-orders', [
-            'orders' => $orders->sortable()->paginate($row)
+            'orders' => $orders->orderByDesc('id')->sortable()->paginate($row)
         ]);
     }
 
@@ -236,6 +236,7 @@ class OrderController extends Controller
         }
 
         $orders = Order::where('due', '>', '0')
+            ->orderByDesc('id')
             ->sortable()
             ->paginate($row);
 
