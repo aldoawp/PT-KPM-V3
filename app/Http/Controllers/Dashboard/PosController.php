@@ -17,7 +17,6 @@ class PosController extends Controller
 {
     public function posSales(Request $request)
     {
-        $todayDate = Carbon::now();
         $row = (int) request('row', 10);
 
         if ($row < 1 || $row > 100) {
@@ -27,9 +26,7 @@ class PosController extends Controller
         $customers = [];
         $products = [];
 
-        $userRole = auth()->user()->role->name;
-
-        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
             $customers = Customer::all();
             $products = Product::filter(request(['search']));
         } else {
@@ -49,7 +46,6 @@ class PosController extends Controller
 
     public function posRestock(Request $request)
     {
-        $todayDate = Carbon::now();
         $row = (int) request('row', 10);
 
         if ($row < 1 || $row > 100) {
@@ -58,9 +54,7 @@ class PosController extends Controller
 
         $products = [];
 
-        $userRole = auth()->user()->role->name;
-
-        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
             $products = Product::filter(request(['search']));
         } else {
             $products = auth()->user()->branch->products()->filter(request(['search']));
@@ -78,7 +72,6 @@ class PosController extends Controller
 
     public function posReturn(Request $request)
     {
-        $todayDate = Carbon::now();
         $row = (int) request('row', 10);
 
         if ($row < 1 || $row > 100) {
@@ -87,9 +80,7 @@ class PosController extends Controller
 
         $products = [];
 
-        $userRole = auth()->user()->role->name;
-
-        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
             $products = Product::filter(request(['search']));
         } else {
             $products = auth()->user()->branch->products()->filter(request(['search']));
@@ -156,6 +147,32 @@ class PosController extends Controller
             ->remove($rowId);
 
         return Redirect::back()->with('success', 'Keranjang telah dihapus!');
+    }
+
+    public function createReceipt(Request $request)
+    {
+        $cart = Cart::instance(Carts::Sales->value);
+
+        if ($cart->count() === 0) {
+            return redirect()->back()->withErrors(['error' => 'Tambahkan setidaknya 1 barang!']);
+        }
+
+        $validator =
+            \Validator::make($request->all(), [
+                'customer_id' => ['required']
+            ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors(['error' => 'Pilih 1 pelanggan!']);
+        }
+
+        $customer =
+            Customer::find($request['customer_id']);
+
+        return view('pos.create-receipt', [
+            'customer' => $customer,
+            'productItem' => $cart
+        ]);
     }
 
     public function createInvoice(Request $request)

@@ -50,7 +50,8 @@
                                                         <label for="pay">Dibayarkan Sekarang</label>
                                                         <input type="number"
                                                             class="form-control @error('pay') is-invalid @enderror"
-                                                            id="pay" name="pay" value="{{ old('pay', 0) }}">
+                                                            id="pay" name="pay" value="{{ old('pay', 0) }}"
+                                                            max="{{ $productItem->total() }}">
                                                         @error('pay')
                                                             <div class="invalid-feedback">
                                                                 {{ $message }}

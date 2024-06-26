@@ -13,6 +13,7 @@ class Branch extends Model
 
     protected $fillable = [
         'region',
+        'address',
     ];
 
     public function users()

@@ -40,22 +40,10 @@ class AttendenceController extends Controller
                 ->paginate($row);
         }
 
-        // dd($attendences);
-
         return view('attendence.index', [
             'attendences' => $attendences,
         ]);
     }
-
-    // Attendence::sortable()
-    //             ->select('date')
-    //             ->groupBy('date')
-    //             ->when(auth()->user()->branch_id != 1, function ($query) {
-    //                 return $query->where('branch_id', auth()->user()->branch_id);
-    //             })
-    //             ->orderBy('date', 'desc')
-    //             ->paginate($row)
-    //             ->appends(request()->query()),
 
     /**
      * Show the form for creating a new resource.
