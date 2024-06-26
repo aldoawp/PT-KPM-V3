@@ -79,10 +79,12 @@
     const logoTitle = document.querySelector('#logo-title');
 
     addEventListener('resize', () => {
-        if (matchMedia('(max-width: 800px)').matches) {
-            logoTitle.textContent = 'PT. KPM';
-        } else {
-            logoTitle.textContent = 'PT. Karyamega Putra Mandiri';
+        if (logoTitle !== null) {
+            if (matchMedia('(max-width: 800px)').matches) {
+                logoTitle.textContent = 'PT. KPM';
+            } else {
+                logoTitle.textContent = 'PT. Karyamega Putra Mandiri';
+            }
         }
     });
 
