@@ -32,7 +32,6 @@ class AttendenceController extends Controller
                 ->paginate($row)
                 ->appends(request()->query()),
         ]);
-        
     }
 
     /**
@@ -42,8 +41,8 @@ class AttendenceController extends Controller
     {
         return view('attendence.create', [
             'employees' => Employee::when(auth()->user()->role_id != 1, function ($query) {
-                    $query->where('branch_id', auth()->user()->branch_id);
-                })
+                $query->where('branch_id', auth()->user()->branch_id);
+            })
                 ->get()
                 ->sortBy('name')
         ]);
@@ -65,13 +64,12 @@ class AttendenceController extends Controller
         Attendence::where('date', $validatedData['date'])->delete();
 
         for ($i = 1; $i <= $countEmployee; $i++) {
-            
             $status = 'status' . $i;
             $attend = new Attendence();
 
             $attend->date = $validatedData['date'];
             $attend->employee_id = $request->employee_id[$i];
-            
+
             if (!isset($request->$status)) {
                 $attend->status = 'Tanpa Kabar';
             } else {
