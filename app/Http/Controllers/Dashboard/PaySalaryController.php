@@ -22,31 +22,32 @@ class PaySalaryController extends Controller
             abort(400, 'The row parameter must be an integer between 1 and 100.');
         }
 
+        $advance_salary = [];
+
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
+            $advance_salary = AdvanceSalary::with(['employee']);
+        } else {
+            $advance_salary = AdvanceSalary::with(['employee'])
+                ->join('employees AS e1', 'advance_salaries.employee_id', '=', 'e1.id')
+                ->select('advance_salaries.*') // Ensure only advance_salaries columns are selected to avoid ambiguity
+                ->where('e1.branch_id', auth()->user()->branch_id);
+        }
+
         if (request('search')) {
             Employee::firstWhere('name', request('search'));
         }
 
         return view('pay-salary.index', [
-            'advanceSalaries' =>
-            AdvanceSalary::with(['employee'])
-                ->join('employees', 'advance_salaries.employee_id', '=', 'employees.id')
-                ->when(auth()->user()->branch_id != 1, function ($query) {
-                    $query->where('employees.branch_id', auth()->user()->branch_id);
-                })
-                ->orderByDesc('advance_salaries.date')
-                ->select('advance_salaries.*')
-                ->filter(request(['search']))
-                ->sortable()
-                ->paginate($row)
-                ->appends(request()->query())
-
+            'advanceSalaries' => $advance_salary->filter(request(['search']))
+                ->sortable(['date' => 'desc'])
+                ->paginate($row)->appends(request()->query()),
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function paySalary(String $id)
+    public function paySalary(string $id)
     {
         return view('pay-salary.create', [
             'advanceSalary' => AdvanceSalary::with(['employee'])
@@ -67,14 +68,20 @@ class PaySalaryController extends Controller
             Employee::firstWhere('name', request('search'));
         }
 
+        $pay_salary = [];
+
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
+            $pay_salary = PaySalary::with(['employee'])
+                ->leftJoin('employees AS e1', 'pay_salaries.employee_id', '=', 'e1.id');
+        } else {
+            $pay_salary = PaySalary::with(['employee'])
+                ->leftJoin('employees AS e1', 'pay_salaries.employee_id', '=', 'e1.id')
+                ->where('e1.branch_id', auth()->user()->branch_id);
+        }
+
         return view('pay-salary.history', [
-            'paySalaries' => PaySalary::with(['employee'])
-                ->leftJoin('employees', 'pay_salaries.employee_id', '=', 'employees.id')
-                ->select('pay_salaries.*', 'employees.id as employee_id', 'employees.name as employee_name') // Select necessary columns with aliases
-                ->when(auth()->user()->branch_id != 1, function ($query) {
-                    $query->where('employees.branch_id', auth()->user()->branch_id);
-                })
-                ->orderByDesc('pay_salaries.date')
+            'paySalaries' => $pay_salary
+                ->select('pay_salaries.*', 'e1.id as employee_id', 'e1.name as employee_name') // Select necessary columns with aliases
                 ->filter(request(['search']))
                 ->sortable()
                 ->paginate($row)
@@ -82,7 +89,7 @@ class PaySalaryController extends Controller
         ]);
     }
 
-    public function payHistoryDetail(String $date, String $employee_id)
+    public function payHistoryDetail(string $date, string $employee_id)
     {
         return view('pay-salary.history-details', [
             'paySalary' => PaySalary::with(['employee'])

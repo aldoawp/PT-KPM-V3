@@ -67,8 +67,8 @@
                                 <th>No.</th>
                                 <th>No Invoice</th>
                                 <th>@sortablelink('customer.name', 'Pelanggan')</th>
-                                <th>@sortablelink('order_date', 'Tanggal Pesanan')</th>
-                                <th>@sortablelink('Dibayarkan')</th>
+                                <th>@sortablelink('created_at', 'Tanggal Pesanan')</th>
+                                <th>@sortablelink('pay', 'Dibayarkan')</th>
                                 <th>Jenis Pembayaran</th>
                                 <th>Sales</th>
                                 <th>Daerah</th>

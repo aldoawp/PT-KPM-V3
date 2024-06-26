@@ -50,9 +50,9 @@
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
                             <th>No.</th>
-                            <th>@sortablelink('tanggal')</th>
+                            <th>@sortablelink('date', 'tanggal')</th>
                             <th>Daerah</th>
-                            <th>ASS</th>
+                            <th>Penaggung Jawab</th>
                             <th>Action</th>
                         </tr>
                     </thead>

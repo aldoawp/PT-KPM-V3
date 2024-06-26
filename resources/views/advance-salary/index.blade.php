@@ -62,7 +62,7 @@
                             <th>No.</th>
                             <th>Foto</th>
                             <th>@sortablelink('employee.name', 'nama')</th>
-                            <th>@sortablelink('tanggal')</th>
+                            <th>@sortablelink('date', 'tanggal')</th>
                             <th>@sortablelink('advance_salary', 'Pinjaman')</th>
                             <th>Daerah</th>
                             <th>ASS</th>

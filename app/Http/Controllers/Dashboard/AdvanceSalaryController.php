@@ -25,28 +25,18 @@ class AdvanceSalaryController extends Controller
         $advance_salary = [];
 
         if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
-            $advance_salary = AdvanceSalary::with(['employee'])
-                ->join('employees', 'advance_salaries.employee_id', '=', 'employees.id')
-                ->orderByDesc('advance_salaries.date')
-                ->select('advance_salaries.*') // Ensure only advance_salaries columns are selected to avoid ambiguity
-                ->filter(request(['search']))
-                ->sortable()
-                ->paginate($row)
-                ->appends(request()->query());
+            $advance_salary = AdvanceSalary::with(['employee']);
         } else {
             $advance_salary = AdvanceSalary::with(['employee'])
-                ->join('employees', 'advance_salaries.employee_id', '=', 'employees.id')
-                ->orderByDesc('advance_salaries.date')
+                ->join('employees AS e1', 'advance_salaries.employee_id', '=', 'e1.id')
                 ->select('advance_salaries.*') // Ensure only advance_salaries columns are selected to avoid ambiguity
-                ->where('employees.branch_id', auth()->user()->branch_id)
-                ->filter(request(['search']))
-                ->sortable()
-                ->paginate($row)
-                ->appends(request()->query());
+                ->where('e1.branch_id', auth()->user()->branch_id);
         }
 
         return view('advance-salary.index', [
-            'advance_salaries' => $advance_salary,
+            'advance_salaries' => $advance_salary->filter(request(['search']))
+                ->sortable(['date' => 'desc'])
+                ->paginate($row)->appends(request()->query()),
         ]);
 
     }

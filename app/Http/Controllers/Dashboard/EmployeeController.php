@@ -23,7 +23,7 @@ class EmployeeController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
-        if (auth()->user()->hasRole('SuperAdmin') || auth()->user()->hasRole('Owner')) {
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
             $employees = Employee::filter(request(['search']))->sortable()->paginate($row)->appends(request()->query());
         } else {
             $employees = Employee::filter(request(['search']))->where('branch_id', auth()->user()->branch_id)->sortable()->paginate($row)->appends(request()->query());

@@ -99,8 +99,7 @@
                                     <td>{{ 'Rp ' . number_format($product->selling_price, 0, ',', '.') }} </td>
                                     <td>
                                         @if ($product->product_store <= 3)
-                                            <span
-                                                class="badge rounded-pill bg-danger">{{ $product->product_store }}</span>
+                                            <span class="badge rounded-pill bg-danger">{{ $product->product_store }}</span>
                                         @else
                                             <span
                                                 class="badge rounded-pill bg-warning">{{ $product->product_store }}</span>

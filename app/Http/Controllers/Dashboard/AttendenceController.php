@@ -21,27 +21,20 @@ class AttendenceController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
-        $userRole = auth()->user()->role->name;
-
-        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
-            $attendences = Attendence::select('attendences.date', 'attendences.branch_id', 'attendences.user_id', 'users.name')
-                ->join('users', 'attendences.user_id', '=', 'users.id')
-                ->groupBy('attendences.date', 'attendences.branch_id', 'attendences.user_id')
-                ->orderBy('attendences.date', 'desc')
-                ->sortable()
-                ->paginate($row);
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
+            $attendences = Attendence::select('attendences.date', 'attendences.branch_id', 'attendences.employee_id', 'users.name')
+                ->join('users', 'attendences.employee_id', '=', 'users.id');
         } else {
-            $attendences = Attendence::select('attendences.date', 'attendences.branch_id', 'attendences.user_id', 'users.name')
-                ->join('users', 'attendences.user_id', '=', 'users.id')
-                ->where('attendences.branch_id', auth()->user()->branch_id)
-                ->groupBy('attendences.date', 'attendences.branch_id', 'attendences.user_id')
-                ->orderBy('attendences.date', 'desc')
-                ->sortable()
-                ->paginate($row);
+            $attendences = Attendence::select('attendences.date', 'attendences.branch_id', 'attendences.employee_id', 'users.name')
+                ->join('users', 'attendences.employee_id', '=', 'users.id')
+                ->where('attendences.branch_id', auth()->user()->branch_id);
         }
 
         return view('attendence.index', [
-            'attendences' => $attendences,
+            'attendences' => $attendences
+                ->groupBy('attendences.date', 'attendences.branch_id', 'attendences.employee_id')
+                ->sortable(['date' => 'desc'])
+                ->paginate($row),
         ]);
     }
 
