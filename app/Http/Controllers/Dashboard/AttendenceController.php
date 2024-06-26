@@ -32,6 +32,7 @@ class AttendenceController extends Controller
 
         return view('attendence.index', [
             'attendences' => $attendences
+                ->filter(request(['search']))
                 ->groupBy('attendences.date', 'attendences.branch_id', 'attendences.employee_id')
                 ->sortable(['date' => 'desc'])
                 ->paginate($row),
