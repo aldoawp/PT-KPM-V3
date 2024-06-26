@@ -72,7 +72,7 @@
                     <tbody class="light-body">
                         @foreach ($customers as $customer)
                         <tr>
-                            <td>{{ (($customers->currentPage() * 10) - 10) + $loop->iteration  }}</td>
+                            <td class="text-center">{{ (($customers->currentPage() * 10) - 10) + $loop->iteration  }}</td>
                             <td>
                                 <img class="avatar-60 rounded" src="{{ $customer->photo ? asset('storage/customers/'.$customer->photo) : asset('assets/images/user/1.png') }}">
                             </td>
