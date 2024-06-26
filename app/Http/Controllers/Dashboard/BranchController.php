@@ -25,6 +25,7 @@ class BranchController extends Controller
     {
         $rules = [
             'region' => 'required|string|max:255|unique:branches,region',
+            'address' => 'required|string|max:255',
         ];
 
         $validatedData = $request->validate($rules);
@@ -45,6 +46,7 @@ class BranchController extends Controller
     {
         $rules = [
             'region' => 'required|string|max:255|unique:branches,region',
+            'address' => 'required|string|max:255',
         ];
 
         $validatedData = $request->validate($rules);
@@ -52,6 +54,7 @@ class BranchController extends Controller
         $branch = Branch::find($id);
 
         $branch->region = $validatedData['region'];
+        $branch->address = $validatedData['address'];
 
         $branch->save();
 

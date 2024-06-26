@@ -51,7 +51,8 @@ class DatabaseSeeder extends Seeder
         // Create branches
         for ($i = 0; $i < 8; $i++) {
             Branch::create([
-                "region" => ['malang', 'bekasi', 'bogor', 'tangerang', "cilegon", 'semarang', 'bandung', 'surabaya'][$i]
+                "region" => ['malang', 'bekasi', 'bogor', 'tangerang', "cilegon", 'semarang', 'bandung', 'surabaya'][$i],
+                "address" => ['jl. yos sudarso', 'jl. jendral sudirman', 'jl. gajah mada', 'jl. ki hajar dewantar', 'jl. sukarno hatta', 'jl. matahari', 'jl. p. diponogoro', 'jl. mulawarman'][$i]
             ]);
         }
 
