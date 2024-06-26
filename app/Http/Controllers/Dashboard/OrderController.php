@@ -31,9 +31,7 @@ class OrderController extends Controller
 
         $orders = [];
 
-        $userRole = auth()->user()->role->name;
-
-        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
             $orders = Order::where('order_status', 'pending');
         } else {
             $orders =
@@ -41,7 +39,7 @@ class OrderController extends Controller
         }
 
         return view('orders.pending-orders', [
-            'orders' => $orders->orderByDesc('id')->sortable()->paginate($row)
+            'orders' => $orders->sortable(['created_at' => 'desc'])->paginate($row)
         ]);
     }
 
@@ -55,9 +53,7 @@ class OrderController extends Controller
 
         $orders = [];
 
-        $userRole = auth()->user()->role->name;
-
-        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
             $orders = Order::where('order_status', 'complete');
         } else {
             $orders =
@@ -65,7 +61,7 @@ class OrderController extends Controller
         }
 
         return view('orders.complete-orders', [
-            'orders' => $orders->orderByDesc('id')->sortable()->paginate($row)
+            'orders' => $orders->sortable(['created_at' => 'desc'])->paginate($row)
         ]);
     }
 
@@ -235,13 +231,16 @@ class OrderController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
-        $orders = Order::where('due', '>', '0')
-            ->orderByDesc('id')
-            ->sortable()
-            ->paginate($row);
+        $orders = [];
+
+        if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) {
+            $orders = Order::where('due', '>', '0');
+        } else {
+            $orders = Order::where('due', '>', '0')->where('branch_id', auth()->user()->branch->id);
+        }
 
         return view('orders.pending-due', [
-            'orders' => $orders
+            'orders' => $orders->sortable(['created_at' => 'desc'])->paginate($row)
         ]);
     }
 

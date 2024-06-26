@@ -67,7 +67,7 @@
                                 <th>No.</th>
                                 <th>No Invoice</th>
                                 <th>@sortablelink('customer.name', 'Nama')</th>
-                                <th>@sortablelink('order_date', 'Tanggal Pesanan')</th>
+                                <th>@sortablelink('created_at', 'Tanggal Pesanan')</th>
                                 <th>Jenis Pembayaran</th>
                                 <th>Sales</th>
                                 <th>Region</th>
@@ -88,12 +88,12 @@
                                     <td>{{ Str::title($order->customer->branch->region) }}</td>
                                     <td>
                                         <span class="btn btn-warning text-white">
-                                            {{ number_format($order->pay, 0, ',', '.') }}
+                                            Rp {{ number_format($order->pay, 0, ',', '.') }}
                                         </span>
                                     </td>
                                     <td>
                                         <span class="btn btn-danger text-white">
-                                            {{ number_format($order->due, 0, ',', '.') }}
+                                            Rp {{ number_format($order->due, 0, ',', '.') }}
                                         </span>
                                     </td>
                                     <td>
