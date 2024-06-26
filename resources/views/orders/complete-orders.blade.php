@@ -66,13 +66,13 @@
                             <tr class="ligth ligth-data">
                                 <th>No.</th>
                                 <th>No Invoice</th>
-                                <th>@sortablelink('customer.name', 'Nama')</th>
+                                <th>@sortablelink('customer.name', 'Pelanggan')</th>
                                 <th>@sortablelink('order_date', 'Tanggal Pesanan')</th>
                                 <th>@sortablelink('Dibayarkan')</th>
                                 <th>Jenis Pembayaran</th>
-                                <th>Status</th>
                                 <th>Sales</th>
-                                <th>Region</th>
+                                <th>Daerah</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -84,9 +84,9 @@
                                     <td>{{ $order->customer->name }}</td>
                                     <td>{{ date('d-m-Y', $order->create_at) }}</td>
                                     <td>Rp {{ number_format($order->pay, 0, ',', '.') }}</td>
-                                    <td>{{ $order->payment_status }}</td>
+                                    <td>{{ Str::title($order->payment_status) }}</td>
                                     <td>{{ $order->user->name }}</td>
-                                    <td>{{ $order->customer->branch->region }}</td>
+                                    <td>{{ Str::title($order->customer->branch->region) }}</td>
                                     <td>
                                         <span class="badge badge-success">{{ $order->order_status }}</span>
                                     </td>

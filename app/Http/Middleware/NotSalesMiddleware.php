@@ -15,6 +15,10 @@ class NotSalesMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (auth()->user()->role->name === 'Sales' && $request->url() === route('dashboard')) {
+            return redirect()->route('pos.salesPos');
+        }
+        
         if (auth()->user()->role->name !== 'Sales') {
             return $next($request);
         }

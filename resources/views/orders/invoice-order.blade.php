@@ -114,7 +114,7 @@
                         <a id="invoice_download_btn" class="btn btn-lg btn-download">
                             Unduh Invoice
                         </a>
-                        <a href="{{ route('order.completeOrders') }}" class="btn btn-primary btn-lg">
+                        <a href="{{ auth()->user()->isSalesRole() ? route('pos.salesPos') : route('order.completeOrders') }}" class="btn btn-primary btn-lg">
                             Kembali
                         </a>
                     </div>

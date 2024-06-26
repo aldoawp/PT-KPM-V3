@@ -104,7 +104,7 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="buying_date">Tanggal Pembelian</label>
+                                <label for="buying_date">Tanggal Produksi</label>
                                 <input id="buying_date" class="form-control @error('buying_date') is-invalid @enderror" name="buying_date" value="{{ old('buying_date', $product->buying_date) }}" />
                                 @error('buying_date')
                                 <div class="invalid-feedback">
@@ -112,7 +112,7 @@
                                 </div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-6">
+                            {{-- <div class="form-group col-md-6">
                                 <label for="expire_date">Tanggal Kadaluarsa</label>
                                 <input id="expire_date" class="form-control @error('expire_date') is-invalid @enderror" name="expire_date" value="{{ old('expire_date', $product->expire_date) }}" />
                                 @error('expire_date')
@@ -120,7 +120,7 @@
                                     {{ $message }}
                                 </div>
                                 @enderror
-                            </div>
+                            </div> --}}
                             <div class="form-group col-md-6">
                                 <label for="buying_price">Harga Modal<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('buying_price') is-invalid @enderror" id="buying_price" name="buying_price" value="{{ old('buying_price', $product->buying_price) }}" required>

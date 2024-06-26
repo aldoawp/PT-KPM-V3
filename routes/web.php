@@ -122,14 +122,14 @@ Route::middleware(['permission:pos.menu'])->group(function () {
 
 // ====== ORDERS ======
 Route::middleware(['permission:orders.menu'])->group(function () {
-    Route::get('/orders/pending', [OrderController::class, 'pendingOrders'])->name('order.pendingOrders');
-    Route::get('/orders/complete', [OrderController::class, 'completeOrders'])->name('order.completeOrders');
+    Route::get('/orders/pending', [OrderController::class, 'pendingOrders'])->name('order.pendingOrders')->middleware('notSalesMiddleware');
+    Route::get('/orders/complete', [OrderController::class, 'completeOrders'])->name('order.completeOrders')->middleware('notSalesMiddleware');
     Route::get('/orders/details/{order_id}', [OrderController::class, 'orderDetails'])->name('order.orderDetails');
     Route::put('/orders/update/status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
     Route::get('/orders/invoice/download/{order_id}', [OrderController::class, 'invoiceDownload'])->name('order.invoiceDownload');
 
-    Route::get('/orders/pending/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.pending.deleteOrder');
-    Route::get('/orders/complete/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.complete.deleteOrder');
+    Route::get('/orders/pending/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.pending.deleteOrder')->middleware('notSalesMiddleware');
+    Route::get('/orders/complete/delete/{order_id}', [OrderController::class, 'deleteOrder'])->name('order.complete.deleteOrder')->middleware('notSalesMiddleware');
 
     // Pending Due
     Route::get('/pending/due', [OrderController::class, 'pendingDue'])->name('order.pendingDue');

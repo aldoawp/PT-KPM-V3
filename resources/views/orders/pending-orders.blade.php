@@ -83,10 +83,10 @@
                                     <td>{{ $order->invoice_no }}</td>
                                     <td>{{ $order->customer->name }}</td>
                                     <td>{{ date('d-m-Y', $order->create_at) }}</td>
-                                    <td>{{ $order->payment_status }}</td>
+                                    <td>{{ Str::title($order->payment_status) }}</td>
                                     <td>Rp {{ number_format($order->total, 0, ',', '.') }}</td>
                                     <td>{{ $order->user->name }}</td>
-                                    <td>{{ $order->customer->branch->region }}</td>
+                                    <td>{{ Str::title($order->customer->branch->region) }}</td>
                                     <td>
                                         <span class="badge badge-danger">{{ $order->order_status }}</span>
                                     </td>
