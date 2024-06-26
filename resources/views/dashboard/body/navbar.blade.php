@@ -6,7 +6,7 @@
                 <a href="{{ route('dashboard') }}" class="header-logo">
                     <img src="{{ asset('assets/images/logo-kpm.png') }}" class="img-fluid rounded-normal" alt="logo">
                     <h5 class="logo-title ml-3 d-block d-sm-none">PT. KPM</h5>
-                    <h5 class="logo-title ml-3 d-none d-sm-block">PT. Karyamega Putra Mandiri</h5>
+                    <h5 class="logo-title ml-3 d-none d-sm-block" id="logo-title">PT. Karyamega Putra Mandiri</h5>
                 </a>
             </div>
             <div class="iq-search-bar device-search invisible">

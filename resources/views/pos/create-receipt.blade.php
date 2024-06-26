@@ -73,9 +73,9 @@
                     </div>
 
                     <div style='font-family:tahoma; font-size:8pt;'>
-                        <div class="d-flex flex-column justify-content-center align-items-center p-5">
+                        <div class="d-flex flex-column justify-content-center align-items-center py-5 px-3">
                             <table
-                                style='width:350px; font-size:14pt; text-wrap: nowrap; font-family:calibri; border-collapse: collapse;'
+                                style='width:auto; font-size:14pt; text-wrap: nowrap; font-family:calibri; border-collapse: collapse;'
                                 border = '0'>
                                 <td width='70%' align='CENTER' style='vertical-align:top'><span style='color:black;'>
                                         <b>PT. KARYAMEGA PUTRA MANDIRI</b></br>{{ strtoupper(auth()->user()->branch->address) }}</span></br>
@@ -106,7 +106,7 @@
                                 }
                             </style>
                             <table cellspacing='0' cellpadding='0'
-                                style='width:400px; font-size:12pt; font-family:calibri;  border-collapse: collapse;'
+                                style='width:auto; font-size:12pt; font-family:calibri;  border-collapse: collapse;'
                                 border='0'>
 
                                 <tr align='center'>

@@ -41,7 +41,7 @@ class OrderController extends Controller
         }
 
         return view('orders.pending-orders', [
-            'orders' => $orders->sortable()->paginate($row)
+            'orders' => $orders->orderByDesc('id')->sortable()->paginate($row)
         ]);
     }
 
@@ -65,7 +65,7 @@ class OrderController extends Controller
         }
 
         return view('orders.complete-orders', [
-            'orders' => $orders->sortable()->paginate($row)
+            'orders' => $orders->orderByDesc('id')->sortable()->paginate($row)
         ]);
     }
 
@@ -239,12 +239,14 @@ class OrderController extends Controller
 
         if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
             $orders = Order::where('due', '>', '0')
+                ->orderByDesc('id')
                 ->sortable()
                 ->paginate($row);
         } else {
             $orders =
                 Order::where('due', '>', '0')
                 ->where('branch_id', auth()->user()->branch->id)
+                ->orderByDesc('id')
                 ->sortable()
                 ->paginate($row);
         }
