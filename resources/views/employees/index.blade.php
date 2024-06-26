@@ -60,13 +60,13 @@
                 <table class="table mb-0">
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
-                            <th>@sortablelink('id', 'No.')</th>
+                            <th>No</th>
                             <th>Foto</th>
-                            <th>@sortablelink('nama')</th>
+                            <th>@sortablelink('name', 'nama')</th>
                             <th>@sortablelink('email')</th>
-                            <th>@sortablelink('No HP')</th>
-                            <th>@sortablelink('Gaji')</th>
-                            <th>@sortablelink('Kota')</th>
+                            <th>@sortablelink('phone', 'No HP')</th>
+                            <th>@sortablelink('salary', 'Gaji')</th>
+                            <th>@sortablelink('branch.region', 'Kota')</th>
                             <th>Action</th>
                         </tr>
                     </thead>
