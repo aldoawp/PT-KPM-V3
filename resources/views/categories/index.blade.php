@@ -15,7 +15,8 @@
                 <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                     <div>
                         <h4 class="mb-3">Daftar Kategori</h4>
-                        <p class="mb-0">Pada halaman ini anda bisa menambahkan atau mengedit jenis-jenis rokok yang anda miliki.</p>
+                        <p class="mb-0">Pada halaman ini anda bisa menambahkan atau mengedit jenis-jenis rokok yang anda
+                            miliki.</p>
                     </div>
                     <div>
                         <a href="{{ route('categories.create') }}" class="btn btn-primary add-list"><i
@@ -45,16 +46,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="control-label col-sm-3 align-self-center" for="search">Pencarian:</label>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input type="text" id="search" class="form-control" name="search"
-                                        placeholder="Cari kategori..." value="{{ request('search') }}">
-                                    <div class="input-group-append">
-                                        <button type="submit" class="input-group-text bg-primary"><i
-                                                class="fa-solid fa-magnifying-glass font-size-20"></i></button>
-                                    </div>
+                        <div class="form-group ml-auto">
+                            <div class="input-group">
+                                <input type="text" id="search" class="form-control" name="search"
+                                    placeholder="Cari kategori..." value="{{ request('search') }}">
+                                <div class="input-group-append">
+                                    <button type="submit" class="input-group-text bg-primary"><i
+                                            class="fa-solid fa-magnifying-glass font-size-20"></i></button>
                                 </div>
                             </div>
                         </div>

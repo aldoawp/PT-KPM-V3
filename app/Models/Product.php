@@ -42,11 +42,13 @@ class Product extends Model
         'branch'
     ];
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function supplier(){
+    public function supplier()
+    {
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 
@@ -68,7 +70,12 @@ class Product extends Model
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
-            return $query->where('product_name', 'like', '%' . $search . '%');
+            return $query->join('categories', 'categories.id', '=', 'products.category_id')
+                ->join('suppliers', 'suppliers.id', '=', 'products.supplier_id')
+                ->where('product_name', 'like', '%' . $search . '%')
+                ->orWhere('categories.name', 'like', '%' . $search . '%')
+                ->orWhere('suppliers.name', 'like', '%' . $search . '%')
+                ->orWhere('selling_price', 'like', '%' . $search . '%');
         });
     }
 }

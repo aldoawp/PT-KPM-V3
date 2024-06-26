@@ -52,9 +52,8 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="control-label col-sm-3 align-self-center" for="search">Search:</label>
-                            <div class="input-group col-sm-8">
+                        <div class="form-group ml-auto">
+                            <div class="input-group">
                                 <input type="text" id="search" class="form-control" name="search"
                                     placeholder="Cari produk..." value="{{ request('search') }}">
                                 <div class="input-group-append">
