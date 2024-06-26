@@ -21,16 +21,27 @@ class AttendenceController extends Controller
             abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
+        $userRole = auth()->user()->role->name;
+
+        if ($userRole === 'SuperAdmin' || $userRole === 'Owner') {
+            $attendences = Attendence::select('attendences.date', 'attendences.branch_id', 'attendences.user_id', 'users.name')
+                ->join('users', 'attendences.user_id', '=', 'users.id')
+                ->groupBy('attendences.date', 'attendences.branch_id', 'attendences.user_id')
+                ->orderBy('attendences.date', 'desc')
+                ->sortable()
+                ->paginate($row);
+        } else {
+            $attendences = Attendence::select('attendences.date', 'attendences.branch_id', 'attendences.user_id', 'users.name')
+                ->join('users', 'attendences.user_id', '=', 'users.id')
+                ->where('attendences.branch_id', auth()->user()->branch_id)
+                ->groupBy('attendences.date', 'attendences.branch_id', 'attendences.user_id')
+                ->orderBy('attendences.date', 'desc')
+                ->sortable()
+                ->paginate($row);
+        }
+
         return view('attendence.index', [
-            'attendences' => Attendence::sortable()
-                ->select('date')
-                ->groupBy('date')
-                ->when(auth()->user()->branch_id != 1, function ($query) {
-                    return $query->where('branch_id', auth()->user()->branch_id);
-                })
-                ->orderBy('date', 'desc')
-                ->paginate($row)
-                ->appends(request()->query()),
+            'attendences' => $attendences,
         ]);
     }
 
@@ -61,9 +72,10 @@ class AttendenceController extends Controller
         $validatedData = $request->validate($rules);
 
         // Delete if the date is already created (it is just for updating new attendance). If not it will create new attendance
-        Attendence::where('date', $validatedData['date'])->delete();
+        // Attendence::where('date', $validatedData['date'])->delete();
 
         for ($i = 1; $i <= $countEmployee; $i++) {
+
             $status = 'status' . $i;
             $attend = new Attendence();
 
@@ -77,6 +89,7 @@ class AttendenceController extends Controller
             }
 
             $attend->branch_id = auth()->user()->branch_id;
+            $attend->user_id = auth()->user()->id;
 
             $attend->save();
         }
@@ -95,11 +108,14 @@ class AttendenceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Attendence $attendence)
+    public function edit($date, $branch_id)
     {
         return view('attendence.edit', [
-            'attendences' => Attendence::with(['employee'])->where('date', $attendence->date)->get(),
-            'date' => $attendence->date
+            'attendences' => Attendence::with(['employee'])
+                ->where('date', $date)
+                ->where('branch_id', $branch_id)
+                ->get(),
+            'date' => $date
         ]);
     }
 

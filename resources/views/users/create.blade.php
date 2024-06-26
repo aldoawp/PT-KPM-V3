@@ -117,7 +117,7 @@
                                     <select class="form-control @error('branch_id') is-invalid @enderror" name="branch_id">
                                         <option selected="" disabled>-- Pilih Daerah --</option>
                                         @foreach ($branches as $branch)
-                                            <option value="{{ $branch->id }}">{{ $branch->region }}</option>
+                                            <option value="{{ $branch->id }}">{{ Str::title($branch->region) }}</option>
                                         @endforeach
                                     </select>
                                     @error('branch_id')

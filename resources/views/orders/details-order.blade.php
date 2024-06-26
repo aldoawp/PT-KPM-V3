@@ -78,7 +78,7 @@
                                         <input type="hidden" name="id" value="{{ $order->id }}">
                                         <button type="submit" class="btn btn-success mr-2 border-none" data-toggle="tooltip" data-placement="top" title="" data-original-title="Selesaikan">Selesaikan Pesanan</button>
 
-                                        <a class="btn btn-danger mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Kembali" href="{{ route('order.pendingOrders') }}">Kembali</a>
+                                        <a class="btn btn-danger mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Kembali" href="{{ auth()->user()->isSalesRole() ? route('pos.salesPos') : route('order.pendingOrders') }}">Kembali</a>
                                     </form>
                                 </div>
                             </div>

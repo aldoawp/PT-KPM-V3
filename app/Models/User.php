@@ -123,4 +123,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class, 'user_id', 'id');
     }
+
+    public function attendence()
+    {
+        return $this->hasMany(Attendence::class, 'user_id', 'id');
+    }
 }

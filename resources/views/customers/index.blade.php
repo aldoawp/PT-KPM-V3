@@ -65,6 +65,7 @@
                             <th>@sortablelink('email')</th>
                             <th>@sortablelink('No HP')</th>
                             <th>@sortablelink('Nama Usaha')</th>
+                            <th>Daerah</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -79,6 +80,7 @@
                             <td>{{ $customer->email }}</td>
                             <td>{{ $customer->phone }}</td>
                             <td>{{ $customer->shopname }}</td>
+                            <td>{{ Str::title($customer->branch->region) }}</td>
                             <td>
                                 <div class="d-flex align-items-center list-action">
                                     <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tampilkan"

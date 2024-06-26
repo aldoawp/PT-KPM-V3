@@ -31,7 +31,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
-                        <h4 class="card-title">Ubah Pinjaman Karyawan</h4>
+                        <h4 class="card-title">Ubah Gaji Karyawan</h4>
                     </div>
                 </div>
 
@@ -79,7 +79,7 @@
                         <!-- end: Input Data -->
                         <div class="mt-2">
                             <button type="submit" class="btn btn-primary mr-2">Simpan</button>
-                            <a class="btn bg-danger" href="{{ route('advance-salary.index') }}">Batalkan</a>
+                            <a class="btn bg-danger" href="{{ route('pay-salary.index') }}">Batal</a>
                         </div>
                     </form>
                 </div>

@@ -34,6 +34,14 @@ class Attendence extends Model
         return $this->belongsTo(Employee::class, 'employee_id', 'id');
     }
 
+    public function branch(){
+        return $this->belongsTo(Branch::class, 'branch_id', 'id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'branch_id', 'id');
+    }
+
     public function getRouteKeyName()
     {
         return 'date';

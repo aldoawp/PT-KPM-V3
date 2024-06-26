@@ -82,11 +82,12 @@ class PaySalaryController extends Controller
         ]);
     }
 
-    public function payHistoryDetail(String $id)
+    public function payHistoryDetail(String $date, String $employee_id)
     {
         return view('pay-salary.history-details', [
             'paySalary' => PaySalary::with(['employee'])
-                ->where('employee_id', $id)
+                ->where('employee_id', $employee_id)
+                ->where('date', $date)
                 ->first(),
         ]);
     }
@@ -121,7 +122,7 @@ class PaySalaryController extends Controller
 
         PaySalary::create($validatedData);
 
-        return Redirect::route('pay-salary.payHistory')->with('success', 'Employee Salary Paid Successfully!');
+        return Redirect::route('pay-salary.payHistory')->with('success', 'Gaji karyawan berhasil dibayar!');
     }
 
     /**
@@ -155,6 +156,6 @@ class PaySalaryController extends Controller
     {
         PaySalary::destroy($paySalary->id);
 
-        return Redirect::route('pay-salary.payHistory')->with('success', 'Employee History Pay Salary has been deleted!');
+        return Redirect::route('pay-salary.payHistory')->with('success', 'Data gaji karyawan telah dihapus!');
     }
 }

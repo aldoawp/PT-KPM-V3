@@ -14,14 +14,17 @@ return new class extends Migration
         Schema::create('attendences', function (Blueprint $table) {
             $table->bigInteger('employee_id')->unsigned();
             $table->unsignedInteger('branch_id');
+            $table->unsignedBigInteger('user_id');
             $table->date('date');
             $table->enum('status', ['Hadir', 'Ijin', 'Tanpa Kabar'])
                 ->default('Tanpa Kabar');
 
-            $table->foreign('branch_id')->references('id')
-                ->on('branches');
             $table->foreign('employee_id')->references('id')
                 ->on('employees')->onDelete('cascade');
+            $table->foreign('branch_id')->references('id')
+                ->on('branches');
+            $table->foreign('user_id')->references('id')
+                ->on('users');
 
             $table->timestamps();
         });

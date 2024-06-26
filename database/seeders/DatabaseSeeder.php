@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
         // Create user roles
         Role::create(['name' => 'SuperAdmin'])->givePermissionTo(Permission::all());
         Role::create(['name' => 'Owner'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu', 'user.menu', 'branch.menu', 'report.menu']);
-        Role::create(['name' => 'ASS'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu']);
+        Role::create(['name' => 'ASS'])->givePermissionTo(['pos.menu', 'employee.menu', 'customer.menu', 'supplier.menu', 'salary.menu', 'category.menu', 'product.menu', 'orders.menu', 'stock.menu', 'attendence.menu', 'user.menu']);
         Role::create(['name' => 'Sales'])->givePermissionTo(['pos.menu', 'customer.menu', 'orders.menu']);
 
         // Create branches
@@ -89,7 +89,15 @@ class DatabaseSeeder extends Seeder
             'role_id' => 3,
             'branch_id' => 2,
         ]);
-        $sales = User::factory()->create([
+        $manager3 = User::factory()->create([
+            'name' => 'Elita',
+            'username' => 'elita',
+            'email' => 'elita@gmail.com',
+            'password' => '$2y$10$6c2Yc4tuj1Sqj8AqosGUQ.EbzkLk9qW77JkOPOuSGYO3UoU6KLDEe',
+            'role_id' => 3,
+            'branch_id' => 6,
+        ]);
+        $sales1 = User::factory()->create([
             'name' => 'Budi',
             'username' => 'budi',
             'email' => 'budi@gmail.com',
@@ -97,13 +105,32 @@ class DatabaseSeeder extends Seeder
             'role_id' => 4,
             'branch_id' => 8,
         ]);
+        $sales2 = User::factory()->create([
+            'name' => 'Santoso',
+            'username' => 'santoso',
+            'email' => 'santoso@gmail.com',
+            'password' => '$2y$10$6c2Yc4tuj1Sqj8AqosGUQ.EbzkLk9qW77JkOPOuSGYO3UoU6KLDEe',
+            'role_id' => 4,
+            'branch_id' => 2,
+        ]);
+        $sales3 = User::factory()->create([
+            'name' => 'Hadi',
+            'username' => 'hadi',
+            'email' => 'hadi@gmail.com',
+            'password' => '$2y$10$6c2Yc4tuj1Sqj8AqosGUQ.EbzkLk9qW77JkOPOuSGYO3UoU6KLDEe',
+            'role_id' => 4,
+            'branch_id' => 6,
+        ]);
 
         // Assign roles to each users
         $admin->assignRole('SuperAdmin');
         $owner->assignRole('Owner');
         $manager1->assignRole('ASS');
         $manager2->assignRole('ASS');
-        $sales->assignRole('Sales');
+        $manager3->assignRole('ASS');
+        $sales1->assignRole('Sales');
+        $sales2->assignRole('Sales');
+        $sales3->assignRole('Sales');
 
         // Create default supplier
         Supplier::factory()->create([
@@ -121,14 +148,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create default product categories
-        Category::factory()->create(['name' => 'Rokok putih']);
-        Category::factory()->create(['name' => 'Rokok kretek']);
-        Category::factory()->create(['name' => 'Rokok klembak']);
+        Category::factory()->create(['name' => 'Rokok Putih']);
+        Category::factory()->create(['name' => 'Rokok Kretek']);
+        Category::factory()->create(['name' => 'Rokok Klembak']);
         Category::factory()->create(['name' => 'Sigaret Kretek Tangan']);
         Category::factory()->create(['name' => 'Sigaret Kretek Mesin']);
-        Category::factory()->create(['name' => 'Rokok filter']);
-        Category::factory()->create(['name' => 'Rokok non filter']);
-
+        Category::factory()->create(['name' => 'Rokok Filter']);
+        Category::factory()->create(['name' => 'Rokok Non-Filter']);
+        
         Employee::factory(100)->create();
         Customer::factory(100)->create();
         for ($i = 0; $i < 100; $i++) {

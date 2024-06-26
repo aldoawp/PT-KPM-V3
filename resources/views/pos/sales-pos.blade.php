@@ -12,6 +12,14 @@
                         </button>
                     </div>
                 @endif
+                @if (session()->has('warning'))
+                    <div class="alert alert-danger" role="alert">
+                        <div class="iq-alert-text">{{ session('warning') }}</div>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <i class="ri-close-line text-danger"></i>
+                        </button>
+                    </div>
+                @endif
                 <div>
                     <h4 class="mb-3">Transaksi Penjualan</h4>
                 </div>
